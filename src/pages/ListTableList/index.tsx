@@ -77,10 +77,12 @@ const TableList: React.FC<{}> = () => {
   const [stepFormValues, setStepFormValues] = useState({});
   const actionRef = useRef<ActionType>();
   const [selectedRowsState, setSelectedRows] = useState<TableListItem[]>([]);
+
   const columns: ProColumns<TableListItem>[] = [
     {
       title: '规则名称',
       dataIndex: 'name',
+      // @ts-ignore
       rules: [
         {
           required: true,
@@ -181,6 +183,7 @@ const TableList: React.FC<{}> = () => {
             onClick={async () => {
               await handleRemove(selectedRowsState);
               setSelectedRows([]);
+              // @ts-ignore
               actionRef.current?.reloadAndRest();
             }}
           >

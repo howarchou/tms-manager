@@ -49,4 +49,12 @@ export default {
   'menu.editor.flow': 'Flow Editor',
   'menu.editor.mind': 'Mind Editor',
   'menu.editor.koni': 'Koni Editor',
+  'menu.order.manage': 'Order-Manage',
+  'menu.order.manage.list': 'Order List',
+  'menu.bill.manage': 'Bill Manage',
+  'menu.bill.manage.list': 'Bill List',
+  'menu.bill.manage.settlement': 'Settlement List',
+  'menu.clue.manage': 'Clue Manage',
+  'menu.clue.manage.order': 'Order Clue',
+  'menu.clue.manage.supplier': 'Supplier Clue',
 };
