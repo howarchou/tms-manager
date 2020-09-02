@@ -12,7 +12,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: '团建系统',
   pwa: false,
   iconfontUrl: '',
 } as LayoutSettings & {

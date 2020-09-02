@@ -15,6 +15,11 @@ const routes: IRoute[] = [
         path: '/user/login',
         component: './user/login',
       },
+      {
+        name: 'register',
+        path: '/user/registered',
+        component: './user/Registered',
+      },
     ],
   },
   {
@@ -180,7 +185,7 @@ const routes: IRoute[] = [
         path: '/account/list',
         name: 'list',
         icon: 'TeamOutlined',
-        component: './account-manage/AccountList',
+        component: './account-manage/AccountList/index',
       },
       {
         path: '/account/auth',

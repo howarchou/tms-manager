@@ -4,7 +4,7 @@ import { notification } from 'antd';
 import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
-import { ResponseError } from 'umi-request';
+import { RequestOptionsInit, ResponseError } from 'umi-request';
 import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 
@@ -15,12 +15,14 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     try {
-      const currentUser = await queryCurrent();
+      const userId = localStorage.getItem('userId') as string;
+      const currentUser = await queryCurrent(userId);
       return {
         currentUser,
         settings: defaultSettings,
       };
     } catch (error) {
+      console.log(error);
       history.push('/user/login');
     }
   }
@@ -66,6 +68,7 @@ const codeMessage = {
   502: '网关错误。',
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
+  4001: '登录密码错误',
 };
 
 /**
@@ -92,6 +95,11 @@ const errorHandler = (error: ResponseError) => {
   throw error;
 };
 
+const responseInterceptor = (response: Response, options: RequestOptionsInit) => {
+  return response;
+};
+
 export const request: RequestConfig = {
   errorHandler,
+  responseInterceptors: [responseInterceptor],
 };

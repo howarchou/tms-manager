@@ -8,11 +8,14 @@ export interface LoginParamsType {
   type: string;
 }
 
-export async function fakeAccountLogin(params: LoginParamsType) {
-  return request<API.LoginStateType>('/api/login/account', {
+export async function fakeAccountLogin(params: LoginParamsType): Promise<API.LoginResponse> {
+  const { username: user_name, password } = params;
+  const response = await request('/api/login', {
     method: 'POST',
-    data: params,
+    data: { user_name, password },
   });
+  // status 为0 登录成功
+  return { ...response, status: response.status === 0 ? 'ok' : 'error', type: params.type };
 }
 
 export async function getFakeCaptcha(mobile: string) {

@@ -12,11 +12,31 @@ declare namespace API {
     userid?: string;
     access?: 'user' | 'guest' | 'admin';
     unreadCount?: number;
+    email?: string;
+    mobile?: string;
+    ID: string;
   }
 
   export interface LoginStateType {
     status?: 'ok' | 'error';
     type?: string;
+  }
+
+  export type LoginType = 'ok' | 'error' | number;
+  export interface LoginResponse {
+    status?: LoginType;
+    type?: string;
+    payload: LoginData;
+  }
+
+  export interface LoginData {
+    ID: string;
+    CreatedAt: Date;
+    UpdatedAt: Date;
+    DeletedAt?: any;
+    name: string;
+    email: string;
+    mobile: string;
   }
 
   export interface NoticeIconData {
@@ -31,5 +51,13 @@ declare namespace API {
     clickClose?: boolean;
     extra: any;
     status: string;
+  }
+
+  export interface AddAccount {
+    email: string;
+    phone:string
+    name: string;
+    password: string
+    role: 'admin' | 'user';
   }
 }

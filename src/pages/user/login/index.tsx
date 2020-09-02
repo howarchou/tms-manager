@@ -2,6 +2,7 @@ import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, useModel } from 'umi';
 import { getPageQuery } from '@/utils/utils';
+import { useLocalStorageState } from '@umijs/hooks';
 import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import Footer from '@/components/Footer';
 import LoginFrom from './components/Login';
@@ -50,14 +51,16 @@ const Login: React.FC<{}> = () => {
 
   const { refresh } = useModel('@@initialState');
   const [autoLogin, setAutoLogin] = useState(true);
-  const [type, setType] = useState<string>('mobile');
+  const [type, setType] = useState<string>('account');
+  const [, setUserId] = useLocalStorageState('userId', '');
 
   const handleSubmit = async (values: LoginParamsType) => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.status === 'ok') {
+      const response = await fakeAccountLogin({ ...values, type });
+      if (response.status === 'ok') {
+        setUserId(response.payload.ID);
         message.success('登录成功！');
         replaceGoto();
         setTimeout(() => {
@@ -66,7 +69,8 @@ const Login: React.FC<{}> = () => {
         return;
       }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      // @ts-ignore
+      setUserLoginState({ status: response.status as API.LoginType, type: response.type });
     } catch (error) {
       message.error('登录失败，请重试！');
     }
@@ -123,7 +127,7 @@ const Login: React.FC<{}> = () => {
             </Tab>
             <Tab key="account" tab="账户密码登录">
               {status === 'error' && loginType === 'account' && !submitting && (
-                <LoginMessage content="账户或密码错误（admin/ant.design）" />
+                <LoginMessage content="账户或密码错误" />
               )}
 
               <Username
