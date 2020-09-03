@@ -21,7 +21,7 @@ interface AddModalIF {
 }
 
 const AddModal = (props: AddModalIF) => {
-  const { visibleModal, data = {} as API.AddAccount } = props;
+  const { visibleModal, data = { role: 'admin' } as API.AddAccount } = props;
   const [visible, setVisible] = useState(visibleModal);
   const [form] = Form.useForm();
 
@@ -50,10 +50,7 @@ const AddModal = (props: AddModalIF) => {
           {...formItemLayout}
           form={form}
           name="addUser"
-          initialValues={{
-            role: 'admin',
-            ...data,
-          }}
+          initialValues={{ ...data }}
           scrollToFirstError
         >
           <Form.Item

@@ -55,9 +55,20 @@ declare namespace API {
 
   export interface AddAccount {
     email: string;
-    phone:string
+    phone: string;
     name: string;
-    password: string
+    password: string;
     role: 'admin' | 'user';
+  }
+
+  export interface TeamBuilding {
+    id: string;
+    name: string;
+    playType: string;
+    price: string;
+    capacity: number;
+    cycle: number;
+    area: string;
+    display: boolean;
   }
 }
