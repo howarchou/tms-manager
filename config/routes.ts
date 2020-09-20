@@ -44,14 +44,8 @@ const routes: IRoute[] = [
     ],
   },
   {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    component: './ListTableList',
-  },
-  {
     name: 'order.manage',
-    icon: 'table',
+    icon: 'icon-dingdan1',
     path: '/order',
     routes: [
       {
@@ -64,7 +58,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'bill.manage',
-    icon: 'table',
+    icon: 'icon-zhangdan1',
     path: '/bill',
     routes: [
       {
@@ -83,7 +77,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'clue.manage',
-    icon: 'table',
+    icon: 'icon-xiansuo',
     path: '/clue',
     routes: [
       {
@@ -102,7 +96,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'operation.manage',
-    icon: 'table',
+    icon: 'icon-yunying1',
     path: '/operation',
     routes: [
       {
@@ -139,7 +133,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'supplier.manage',
-    icon: 'table',
+    icon: 'icon-gongyingshang',
     path: '/supplier',
     routes: [
       {
@@ -152,7 +146,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'team-building.manage',
-    icon: 'table',
+    icon: 'icon-tuanjianhuodong',
     path: '/team-building',
     routes: [
       {
@@ -165,7 +159,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'materials.manage',
-    icon: 'table',
+    icon: 'icon-wuliao',
     path: '/materials',
     routes: [
       {
@@ -178,7 +172,7 @@ const routes: IRoute[] = [
   },
   {
     name: 'account.manage',
-    icon: 'table',
+    icon: 'icon-account',
     path: '/account',
     routes: [
       {

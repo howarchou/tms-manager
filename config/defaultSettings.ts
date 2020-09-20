@@ -14,7 +14,8 @@ export default {
   },
   title: '团建系统',
   pwa: false,
-  iconfontUrl: '',
+  logo: 'http://yytms.cicisoft.cn/asset/logo/logo.png',
+  iconfontUrl: '//at.alicdn.com/t/font_2063097_wevr4bi17f.js',
 } as LayoutSettings & {
   pwa: boolean;
 };

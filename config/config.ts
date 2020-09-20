@@ -13,9 +13,10 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: 'Ant Design Pro',
+    name: '鱼跃团建',
     locale: true,
     siderWidth: 208,
+    logo: '',
   },
   locale: {
     // default zh-CN

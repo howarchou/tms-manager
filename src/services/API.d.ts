@@ -66,9 +66,9 @@ declare namespace API {
     name: string;
     playType: string;
     price: string;
-    capacity: number;
-    cycle: number;
+    capacity: string;
+    cycle: string;
     area: string;
-    display: boolean;
+    display: string;
   }
 }
