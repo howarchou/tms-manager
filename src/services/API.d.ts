@@ -1,3 +1,5 @@
+import { HomeBannerStatus } from '@/services/API.Enum';
+
 declare namespace API {
   export interface CurrentUser {
     avatar?: string;
@@ -70,5 +72,14 @@ declare namespace API {
     cycle: string;
     area: string;
     display: string;
+  }
+
+  export interface HomeBanner {
+    id: string;
+    name: string;
+    link: string;
+    sort: number;
+    status: HomeBannerStatus;
+    cover: string;
   }
 }

@@ -8,7 +8,7 @@
 export default {
   dev: {
     '/api/': {
-      target: 'http://39.100.48.148:8080',
+      target: 'http://tms.cicisoft.cn',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

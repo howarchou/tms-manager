@@ -2,7 +2,7 @@
  *  Created by pw on 2020/8/29 5:23 下午.
  */
 import React, { useState } from 'react';
-import { Table } from 'antd';
+import { Space, Table } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import AddTeambuildPanel from '@/pages/team-building-manage/AddTeambuildPanel';
 import styles from './TeamBuildingList.less';
@@ -14,12 +14,12 @@ export default () => {
     data.push(values);
     setData(data.slice());
   };
-  //
-  // const handleEdit = (record: API.TeamBuilding) => {
-  //   setData([]);
-  // };
-  //
-  // const handleDel = (record: API.TeamBuilding) => {};
+
+  const handleEdit = (record: API.TeamBuilding) => {
+    setData([]);
+  };
+
+  const handleDel = (record: API.TeamBuilding) => {};
 
   const columns = [
     {
@@ -66,17 +66,17 @@ export default () => {
         return record.display === 'add' ? '已上架' : '已下架';
       },
     },
-    // {
-    //   title: '操作',
-    //   key: 'action',
-    //   render: (text: string, record: any) => (
-    //     <Space size="middle">
-    //       <a onClick={() => handleEdit(record)}>查看</a>
-    //       <a onClick={() => handleEdit(record)}>编辑</a>
-    //       <a onClick={() => handleDel(record)}>下架</a>
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: '操作',
+      key: 'action',
+      render: (text: string, record: any) => (
+        <Space size="middle">
+          <a onClick={() => handleEdit(record)}>查看</a>
+          <a onClick={() => handleEdit(record)}>编辑</a>
+          <a onClick={() => handleDel(record)}>下架</a>
+        </Space>
+      ),
+    },
   ];
   return (
     <PageContainer>

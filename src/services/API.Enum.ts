@@ -5,3 +5,8 @@ export enum LoginState {
   Success = 0,
   PWDError = 4001,
 }
+
+export enum HomeBannerStatus {
+  UP = 0,
+  DOWN,
+}
