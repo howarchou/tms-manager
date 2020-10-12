@@ -74,8 +74,38 @@ declare namespace API {
     display: string;
   }
 
-  export interface HomeBanner {
+  export interface TeamBuildingNew {
+    id?: string;
+    address: string;
+    area: string;
+    booking_notes?: string;
+    cost_statement?: string;
+    cover: string;
+    description: string;
+    duration: number; // 团建天数
+    hold_max: number; // 容纳人数(最大)
+    hold_min: number; // 容纳人数(最小)
+    method: number; //玩法
+    name: string;
+    planner: string; //团建策划师
+    price: number; //人均消费(单位分)
+    profit: string; //收益
+    schedule: string; // 行程安排
+    stars: string; //推荐指数
+    tags: string; //标签，多个以空格分隔
+    warm_tips: string; //温馨提示
+  }
+
+  export interface TeamBuildingPlan {
     id: string;
+    day: number;
+    time: number;
+    supplier: string;
+    supplierProject: string;
+  }
+
+  export interface HomeBanner {
+    ID: string;
     name: string;
     link: string;
     sort: number;

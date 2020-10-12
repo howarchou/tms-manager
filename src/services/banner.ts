@@ -15,10 +15,10 @@ export async function getBanners(
 }
 
 export async function saveBanner(params: API.HomeBanner): Promise<API.HomeBanner> {
-  const { id, ...others } = params;
-  const path = id ? `/api/banners/${id}` : '/api/banners';
+  const { ID, ...others } = params;
+  const path = ID ? `/api/banners/${ID}` : '/api/banners';
   const result = await request<API.BaseResponse<API.HomeBanner>>(path, {
-    method: id ? 'PUT' : 'POST',
+    method: ID ? 'PUT' : 'POST',
     data: others,
   });
   return result.payload;

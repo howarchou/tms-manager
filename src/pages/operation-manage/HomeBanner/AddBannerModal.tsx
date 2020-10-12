@@ -37,8 +37,12 @@ const AddBannerModal = (props: AddModalIF) => {
   const handleOk = async () => {
     const values = await form.validateFields();
     console.log(values);
-    const data = await saveBanner({ ...values, status: 1 } as API.HomeBanner);
-    props.onAdd(data);
+    const results = await saveBanner({
+      ...values,
+      status: data?.status || 0,
+      ID: data?.ID,
+    } as API.HomeBanner);
+    props.onAdd(results);
     setVisible(false);
   };
 

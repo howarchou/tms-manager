@@ -12,11 +12,11 @@ function beforeUpload(file: Blob) {
   if (!isJpgOrPng) {
     message.error('You can only upload JPG/PNG file!');
   }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
+  const isLt20M = file.size / 1024 / 1024 < 20;
+  if (!isLt20M) {
+    message.error('Image must smaller than 20MB!');
   }
-  return isJpgOrPng && isLt2M;
+  return isJpgOrPng && isLt20M;
 }
 
 interface Props {
