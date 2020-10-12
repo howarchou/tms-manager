@@ -7,6 +7,6 @@ export enum LoginState {
 }
 
 export enum HomeBannerStatus {
-  UP = 0,
-  DOWN,
+  DOWN = 0,
+  UP,
 }

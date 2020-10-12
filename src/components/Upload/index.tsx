@@ -1,10 +1,11 @@
 /**
  *  Created by pw on 2020/10/9 10:29 下午.
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Upload, message } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { UploadChangeParam } from 'antd/lib/upload/interface';
+import { customSetting } from '../../../config/defaultSettings';
 
 function beforeUpload(file: Blob) {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -18,46 +19,61 @@ function beforeUpload(file: Blob) {
   return isJpgOrPng && isLt2M;
 }
 
-export default class UploadComponent extends React.Component {
-  state = {
-    loading: false,
-    imageUrl: '',
-  };
+interface Props {
+  onChange?: (value: string) => void;
+  value?: string;
+}
 
-  handleChange = (info: UploadChangeParam) => {
+export default function (props: Props) {
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState(props?.value);
+
+  useEffect(() => {
+    if (props?.value) {
+      const imgUrl = !!~props?.value?.indexOf(customSetting.globalFileUrl)
+        ? props?.value
+        : `${customSetting.globalFileUrl}${props?.value}`;
+      setImageUrl(imgUrl);
+    }
+  }, [props?.value]);
+
+  const handleChange = (info: UploadChangeParam) => {
     if (info.file.status === 'error') {
-      this.setState({ loading: false });
+      setLoading(false);
       return;
     }
     if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
+      setLoading(true);
       return;
     }
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
+      const payload = info.file.response.payload;
+      setLoading(false);
+      setImageUrl(`${customSetting.globalFileUrl}${payload}`);
+      if (props.onChange) {
+        props.onChange(payload);
+      }
     }
   };
 
-  render() {
-    const { loading, imageUrl } = this.state;
-    const uploadButton = (
-      <div>
-        {loading ? <LoadingOutlined /> : <PlusOutlined />}
-        <div style={{ marginTop: 8 }}>Upload</div>
-      </div>
-    );
-    return (
-      <Upload
-        name="data"
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        action="http://tms.cicisoft.cn/api/upload"
-        beforeUpload={beforeUpload}
-        onChange={this.handleChange}
-      >
-        {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
-      </Upload>
-    );
-  }
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  return (
+    <Upload
+      name="file"
+      listType="picture-card"
+      className="avatar-uploader"
+      showUploadList={false}
+      action="http://tms.cicisoft.cn/api/upload"
+      beforeUpload={beforeUpload}
+      onChange={handleChange}
+    >
+      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+    </Upload>
+  );
 }

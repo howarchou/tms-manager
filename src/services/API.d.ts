@@ -82,4 +82,27 @@ declare namespace API {
     status: HomeBannerStatus;
     cover: string;
   }
+
+  export interface BaseResponse<T> {
+    message: string;
+    payload: T;
+  }
+
+  export interface ListResponse<T> {
+    message: string;
+    payload: ListResponsePayload<T>;
+  }
+
+  export interface ListResponsePayload<T> {
+    data: T[];
+    page_no: number;
+    page_size: number;
+    total_count: number;
+    total_page: number;
+  }
+
+  export interface ListParam {
+    page_no: number;
+    page_size: number;
+  }
 }

@@ -4,6 +4,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Modal } from 'antd';
 import UploadComponent from '@/components/Upload';
+import { API } from '@/services/API';
+import { saveBanner } from '@/services/banner';
 
 const formItemLayout = {
   labelCol: {
@@ -17,24 +19,26 @@ const formItemLayout = {
 };
 
 interface AddModalIF {
-  onAdd: (data: API.HomeBanner, isAdd: boolean) => void;
+  onAdd: (data: API.HomeBanner) => void;
   data: API.HomeBanner;
-  visibleModal: boolean;
+  open: string;
 }
 
 const AddBannerModal = (props: AddModalIF) => {
-  const { visibleModal, data = { sort: 1 } as API.HomeBanner } = props;
-  const [visible, setVisible] = useState(visibleModal);
+  const { data = { sort: 1 } as API.HomeBanner, open } = props;
+  const [visible, setVisible] = useState(!!open);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setVisible(visibleModal);
-  }, [visibleModal]);
+    setVisible(!!open);
+    form.setFieldsValue(data);
+  }, [open]);
 
   const handleOk = async () => {
     const values = await form.validateFields();
     console.log(values);
-    props.onAdd({ ...values, status: 0 } as API.HomeBanner, !data.id);
+    const data = await saveBanner({ ...values, status: 1 } as API.HomeBanner);
+    props.onAdd(data);
     setVisible(false);
   };
 
@@ -48,7 +52,7 @@ const AddBannerModal = (props: AddModalIF) => {
         新增
       </Button>
       <Modal width={600} title="添加" visible={visible} onOk={handleOk} onCancel={handleCancel}>
-        <Form<API.AddAccount>
+        <Form<API.HomeBanner>
           {...formItemLayout}
           form={form}
           name="addBanner"

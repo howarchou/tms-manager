@@ -1,4 +1,5 @@
 import { request } from 'umi';
+import { API } from '@/services/API';
 
 export interface LoginParamsType {
   username: string;

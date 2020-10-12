@@ -19,3 +19,7 @@ export default {
 } as LayoutSettings & {
   pwa: boolean;
 };
+
+export const customSetting = {
+  globalFileUrl: 'http://yytms.cicisoft.cn/',
+};

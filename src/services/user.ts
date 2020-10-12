@@ -1,4 +1,5 @@
 import { request } from 'umi';
+import { API } from '@/services/API';
 
 export async function query() {
   return request<API.CurrentUser[]>('/api/users');
