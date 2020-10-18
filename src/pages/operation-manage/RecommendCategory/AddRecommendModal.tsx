@@ -19,36 +19,28 @@ const formItemLayout = {
 };
 
 interface AddModalIF {
-  onAdd: (data: API.HomeBanner) => void;
-  data: API.HomeBanner;
+  onAdd: (data: API.Recommend) => void;
+  data: API.Recommend;
   open: string;
 }
 
-const AddBannnerModal = (props: AddModalIF) => {
-  const { data = { sort: 1 } as API.HomeBanner, open } = props;
+const AddRecommendModal = (props: AddModalIF) => {
+  const { data = { sort: 1 } as API.Recommend, open } = props;
   const [visible, setVisible] = useState(!!open);
-  const [dataValue, setDataValue] = useState(data);
   const [form] = Form.useForm();
 
   useEffect(() => {
     setVisible(!!open);
     form.setFieldsValue(data);
-    setDataValue(data);
   }, [open]);
-
-  const handleAdd = () => {
-    form.resetFields();
-    setDataValue({} as API.HomeBanner);
-    setVisible(true);
-  };
 
   const handleOk = async () => {
     const values = await form.validateFields();
     console.log(values);
     const results = await saveBanner({
       ...values,
-      status: dataValue?.status || 0,
-      id: dataValue?.id,
+      status: data?.status || 0,
+      ID: data?.ID,
     } as API.HomeBanner);
     props.onAdd(results);
     setVisible(false);
@@ -60,7 +52,7 @@ const AddBannnerModal = (props: AddModalIF) => {
 
   return (
     <>
-      <Button type="primary" onClick={() => handleAdd()}>
+      <Button type="primary" onClick={() => setVisible(true)}>
         新增
       </Button>
       <Modal width={600} title="添加" visible={visible} onOk={handleOk} onCancel={handleCancel}>
@@ -68,12 +60,12 @@ const AddBannnerModal = (props: AddModalIF) => {
           {...formItemLayout}
           form={form}
           name="addBanner"
-          initialValues={{ ...dataValue }}
+          initialValues={{ ...data }}
           scrollToFirstError
         >
           <Form.Item
             name="name"
-            label="分类名称"
+            label="名称"
             rules={[
               {
                 required: true,
@@ -129,4 +121,4 @@ const AddBannnerModal = (props: AddModalIF) => {
   );
 };
 
-export default (props: AddModalIF) => <AddBannnerModal {...props} />;
+export default (props: AddModalIF) => <AddRecommendModal {...props} />;

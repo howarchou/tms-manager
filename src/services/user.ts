@@ -12,8 +12,8 @@ export async function queryCurrent(id?: string) {
 
 function converToUser(payload: API.LoginData): API.CurrentUser {
   return {
-    userid: payload.ID,
-    ID: payload.ID,
+    userid: payload.id,
+    id: payload.id,
     name: payload.name,
     email: payload.email,
     mobile: payload.mobile,

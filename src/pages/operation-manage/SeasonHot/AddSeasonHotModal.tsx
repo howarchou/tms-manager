@@ -1,11 +1,8 @@
-/**
- *  Created by pw on 2020/10/9 10:08 下午.
- */
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, InputNumber, Modal } from 'antd';
 import UploadComponent from '@/components/Upload';
 import { API } from '@/services/API';
-import { saveBanner } from '@/services/banner';
+import { saveSeasonHot } from '@/services/seasonHot';
 
 const formItemLayout = {
   labelCol: {
@@ -19,37 +16,29 @@ const formItemLayout = {
 };
 
 interface AddModalIF {
-  onAdd: (data: API.HomeBanner) => void;
-  data: API.HomeBanner;
+  onAdd: (data: API.SeasonHot) => void;
+  data: API.SeasonHot;
   open: string;
 }
 
-const AddBannnerModal = (props: AddModalIF) => {
-  const { data = { sort: 1 } as API.HomeBanner, open } = props;
+const AddSeasonHotModal = (props: AddModalIF) => {
+  const { data = { sort: 1 } as API.SeasonHot, open } = props;
   const [visible, setVisible] = useState(!!open);
-  const [dataValue, setDataValue] = useState(data);
   const [form] = Form.useForm();
 
   useEffect(() => {
     setVisible(!!open);
     form.setFieldsValue(data);
-    setDataValue(data);
   }, [open]);
-
-  const handleAdd = () => {
-    form.resetFields();
-    setDataValue({} as API.HomeBanner);
-    setVisible(true);
-  };
 
   const handleOk = async () => {
     const values = await form.validateFields();
     console.log(values);
-    const results = await saveBanner({
+    const results = await saveSeasonHot({
       ...values,
-      status: dataValue?.status || 0,
-      id: dataValue?.id,
-    } as API.HomeBanner);
+      status: data?.status || 0,
+      id: data?.id,
+    } as API.SeasonHot);
     props.onAdd(results);
     setVisible(false);
   };
@@ -60,15 +49,15 @@ const AddBannnerModal = (props: AddModalIF) => {
 
   return (
     <>
-      <Button type="primary" onClick={() => handleAdd()}>
+      <Button type="primary" onClick={() => setVisible(true)}>
         新增
       </Button>
       <Modal width={600} title="添加" visible={visible} onOk={handleOk} onCancel={handleCancel}>
         <Form<API.HomeBanner>
           {...formItemLayout}
           form={form}
-          name="addBanner"
-          initialValues={{ ...dataValue }}
+          name="addSeasonHot"
+          initialValues={{ ...data }}
           scrollToFirstError
         >
           <Form.Item
@@ -129,4 +118,4 @@ const AddBannnerModal = (props: AddModalIF) => {
   );
 };
 
-export default (props: AddModalIF) => <AddBannnerModal {...props} />;
+export default (props: AddModalIF) => <AddSeasonHotModal {...props} />;

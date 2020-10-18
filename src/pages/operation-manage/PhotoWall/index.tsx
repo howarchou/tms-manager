@@ -2,24 +2,23 @@
  *  Created by pw on 2020/10/9 12:15 上午.
  */
 import React, { useEffect, useState } from 'react';
-import { Popconfirm } from 'antd';
 import styles from './index.less';
 import { PageContainer } from '@ant-design/pro-layout';
-import { Space, Table } from 'antd';
-import AddBannerModal from '@/pages/operation-manage/HomeBanner/AddBannerModal';
+import { Popconfirm, Space, Table } from 'antd';
+import AddPhotoMallModal from './AddPhotoMallModal';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { API } from '@/services/API';
 import { customSetting } from '../../../../config/defaultSettings';
-import { getBanners, saveBanner, deleteBanner } from '@/services/banner';
+import { getPhotoWalls, savePhotoWall, deletePhotoWall } from '@/services/photoWall';
 import { uuid } from '@/helpers';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
 
 export default function () {
-  const [data, setData] = useState<API.ListResponsePayload<API.HomeBanner>>();
+  const [data, setData] = useState<API.ListResponsePayload<API.PhotoWall>>();
   const [page, setPage] = useState(DEFAULT_PAGE_NO);
-  const [editData, setEditData] = useState<API.HomeBanner>({} as API.HomeBanner);
+  const [editData, setEditData] = useState<API.PhotoWall>({} as API.PhotoWall);
   const [openModal, setOpenModal] = useState('');
 
   useEffect(() => {
@@ -27,37 +26,19 @@ export default function () {
   }, []);
 
   const fetchData = (params: API.ListParam) => {
-    getBanners(params).then((res) => {
+    getPhotoWalls(params).then((res) => {
       setData(res);
     });
   };
 
   const columns = [
     {
-      title: 'banner名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '跳转链接',
-      dataIndex: 'link',
-      key: 'link',
-    },
-    {
-      title: '排序',
+      title: '序号',
       dataIndex: 'sort',
       key: 'sort',
     },
     {
-      title: '状态',
-      key: 'status',
-      dataIndex: 'status',
-      render: (text: string, record: API.HomeBanner) => {
-        return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
-      },
-    },
-    {
-      title: '缩略图',
+      title: '图片',
       key: 'cover',
       dataIndex: 'cover',
       render: (text: string) => {
@@ -68,14 +49,21 @@ export default function () {
       },
     },
     {
+      title: '状态',
+      key: 'status',
+      dataIndex: 'status',
+      render: (text: string, record: API.PhotoWall) => {
+        return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
+      },
+    },
+
+    {
       title: '操作',
       key: 'action',
-      render: (text: string, record: API.HomeBanner) => (
+      render: (text: string, record: API.PhotoWall) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleState(record)}>
-            {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
-          </a>
+          <a onClick={() => handleState(record)}>下架</a>
           <Popconfirm
             title="确认删除?"
             onConfirm={() => handleDel(record)}
@@ -89,25 +77,25 @@ export default function () {
     },
   ];
 
-  const handleEdit = (record: API.HomeBanner) => {
+  const handleEdit = (record: API.PhotoWall) => {
     setEditData(record);
     setOpenModal(uuid(8));
   };
 
-  const handleDel = async (record: API.HomeBanner) => {
-    await deleteBanner(record);
+  const handleDel = async (record: API.PhotoWall) => {
+    await deletePhotoWall(record);
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
-  const handleState = async (record: API.HomeBanner) => {
-    await saveBanner({
+  const handleState = async (record: API.PhotoWall) => {
+    await savePhotoWall({
       ...record,
       status: record.status === HomeBannerStatus.DOWN ? HomeBannerStatus.UP : HomeBannerStatus.DOWN,
     });
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
-  const handAddResult = (banner: API.HomeBanner) => {
+  const handAddResult = (banner: API.PhotoWall) => {
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
@@ -120,7 +108,7 @@ export default function () {
     <PageContainer>
       <div className={styles.home_banner}>
         <div className={styles.home_banner_add}>
-          <AddBannerModal onAdd={handAddResult} open={openModal} data={editData} />
+          <AddPhotoMallModal onAdd={handAddResult} open={openModal} data={editData} />
         </div>
         <Table
           size="large"

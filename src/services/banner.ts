@@ -15,11 +15,15 @@ export async function getBanners(
 }
 
 export async function saveBanner(params: API.HomeBanner): Promise<API.HomeBanner> {
-  const { ID, ...others } = params;
-  const path = ID ? `/api/banners/${ID}` : '/api/banners';
+  const { id, ...others } = params;
+  const path = id ? `/api/banners/${id}` : '/api/banners';
   const result = await request<API.BaseResponse<API.HomeBanner>>(path, {
-    method: ID ? 'PUT' : 'POST',
+    method: id ? 'PUT' : 'POST',
     data: others,
   });
   return result.payload;
+}
+
+export async function deleteBanner(params: API.HomeBanner) {
+  return await request(`/api/banners/${params.id}`, { method: 'DELETE' });
 }

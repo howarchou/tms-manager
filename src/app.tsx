@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { RequestOptionsInit, ResponseError } from 'umi-request';
 import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
+import { API } from '@/services/API';
 
 export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;

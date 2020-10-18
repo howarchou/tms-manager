@@ -16,7 +16,7 @@ declare namespace API {
     unreadCount?: number;
     email?: string;
     mobile?: string;
-    ID: string;
+    id: string;
   }
 
   export interface LoginStateType {
@@ -32,10 +32,10 @@ declare namespace API {
   }
 
   export interface LoginData {
-    ID: string;
-    CreatedAt: Date;
-    UpdatedAt: Date;
-    DeletedAt?: any;
+    id: string;
+    created_at: number;
+    updated_at: number;
+    deleted_at?: number;
     name: string;
     email: string;
     mobile: string;
@@ -105,7 +105,7 @@ declare namespace API {
   }
 
   export interface HomeBanner {
-    ID: string;
+    id: string;
     name: string;
     link: string;
     sort: number;
@@ -134,5 +134,32 @@ declare namespace API {
   export interface ListParam {
     page_no: number;
     page_size: number;
+  }
+
+  export interface Recommend {
+    id: string;
+    name: string;
+    link: string;
+    sort: number;
+    status: HomeBannerStatus;
+    cover: string;
+  }
+
+  export interface SeasonHot {
+    id: string;
+    name: string;
+    link: string;
+    sort: number;
+    status: HomeBannerStatus;
+    cover: string;
+  }
+
+  export interface PhotoWall {
+    id: string;
+    link: string;
+    sort: number;
+    status: HomeBannerStatus;
+    cover: string;
+    name?: string;
   }
 }
