@@ -8,6 +8,7 @@ import { RequestOptionsInit, ResponseError } from 'umi-request';
 import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 import { API } from '@/services/API';
+import { globalConfig } from '@/services/config';
 
 export async function getInitialState(): Promise<{
   currentUser?: API.CurrentUser;
@@ -18,6 +19,7 @@ export async function getInitialState(): Promise<{
     try {
       const userId = localStorage.getItem('userId') as string;
       const currentUser = await queryCurrent(userId);
+      await globalConfig();
       return {
         currentUser,
         settings: defaultSettings,

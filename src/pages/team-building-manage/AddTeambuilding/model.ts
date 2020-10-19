@@ -1,15 +1,12 @@
 import { Effect, Reducer } from 'umi';
 
 import { fakeSubmitForm } from './service';
+import { getDefaultValue } from '../config';
+import { API } from '@/services/API';
 
 export interface StateType {
   current?: string;
-  step?: {
-    payAccount: string;
-    receiverAccount: string;
-    receiverName: string;
-    amount: string;
-  };
+  step?: API.TeamBuildingNew;
 }
 
 export interface ModelType {
@@ -29,12 +26,7 @@ const Model: ModelType = {
 
   state: {
     current: 'info',
-    step: {
-      payAccount: 'ant-design@alipay.com',
-      receiverAccount: 'test@example.com',
-      receiverName: 'Alex',
-      amount: '500',
-    },
+    step: { ...(getDefaultValue() as any) },
   },
 
   effects: {

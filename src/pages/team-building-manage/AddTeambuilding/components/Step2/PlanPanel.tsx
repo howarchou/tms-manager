@@ -1,11 +1,12 @@
 /**
  *  Created by pw on 2020/10/12 11:37 下午.
  */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Select, TimePicker } from 'antd';
 const { Option } = Select;
 import styles from './index.less';
 import moment from 'moment';
+import { API } from '@/services/API';
 
 const formItemLayout = {
   labelCol: {
@@ -16,8 +17,20 @@ const formItemLayout = {
   },
 };
 
-export default function () {
+interface Props {
+  plan: API.TeamBuildingPlan;
+}
+
+export function PlanGroup(){
+
+}
+
+export default function (props: Props) {
+  const { plan } = props;
   const [form] = Form.useForm();
+  useEffect(() => {
+    plan.form = form;
+  }, []);
   return (
     <Form
       {...formItemLayout}
@@ -82,3 +95,4 @@ export default function () {
     </Form>
   );
 }
+

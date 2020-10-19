@@ -7,6 +7,7 @@ import PlanPanel from './PlanPanel';
 import { API } from '@/services/API';
 import uuid from '@/helpers/uuid';
 import moment from 'moment';
+import { saveActivitying } from '@/services/activity';
 
 const formItemLayout = {
   labelCol: {
@@ -48,19 +49,29 @@ const Step2: React.FC<Step2Props> = (props) => {
   };
   const onValidateForm = async () => {
     const values = await validateFields();
+    const planPromises = formItems.map((plan) => {
+      return plan.form?.validateFields();
+    });
+    const plans = await Promise.all(planPromises).catch((err) => {
+      console.log(err);
+      return;
+    });
+    console.log(plans);
     if (dispatch) {
+      const { hold_people = {}, ...others }: any = data;
+      const params: any = { ...values, ...others, ...hold_people, sort: 1, status: 1 };
+      console.log(params);
+      await saveActivitying(params);
       dispatch({
         type: 'addteambuilding/submitStepForm',
-        payload: {
-          ...data,
-          ...values,
-        },
+        payload: params,
       });
     }
   };
 
   const handleAdd = () => {
-    formItems.push(deafultProject());
+    const data = deafultProject();
+    formItems.push({ ...data });
     setFormItems(formItems.slice());
   };
 
@@ -75,7 +86,7 @@ const Step2: React.FC<Step2Props> = (props) => {
       {formItems.map((item) => {
         return (
           <Form.Item key={item.id} name="plan">
-            <PlanPanel />
+            <PlanPanel plan={item} />
           </Form.Item>
         );
       })}

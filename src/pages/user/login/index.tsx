@@ -7,6 +7,7 @@ import { LoginParamsType, fakeAccountLogin } from '@/services/login';
 import Footer from '@/components/Footer';
 import LoginFrom from './components/Login';
 import styles from './style.less';
+import { API } from '@/services/API';
 
 const { Tab, Username, Password, Mobile, Captcha, Submit } = LoginFrom;
 
@@ -60,7 +61,7 @@ const Login: React.FC<{}> = () => {
       // 登录
       const response = await fakeAccountLogin({ ...values, type });
       if (response.status === 'ok') {
-        setUserId(response.payload.ID);
+        setUserId(response.payload.id);
         message.success('登录成功！');
         replaceGoto();
         setTimeout(() => {

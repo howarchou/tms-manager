@@ -68,6 +68,7 @@ export default {
   'menu.team-building.manage': '团建管理',
   'menu.team-building.manage.list': '团建列表',
   'menu.team-building.manage.add': '新增团建',
+  'menu.team-building.manage.detail': '团建详情',
   'menu.materials.manage': '物料管理',
   'menu.materials.manage.photo': '图片管理',
   'menu.account.manage': '子账户管理',

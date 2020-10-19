@@ -5,6 +5,7 @@ import React from 'react';
 import { Form, Input, Button, Select, Row, Col } from 'antd';
 import styles from './AddTeambuildPanel.less';
 import { uuid } from '@/helpers';
+import { API } from '@/services/API';
 
 interface Props {
   onResult: (values: API.TeamBuilding) => void;

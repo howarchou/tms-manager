@@ -1,4 +1,5 @@
 import { HomeBannerStatus } from '@/services/API.Enum';
+import { FormInstance } from 'antd/es/form';
 
 declare namespace API {
   export interface CurrentUser {
@@ -67,17 +68,18 @@ declare namespace API {
     id: string;
     name: string;
     playType: string;
-    price: string;
+    price: number;
     capacity: string;
     cycle: string;
-    area: string;
+    area: number;
     display: string;
   }
 
   export interface TeamBuildingNew {
     id?: string;
+    series_number?: number;
     address: string;
-    area: string;
+    area: number;
     booking_notes?: string;
     cost_statement?: string;
     cover: string;
@@ -94,6 +96,8 @@ declare namespace API {
     stars: string; //推荐指数
     tags: string; //标签，多个以空格分隔
     warm_tips: string; //温馨提示
+    mobile: string;
+    status: HomeBannerStatus;
   }
 
   export interface TeamBuildingPlan {
@@ -102,6 +106,7 @@ declare namespace API {
     time: number;
     supplier: string;
     supplierProject: string;
+    form?: FormInstance;
   }
 
   export interface HomeBanner {
@@ -161,5 +166,14 @@ declare namespace API {
     status: HomeBannerStatus;
     cover: string;
     name?: string;
+  }
+
+  export interface ConfigValue {
+    [key: string]: BaseConfig[];
+  }
+
+  export interface BaseConfig {
+    value: string;
+    text: string;
   }
 }

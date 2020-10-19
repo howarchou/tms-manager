@@ -7,6 +7,13 @@ import styles from './index.less';
 import UploadComponent from '@/components/Upload';
 import Rate from '@/components/Rates';
 import HoldInputWrapper from './HoldInputWrapper';
+import {
+  areaConfig,
+  durationConfig,
+  getDefaultValue,
+  methodConfig,
+  profitConfig,
+} from '../../../config';
 
 const { Option } = Select;
 
@@ -24,7 +31,7 @@ interface Step1Props {
 }
 
 const Step1: React.FC<Step1Props> = (props) => {
-  const { dispatch, data } = props;
+  const { dispatch, data = getDefaultValue() } = props;
   const [form] = Form.useForm();
 
   if (!data) {
@@ -66,9 +73,14 @@ const Step1: React.FC<Step1Props> = (props) => {
         name="area"
         rules={[{ required: true, message: '请选择活动地区' }]}
       >
-        <Select defaultValue="beijing">
-          <Option value="beijing">北京</Option>
-          <Option value="shanghai">上海</Option>
+        <Select>
+          {areaConfig().map((area) => {
+            return (
+              <Option key={area.value} value={area.value}>
+                {area.text}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
       <Form.Item
@@ -83,8 +95,14 @@ const Step1: React.FC<Step1Props> = (props) => {
         name="method"
         rules={[{ required: true, message: '请选择团建玩法' }]}
       >
-        <Select defaultValue="ztcy">
-          <Option value="ztcy">主体创意</Option>
+        <Select>
+          {methodConfig().map((area) => {
+            return (
+              <Option key={area.value} value={area.value}>
+                {area.text}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
       <Form.Item
@@ -92,8 +110,14 @@ const Step1: React.FC<Step1Props> = (props) => {
         name="profit"
         rules={[{ required: true, message: '请选择团建收益' }]}
       >
-        <Select defaultValue="ztcy">
-          <Option value="ztcy">增强积极性</Option>
+        <Select>
+          {profitConfig().map((area) => {
+            return (
+              <Option key={area.value} value={area.value}>
+                {area.text}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
       <Form.Item
@@ -101,16 +125,19 @@ const Step1: React.FC<Step1Props> = (props) => {
         name="duration"
         rules={[{ required: true, message: '请选择团建天数' }]}
       >
-        <Select defaultValue="0.5">
-          <Option value="0.5">半天</Option>
-          <Option value="1">一天</Option>
-          <Option value="2">两天</Option>
-          <Option value="3">三天</Option>
+        <Select>
+          {durationConfig().map((area) => {
+            return (
+              <Option key={area.value} value={area.value}>
+                {area.text}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
       <Form.Item
         label="容纳人数"
-        name="hold_max"
+        name="hold_people"
         rules={[{ required: true, message: '请输入容纳人数' }]}
       >
         <HoldInputWrapper />

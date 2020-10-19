@@ -157,9 +157,13 @@ const routes: IRoute[] = [
       },
       {
         path: '/team-building/add',
-        name: 'add',
         icon: 'smile',
         component: './team-building-manage/AddTeambuilding',
+      },
+      {
+        path: '/team-building/detail',
+        icon: 'smile',
+        component: './team-building-manage/detail',
       },
     ],
   },
