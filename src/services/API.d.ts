@@ -91,7 +91,7 @@ declare namespace API {
     name: string;
     planner: string; //团建策划师
     price: number; //人均消费(单位分)
-    profit: string; //收益
+    profit: number; //收益
     schedule: string; // 行程安排
     stars: string; //推荐指数
     tags: string; //标签，多个以空格分隔
@@ -175,5 +175,38 @@ declare namespace API {
   export interface BaseConfig {
     value: string;
     text: string;
+  }
+
+  export interface Order {
+    id?: string;
+    order_no: string;
+    name: string;
+    amount: number;
+    area: number;
+    address: string;
+    start_date: number;
+    days: number;
+    price: number;
+    planner: string;
+    planner_mobile: string;
+    company: string;
+    contact: string;
+    contact_mobile: string;
+    status: number;
+    remark: string;
+    created_at: number;
+    updated_at: number;
+    deleted_at: number;
+    source: number;
+  }
+
+  export interface FeeDetail {
+    cost_price: number;
+    days: number;
+    intro: string;
+    name: string;
+    num: number;
+    price: number;
+    total_price: number;
   }
 }

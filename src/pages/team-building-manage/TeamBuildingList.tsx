@@ -44,9 +44,12 @@ export default () => {
     });
   };
 
-  const handleDel = (record: API.TeamBuildingNew) => {};
-
-  const handleEdit = (record: API.TeamBuildingNew) => {};
+  const handleEdit = (record: API.TeamBuildingNew) => {
+    history.push({
+      pathname: '/team-building/add',
+      query: { id: record.id },
+    });
+  };
 
   const handlePageChange = (page: number) => {
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_NO });
@@ -106,7 +109,6 @@ export default () => {
         <Space size="middle">
           <a onClick={() => handleDetail(record)}>查看</a>
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleDel(record)}>下架</a>
         </Space>
       ),
     },

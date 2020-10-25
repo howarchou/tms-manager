@@ -40,13 +40,13 @@ export function durationConfig(): AreaIF[] {
   ];
 }
 
-export function getDefaultValue() {
+export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
   return {
-    area: '1',
-    method: 2,
-    profit: 3,
-    duration: 4,
-  };
+    area: data?.area || 1,
+    method: data?.method || 1,
+    profit: data?.profit || 1,
+    duration: data?.duration || 1,
+  } as API.TeamBuildingNew;
 }
 
 function getCookieValueByKey(key: string): API.BaseConfig[] {

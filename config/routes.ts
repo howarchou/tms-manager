@@ -54,6 +54,14 @@ const routes: IRoute[] = [
         icon: 'smile',
         component: './order-manage',
       },
+      {
+        path: '/order/add',
+        component: './order-manage/AddOrder',
+      },
+      {
+        path: '/order/detail',
+        component: './order-manage/Detail',
+      },
     ],
   },
   {
