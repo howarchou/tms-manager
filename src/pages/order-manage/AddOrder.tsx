@@ -40,13 +40,6 @@ const AddOrder: FC<AddorderProps> = (props) => {
     }
   }, []);
 
-  const submitFormLayout = {
-    wrapperCol: {
-      xs: { span: 24, offset: 0 },
-      sm: { span: 10, offset: 7 },
-    },
-  };
-
   const onFinish = async (values: { [key: string]: any }) => {
     console.log(values);
     values.start_date = moment(values.start_date || 0).valueOf();

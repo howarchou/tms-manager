@@ -98,6 +98,42 @@ declare namespace API {
     warm_tips: string; //温馨提示
     mobile: string;
     status: HomeBannerStatus;
+    places?: TeamBuilding_Place[];
+    themes?: TeamBuilding_Theme[];
+    feature: TeamBuilding_Feature;
+  }
+
+  interface TeamBuilding_Schedule {
+    uuidKey?: string;
+    title: string;
+    sub_title: string;
+    date: number;
+    items: TeamBuilding_Schedule_Item[];
+  }
+
+  interface TeamBuilding_Schedule_Item {
+    day: number;
+    time: number;
+    supplier: number;
+    supplierProject: number;
+  }
+
+  export interface TeamBuilding_Place {
+    foreword: string;
+    pictures: string[];
+    later: string;
+  }
+
+  export interface TeamBuilding_Theme {
+    foreword: string;
+    pictures: string[];
+    later: string;
+  }
+
+  export interface TeamBuilding_Feature {
+    title: string;
+    pictures: string;
+    desc: string;
   }
 
   export interface TeamBuildingPlan {

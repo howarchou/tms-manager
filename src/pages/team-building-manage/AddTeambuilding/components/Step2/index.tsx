@@ -1,36 +1,35 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'antd';
+import React, { useEffect } from 'react';
+import { Form, Button, Space, Row, Col, Input, Card } from 'antd';
 import { connect, Dispatch } from 'umi';
 import { StateType } from '../../model';
-import styles from './index.less';
-import PlanPanel from './PlanPanel';
-import { API } from '@/services/API';
-import uuid from '@/helpers/uuid';
-import moment from 'moment';
-import { saveActivitying } from '@/services/activity';
 
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 19,
-  },
-};
+// import { saveActivitying } from '@/services/activity';
+import UploadComponent from '@/components/Upload';
+
 interface Step2Props {
   data?: StateType['step'];
   dispatch?: Dispatch;
   submitting?: boolean;
 }
 
+const FormItemLayoutSpan = 8;
+const FormItemLayoutOffset = 0;
+const FormRowLayoutSpan = 16;
+
 const Step2: React.FC<Step2Props> = (props) => {
-  const [formItems, setFormItems] = useState<API.TeamBuildingPlan[]>([deafultProject()]);
-  const [form] = Form.useForm();
   const { data, dispatch, submitting } = props;
+  const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({
+      themes: data?.themes || [{}],
+      feature: data?.feature || [{}],
+      places: data?.places || [{}],
+    });
+  }, []);
   if (!data) {
     return null;
   }
-  const { validateFields, getFieldsValue } = form;
+  const { getFieldsValue } = form;
   const onPrev = () => {
     if (dispatch) {
       const values = getFieldsValue();
@@ -48,68 +47,137 @@ const Step2: React.FC<Step2Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    const values = await validateFields();
-    const planPromises = formItems.map((plan) => {
-      return plan.form?.validateFields();
-    });
-    const plans = await Promise.all(planPromises).catch((err) => {
-      console.log(err);
-      return;
-    });
-    console.log(plans);
+    // const values = await validateFields();
+    const values = await getFieldsValue();
     if (dispatch) {
       const { hold_people = {}, ...others }: any = data;
-      const params: any = { ...values, ...others, ...hold_people, sort: 1, status: 1 };
+      const params: any = { ...others, ...hold_people, ...values };
       console.log(params);
-      await saveActivitying(params);
       dispatch({
-        type: 'addteambuilding/submitStepForm',
+        type: 'addteambuilding/saveStepFormData',
         payload: params,
+      });
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: 'confirm',
       });
     }
   };
 
-  const handleAdd = () => {
-    const data = deafultProject();
-    formItems.push({ ...data });
-    setFormItems(formItems.slice());
-  };
-
   return (
     <Form
-      {...formItemLayout}
+      style={{ height: '100%', marginTop: 40 }}
+      name={'plan'}
       form={form}
-      layout="horizontal"
-      className={styles.stepForm}
-      initialValues={{ password: '123456' }}
+      layout="vertical"
+      autoComplete="off"
+      hideRequiredMark={true}
     >
-      {formItems.map((item) => {
-        return (
-          <Form.Item key={item.id} name="plan">
-            <PlanPanel plan={item} />
-          </Form.Item>
-        );
-      })}
-      <div className={styles.addPlan}>
-        <Button onClick={handleAdd}>添加项目</Button>
-      </div>
-      <Form.Item
-        style={{ marginBottom: 8 }}
-        wrapperCol={{
-          xs: { span: 24, offset: 0 },
-          sm: {
-            span: formItemLayout.wrapperCol.span,
-            offset: formItemLayout.labelCol.span,
-          },
+      <Row gutter={FormRowLayoutSpan}>
+        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+          <Form.List name={'themes'}>
+            {(fields) => (
+              <>
+                {fields.map((field) => (
+                  <Card title="团建主题" key={field.key}>
+                    <Form.Item
+                      {...field}
+                      label="主题图片"
+                      name={[field.name, 'pictures']}
+                      fieldKey={[field.fieldKey, 'pictures']}
+                      rules={[{ required: true, message: '请主题图片' }]}
+                    >
+                      <UploadComponent max={1} showUploadList={true} />
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      label="主题描述"
+                      name={[field.name, 'later']}
+                      fieldKey={[field.fieldKey, 'later']}
+                      rules={[{ required: true, message: '请输入主题描述' }]}
+                    >
+                      <Input.TextArea placeholder="请输入主题描述" autoSize={{ minRows: 3 }} />
+                    </Form.Item>
+                  </Card>
+                ))}
+              </>
+            )}
+          </Form.List>
+        </Col>
+        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+          <Form.List name={'feature'}>
+            {(fields) =>
+              fields.map((field) => (
+                <Card key={field.key} title="团建特色">
+                  <Form.Item
+                    {...field}
+                    label="团建特色图片"
+                    name={[field.name, 'pictures']}
+                    fieldKey={[field.fieldKey, 'pictures']}
+                    rules={[{ required: true, message: '请团建特色图片' }]}
+                  >
+                    <UploadComponent />
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    label="特色描述"
+                    name={[field.name, 'desc']}
+                    fieldKey={[field.fieldKey, 'desc']}
+                    rules={[{ required: true, message: '请输入特色描述' }]}
+                  >
+                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 3 }} />
+                  </Form.Item>
+                </Card>
+              ))
+            }
+          </Form.List>
+        </Col>
+        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+          <Form.List name={'places'}>
+            {(fields) =>
+              fields.map((field) => (
+                <Card key={field.key} title="场地">
+                  <Form.Item
+                    {...field}
+                    label="场地图片(2张)"
+                    name={[field.name, 'pictures']}
+                    fieldKey={[field.fieldKey, 'pictures']}
+                    rules={[{ required: true, message: '请上传场地图片' }]}
+                  >
+                    <UploadComponent max={2} multiple={true} showUploadList={true} />
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    label="场地描述"
+                    name={[field.name, 'later']}
+                    fieldKey={[field.fieldKey, 'later']}
+                    rules={[{ required: true, message: '请输入详细地址' }]}
+                  >
+                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 3 }} />
+                  </Form.Item>
+                </Card>
+              ))
+            }
+          </Form.List>
+        </Col>
+      </Row>
+      <Space
+        style={{
+          marginTop: 40,
+          marginBottom: 20,
+          display: 'flex',
+          justifyContent: 'center',
+          flex: 1,
         }}
+        align={'baseline'}
       >
-        <Button type="primary" onClick={onValidateForm} loading={submitting}>
-          提交
-        </Button>
-        <Button onClick={onPrev} style={{ marginLeft: 8 }}>
+        <Button onClick={onPrev} style={{ marginRight: 8 }}>
           上一步
         </Button>
-      </Form.Item>
+        <Button type="primary" onClick={onValidateForm} loading={submitting}>
+          下一步
+        </Button>
+      </Space>
     </Form>
   );
 };
@@ -127,13 +195,3 @@ export default connect(
     data: addteambuilding.step,
   }),
 )(Step2);
-
-const deafultProject = (): API.TeamBuildingPlan => {
-  return {
-    id: uuid(8),
-    day: 1,
-    time: moment.now(),
-    supplier: 'meituan',
-    supplierProject: 'mountain',
-  };
-};

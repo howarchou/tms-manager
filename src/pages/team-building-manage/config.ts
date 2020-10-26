@@ -13,31 +13,16 @@ export function areaConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_area');
 }
 
-export function methodConfig(): AreaIF[] {
-  return [
-    { value: 1, text: '玩法1' },
-    { value: 2, text: '玩法2' },
-    { value: 3, text: '玩法3' },
-    { value: 4, text: '玩法4' },
-  ];
+export function methodConfig(): API.BaseConfig[] {
+  return getCookieValueByKey('activity_method');
 }
 
-export function profitConfig(): AreaIF[] {
-  return [
-    { value: 1, text: '收益1' },
-    { value: 2, text: '收益2' },
-    { value: 3, text: '收益3' },
-    { value: 4, text: '收益4' },
-  ];
+export function profitConfig(): API.BaseConfig[] {
+  return getCookieValueByKey('activity_profit');
 }
 
-export function durationConfig(): AreaIF[] {
-  return [
-    { value: 1, text: '半天' },
-    { value: 2, text: '一天' },
-    { value: 3, text: '两天' },
-    { value: 4, text: '三天' },
-  ];
+export function durationConfig(): API.BaseConfig[] {
+  return getCookieValueByKey('activity_duration');
 }
 
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
@@ -51,7 +36,7 @@ export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew
 
 function getCookieValueByKey(key: string): API.BaseConfig[] {
   const result = Cookies.getJSON(GLOBAL_CONFIG) as API.ConfigValue;
-  return result[key];
+  return result[key] || [];
 }
 
 interface DetailDescribeIF {
