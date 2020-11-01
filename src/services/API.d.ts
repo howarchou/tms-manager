@@ -92,7 +92,7 @@ declare namespace API {
     planner: string; //团建策划师
     price: number; //人均消费(单位分)
     profit: number; //收益
-    schedule: string; // 行程安排
+    schedules: TeamBuilding_Schedules; // 行程安排
     stars: string; //推荐指数
     tags: string; //标签，多个以空格分隔
     warm_tips: string; //温馨提示
@@ -103,7 +103,12 @@ declare namespace API {
     feature: TeamBuilding_Feature;
   }
 
-  interface TeamBuilding_Schedule {
+  interface TeamBuilding_Schedules {
+    activity_id: string;
+    sections: TeamBuilding_Schedule_Section[];
+  }
+
+  interface TeamBuilding_Schedule_Section {
     uuidKey?: string;
     title: string;
     sub_title: string;

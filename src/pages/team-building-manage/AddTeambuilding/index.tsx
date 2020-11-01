@@ -10,6 +10,8 @@ import Step4 from './components/Step4';
 import styles from './style.less';
 import { getActivityDetail } from '@/services/activity';
 import { Dispatch } from '@@/plugin-dva/connect';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { history } from 'umi';
 
 const { Step } = Steps;
 
@@ -39,23 +41,28 @@ const Addteambuilding: React.FC<AddteambuildingProps> = ({ current, location, di
   const id = location?.query?.id;
 
   useEffect(() => {
-    if (id) {
-      getActivityDetail(id).then((data) => {
-        if (dispatch) {
-          dispatch({
-            type: 'addteambuilding/saveStepFormData',
-            payload: data,
-          });
-        }
-      });
-    }
     const { step, component } = getCurrentStepAndComponent(current);
     setCurrentStep(step);
     setStepComponent(component);
   }, [current]);
 
+  const handleLeftClick = () => {
+    history.push({
+      pathname: '/team-building/list',
+    });
+  };
+
+  const LeftTitle = () => {
+    return (
+      <>
+        <ArrowLeftOutlined onClick={handleLeftClick} style={{ marginRight: 8 }} />
+        {id ? '编辑团建' : '添加团建'}
+      </>
+    );
+  };
+
   return (
-    <PageContainer title={'添加团建'}>
+    <PageContainer title={<LeftTitle />}>
       <Card bordered={false}>
         <div className={styles.pageConntaier}>
           <Steps current={currentStep} className={styles.steps}>
@@ -71,6 +78,35 @@ const Addteambuilding: React.FC<AddteambuildingProps> = ({ current, location, di
   );
 };
 
+const AddTeambuildingWrapper = (props: any) => {
+  const { dispatch, location } = props;
+  const id = location?.query?.id;
+  useEffect(() => {
+    if (id) {
+      getActivityDetail(id).then((data) => {
+        handleUpdateData(data);
+      });
+    } else {
+      handleUpdateData(undefined, true);
+    }
+  }, [id]);
+
+  const handleUpdateData = (data: any, clear: boolean = false) => {
+    if (dispatch) {
+      const action = clear ? 'clearFormData' : 'saveStepFormData';
+      dispatch({
+        type: `addteambuilding/${action}`,
+        payload: data,
+      });
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: 'info',
+      });
+    }
+  };
+  return <Addteambuilding {...props} />;
+};
+
 export default connect(({ addteambuilding }: { addteambuilding: StateType }) => ({
   current: addteambuilding.current,
-}))(Addteambuilding);
+}))(AddTeambuildingWrapper);

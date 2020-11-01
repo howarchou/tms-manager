@@ -40,7 +40,7 @@ const Step3: React.FC<Step3Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ schedules: [{}] });
+    form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
   }, []);
   const { data, dispatch, submitting } = props;
   if (!data) {
@@ -74,14 +74,15 @@ const Step3: React.FC<Step3Props> = (props) => {
       });
       const plans = await Promise.all(planPromises);
       const schedules = values.schedules.map(
-        (schedule: API.TeamBuilding_Schedule, index: number) => {
+        (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
           const { title, sub_title, date } = schedule;
           const items = plans[index];
-          return { title, sub_title, date: moment(date).valueOf(), items };
+          console.log(moment(date).valueOf());
+          return { title, sub_title, items };
         },
       );
       const { hold_people = {}, feature = [], ...others }: any = data;
-      const [first] = feature;
+      const [first] = Array.isArray(feature) ? feature : [feature];
       const params: any = {
         ...others,
         ...hold_people,
@@ -130,7 +131,9 @@ const Step3: React.FC<Step3Props> = (props) => {
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => {
-              console.log(field);
+              const section = data?.schedules?.sections
+                ? data?.schedules?.sections[index]
+                : undefined;
               return (
                 <Card
                   key={field.key}
@@ -202,7 +205,11 @@ const Step3: React.FC<Step3Props> = (props) => {
                       </Row>
                     }
                   >
-                    <FormItemList uuidKey={uuid(8)} onUpdateFrom={handleListFrom} />
+                    <FormItemList
+                      uuidKey={uuid(8)}
+                      onUpdateFrom={handleListFrom}
+                      value={section?.items}
+                    />
                   </Card>
                 </Card>
               );
@@ -235,15 +242,20 @@ const Step3: React.FC<Step3Props> = (props) => {
 
 interface FormItemListProps {
   uuidKey: string;
-  value?: any;
+  value?: API.TeamBuilding_Schedule_Item[];
   onUpdateFrom: (key: string, form: FormInstance) => void;
 }
 
 const FormItemList = (props: FormItemListProps) => {
-  const { uuidKey, onUpdateFrom } = props;
+  const { uuidKey, onUpdateFrom, value } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ plans: [{}] });
+    const plans = value
+      ? value.map((item) => {
+          return { ...item, time: moment(item.time) };
+        })
+      : [{}];
+    form.setFieldsValue({ plans });
     onUpdateFrom(uuidKey, form);
   }, []);
   return (

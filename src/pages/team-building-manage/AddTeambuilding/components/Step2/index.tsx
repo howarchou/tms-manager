@@ -20,9 +20,19 @@ const Step2: React.FC<Step2Props> = (props) => {
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      themes: data?.themes || [{}],
-      feature: data?.feature || [{}],
-      places: data?.places || [{}],
+      themes: data?.themes?.length || [{}],
+      feature:
+        data?.feature !== undefined
+          ? Array.isArray(data?.feature)
+            ? data?.feature
+            : [data?.feature]
+          : [{}],
+      places:
+        data?.places !== undefined
+          ? Array.isArray(data?.places)
+            ? data?.places
+            : [data?.places]
+          : [{}],
     });
   }, []);
   if (!data) {

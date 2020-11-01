@@ -1,6 +1,5 @@
 import { Effect, Reducer } from 'umi';
 
-import { fakeSubmitForm } from './service';
 import { getDefaultValue } from '../config';
 import { API } from '@/services/API';
 
@@ -18,6 +17,7 @@ export interface ModelType {
   reducers: {
     saveStepFormData: Reducer<StateType>;
     saveCurrentStep: Reducer<StateType>;
+    clearFormData: Reducer;
   };
 }
 
@@ -30,8 +30,7 @@ const Model: ModelType = {
   },
 
   effects: {
-    *submitStepForm({ payload }, { call, put }) {
-      yield call(fakeSubmitForm, payload);
+    *submitStepForm({ payload }, { put }) {
       yield put({
         type: 'saveStepFormData',
         payload,
@@ -58,6 +57,13 @@ const Model: ModelType = {
           ...(state as StateType).step,
           ...payload,
         },
+      };
+    },
+
+    clearFormData(state) {
+      return {
+        ...state,
+        step: {},
       };
     },
   },

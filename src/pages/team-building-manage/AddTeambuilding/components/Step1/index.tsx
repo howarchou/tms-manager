@@ -37,7 +37,10 @@ const Step1: React.FC<Step1Props> = (props) => {
 
   useEffect(() => {
     if (data) {
-      form.setFieldsValue(data);
+      form.setFieldsValue({
+        ...data,
+        hold_people: { hold_min: data?.hold_min, hold_max: data?.hold_max },
+      });
     }
   }, [data?.id]);
 
@@ -206,7 +209,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>
-              <Select placeholder={'请选择标签'}>
+              <Select placeholder={'请选择标签'} mode={'multiple'}>
                 {tagsConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>

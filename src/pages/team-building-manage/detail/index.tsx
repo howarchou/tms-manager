@@ -9,6 +9,8 @@ import { API } from '@/services/API';
 import { detailDescribe } from '../config';
 import './index.less';
 import Rate from '@/components/Rates';
+import { history } from '@@/core/history';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 interface Props {
   location: any;
@@ -24,8 +26,23 @@ export default function (props: Props) {
     });
   }, [id]);
 
+  const handleLeftClick = () => {
+    history.push({
+      pathname: '/team-building/list',
+    });
+  };
+
+  const LeftTitle = () => {
+    return (
+      <>
+        <ArrowLeftOutlined onClick={handleLeftClick} style={{ marginRight: 8 }} />
+        团建详情
+      </>
+    );
+  };
+
   return (
-    <PageContainer>
+    <PageContainer title={<LeftTitle />}>
       <Descriptions className="detail_wrapper" title={'基本信息'}>
         {detailDescribe().map((item, index) => {
           if (item.type === 'complex' && item.union?.length) {
