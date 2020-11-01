@@ -9,8 +9,8 @@ import {
   message,
   Card,
   Input,
-  DatePicker,
   InputNumber,
+  Select,
 } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect, Dispatch } from 'umi';
@@ -24,6 +24,7 @@ import { API } from '@/services/API';
 import { uuid } from '@/helpers/uuid';
 import UploadComponent from '@/components/Upload';
 import { history } from 'umi';
+import { scheduleIconConfig } from '@/pages/team-building-manage/config';
 
 interface Step3Props {
   data?: StateType['step'];
@@ -75,10 +76,10 @@ const Step3: React.FC<Step3Props> = (props) => {
       const plans = await Promise.all(planPromises);
       const schedules = values.schedules.map(
         (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-          const { title, sub_title, date } = schedule;
+          const { title, sub_title, icon } = schedule;
           const items = plans[index];
-          console.log(moment(date).valueOf());
-          return { title, sub_title, items };
+          // console.log(moment(date).valueOf());
+          return { title, sub_title, icon, items };
         },
       );
       const { hold_people = {}, feature = [], ...others }: any = data;
@@ -172,6 +173,31 @@ const Step3: React.FC<Step3Props> = (props) => {
                         <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
                           <Form.Item
                             {...field}
+                            label="图标"
+                            name={[field.name, 'icon']}
+                            fieldKey={[field.fieldKey, 'icon']}
+                            rules={[{ required: true, message: '请选择图标' }]}
+                          >
+                            <Select placeholder={'请选择图标'}>
+                              {scheduleIconConfig().map((icon) => {
+                                return (
+                                  <Select.Option key={icon.value} value={icon.value}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                      <img
+                                        src={icon.icon}
+                                        style={{ marginRight: 8, width: 10, height: 12 }}
+                                      />
+                                      {icon.text}
+                                    </div>
+                                  </Select.Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
+                        </Col>
+                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
+                          <Form.Item
+                            {...field}
                             label="标题"
                             name={[field.name, 'title']}
                             fieldKey={[field.fieldKey, 'title']}
@@ -189,17 +215,6 @@ const Step3: React.FC<Step3Props> = (props) => {
                             rules={[{ required: true, message: '请输入描述' }]}
                           >
                             <Input placeholder={'请输入描述'} />
-                          </Form.Item>
-                        </Col>
-                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
-                          <Form.Item
-                            {...field}
-                            label="日期"
-                            name={[field.name, 'date']}
-                            fieldKey={[field.fieldKey, 'date']}
-                            rules={[{ required: true, message: '请选择时间' }]}
-                          >
-                            <DatePicker style={{ width: '100%' }} format={'YYYY-MM-DD'} />
                           </Form.Item>
                         </Col>
                       </Row>

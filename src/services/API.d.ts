@@ -113,6 +113,7 @@ declare namespace API {
     title: string;
     sub_title: string;
     date: number;
+    icon: number;
     items: TeamBuilding_Schedule_Item[];
   }
 

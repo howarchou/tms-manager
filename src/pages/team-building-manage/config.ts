@@ -4,6 +4,11 @@
 import Cookies from 'js-cookie';
 import { GLOBAL_CONFIG } from '@/services/Constants';
 import { API } from '@/services/API';
+import DB_ICON from '@/assets/schedule/大巴车.png';
+import JD_ICON from '@/assets/schedule/景点.png';
+import TZHD_ICON from '@/assets/schedule/拓展活动.png';
+import XX_ICON from '@/assets/schedule/休息.png';
+import YC_ICON from '@/assets/schedule/用餐.png';
 
 export function areaConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_area');
@@ -23,6 +28,16 @@ export function durationConfig(): API.BaseConfig[] {
 
 export function tagsConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_tags');
+}
+
+export function scheduleIconConfig(): any[] {
+  return [
+    { icon: DB_ICON, text: '大巴车', value: 1 },
+    { icon: JD_ICON, text: '景点', value: 2 },
+    { icon: TZHD_ICON, text: '拓展活动', value: 3 },
+    { icon: XX_ICON, text: '休息', value: 4 },
+    { icon: YC_ICON, text: '用餐', value: 5 },
+  ];
 }
 
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
