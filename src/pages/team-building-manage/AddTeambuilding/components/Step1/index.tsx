@@ -13,6 +13,7 @@ import {
   getDefaultValue,
   methodConfig,
   profitConfig,
+  tagsConfig,
 } from '../../../config';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
@@ -203,23 +204,31 @@ const Step1: React.FC<Step1Props> = (props) => {
               <Input placeholder="策划师电话" />
             </Form.Item>
           </Col>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>
+              <Select placeholder={'请选择标签'}>
+                {tagsConfig().map((area) => {
+                  return (
+                    <Option key={area.value} value={area.value}>
+                      {area.text}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={FormRowLayoutSpan}>
-          <Col span={6} offset={FormItemLayoutOffset}>
+          <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="活动描述"
+              label="活动特色"
               name="description"
-              rules={[{ required: true, message: '请输入活动描述' }]}
+              rules={[{ required: true, message: '请输入活动特色' }]}
             >
-              <TextArea placeholder="活动描述" autoSize={{ minRows: 3, maxRows: 5 }} />
+              <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
-          <Col span={6} offset={FormItemLayoutOffset}>
-            <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>
-              <TextArea placeholder="请输入标签，顿号隔开" autoSize={{ minRows: 3, maxRows: 5 }} />
-            </Form.Item>
-          </Col>
-          <Col span={6} offset={FormItemLayoutOffset}>
+          <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
               label="预订须知"
               name="booking_notes"
@@ -228,7 +237,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               <TextArea placeholder="预订须知" autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
-          <Col span={6} offset={FormItemLayoutOffset}>
+          <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
               label="温馨提示"
               name="warm_tips"

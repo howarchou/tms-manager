@@ -3,7 +3,6 @@ import {
   Form,
   Button,
   Space,
-  Select,
   TimePicker,
   Row,
   Col,
@@ -11,11 +10,12 @@ import {
   Card,
   Input,
   DatePicker,
+  InputNumber,
 } from 'antd';
-const Option = Select.Option;
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect, Dispatch } from 'umi';
 import { StateType } from '../../model';
+import styles from './index.less';
 
 import { saveActivitying } from '@/services/activity';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
@@ -23,6 +23,7 @@ import moment from 'moment';
 import { API } from '@/services/API';
 import { uuid } from '@/helpers/uuid';
 import UploadComponent from '@/components/Upload';
+import { history } from 'umi';
 
 interface Step3Props {
   data?: StateType['step'];
@@ -31,7 +32,7 @@ interface Step3Props {
 }
 
 const FormItemTitleLayoutSpan = 8;
-const FormItemLayoutSpan = 11;
+const FormItemLayoutSpan = 8;
 const FormItemLayoutOffset = 0;
 const FormRowLayoutSpan = 12;
 
@@ -91,9 +92,22 @@ const Step3: React.FC<Step3Props> = (props) => {
       };
       console.log(params);
       await saveActivitying(params);
+      history.push({
+        pathname: '/team-building/list',
+      });
+      onFinish();
+    }
+  };
+
+  const onFinish = () => {
+    if (dispatch) {
       dispatch({
-        type: 'addteambuilding/submitStepForm',
-        payload: params,
+        type: 'addteambuilding/saveStepFormData',
+        payload: {},
+      });
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: 'info',
       });
     }
   };
@@ -246,47 +260,49 @@ const FormItemList = (props: FormItemListProps) => {
           return (
             <>
               {fields.map((field) => (
-                <div key={field.key}>
-                  <Row
-                    gutter={FormRowLayoutSpan}
-                    style={{
-                      display: 'flex',
-                      marginBottom: 8,
-                      justifyContent: 'center',
-                      flex: 1,
-                    }}
-                  >
-                    <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="天数"
-                        name={[field.name, 'day']}
-                        fieldKey={[field.fieldKey, 'day']}
-                        rules={[{ required: true, message: '请选择天数' }]}
-                      >
-                        <Select placeholder={'请选择天数'}>
-                          <Option value={1}>第一天</Option>
-                          <Option value={2}>第二天</Option>
-                          <Option value={3}>第三天</Option>
-                          <Option value={4}>第四天</Option>
-                          <Option value={5}>第五天</Option>
-                          <Option value={6}>第六天</Option>
-                          <Option value={7}>第七天</Option>
-                        </Select>
-                      </Form.Item>
-                    </Col>
-                    <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="具体时间"
-                        name={[field.name, 'time']}
-                        fieldKey={[field.fieldKey, 'time']}
-                        rules={[{ required: true, message: '请选择时间' }]}
-                      >
-                        <TimePicker style={{ width: '100%' }} format={'HH:mm'} />
-                      </Form.Item>
-                    </Col>
-                    <Space align={'center'}>
+                <Row
+                  key={field.key}
+                  gutter={FormRowLayoutSpan}
+                  style={{
+                    display: 'flex',
+                    marginBottom: 8,
+                    justifyContent: 'center',
+                    flex: 1,
+                  }}
+                >
+                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+                    <Form.Item
+                      {...field}
+                      label="天数"
+                      name={[field.name, 'day']}
+                      fieldKey={[field.fieldKey, 'day']}
+                      rules={[{ required: true, message: '请输入天数' }]}
+                    >
+                      <InputNumber style={{ width: '100%' }} placeholder={'请输入天数'} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+                    <Form.Item
+                      {...field}
+                      label="具体时间"
+                      name={[field.name, 'time']}
+                      fieldKey={[field.fieldKey, 'time']}
+                      rules={[{ required: true, message: '请选择时间' }]}
+                    >
+                      <TimePicker style={{ width: '100%' }} format={'HH:mm'} />
+                    </Form.Item>
+                  </Col>
+                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+                    <Form.Item
+                      className={styles.actionRowWrapper}
+                      {...field}
+                      name={[field.name, 'pictures']}
+                      fieldKey={[field.fieldKey, 'pictures']}
+                      rules={[{ required: true, message: '请选择图片' }]}
+                    >
+                      <UploadComponent showUploadList={true} multiple={true} />
+                    </Form.Item>
+                    <Space className={styles.actionRow} align={'center'}>
                       <PlusOutlined onClick={() => add()} />
                       <MinusCircleOutlined
                         onClick={() => {
@@ -298,21 +314,8 @@ const FormItemList = (props: FormItemListProps) => {
                         }}
                       />
                     </Space>
-                  </Row>
-                  <Row gutter={FormRowLayoutSpan}>
-                    <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="图片"
-                        name={[field.name, 'pictures']}
-                        fieldKey={[field.fieldKey, 'pictures']}
-                        rules={[{ required: true, message: '请选择图片' }]}
-                      >
-                        <UploadComponent showUploadList={true} multiple={true} />
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </div>
+                  </Col>
+                </Row>
               ))}
             </>
           );

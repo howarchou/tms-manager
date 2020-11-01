@@ -4,10 +4,6 @@
 import Cookies from 'js-cookie';
 import { GLOBAL_CONFIG } from '@/services/Constants';
 import { API } from '@/services/API';
-interface AreaIF {
-  value: number;
-  text: string;
-}
 
 export function areaConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_area');
@@ -23,6 +19,10 @@ export function profitConfig(): API.BaseConfig[] {
 
 export function durationConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_duration');
+}
+
+export function tagsConfig(): API.BaseConfig[] {
+  return getCookieValueByKey('activity_tags');
 }
 
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {

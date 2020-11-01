@@ -13,7 +13,6 @@ interface Step2Props {
 }
 
 const FormItemLayoutSpan = 8;
-const FormItemLayoutOffset = 0;
 const FormRowLayoutSpan = 16;
 
 const Step2: React.FC<Step2Props> = (props) => {
@@ -69,55 +68,16 @@ const Step2: React.FC<Step2Props> = (props) => {
       style={{ height: '100%', marginTop: 40 }}
       name={'plan'}
       form={form}
-      layout="vertical"
+      layout="horizontal"
       autoComplete="off"
       hideRequiredMark={true}
     >
-      <Row gutter={FormRowLayoutSpan}>
-        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-          <Form.List name={'themes'}>
-            {(fields) => (
-              <>
-                {fields.map((field) => (
-                  <Card title="团建主题" key={field.key}>
-                    <Form.Item
-                      {...field}
-                      label="主题图片"
-                      name={[field.name, 'pictures']}
-                      fieldKey={[field.fieldKey, 'pictures']}
-                      rules={[{ required: true, message: '请主题图片' }]}
-                    >
-                      <UploadComponent max={1} showUploadList={true} />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      label="主题描述"
-                      name={[field.name, 'later']}
-                      fieldKey={[field.fieldKey, 'later']}
-                      rules={[{ required: true, message: '请输入主题描述' }]}
-                    >
-                      <Input.TextArea placeholder="请输入主题描述" autoSize={{ minRows: 3 }} />
-                    </Form.Item>
-                  </Card>
-                ))}
-              </>
-            )}
-          </Form.List>
-        </Col>
-        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-          <Form.List name={'feature'}>
-            {(fields) =>
-              fields.map((field) => (
-                <Card key={field.key} title="团建特色">
-                  <Form.Item
-                    {...field}
-                    label="团建特色图片"
-                    name={[field.name, 'pictures']}
-                    fieldKey={[field.fieldKey, 'pictures']}
-                    rules={[{ required: true, message: '请团建特色图片' }]}
-                  >
-                    <UploadComponent />
-                  </Form.Item>
+      <Form.List name={'feature'}>
+        {(fields) =>
+          fields.map((field) => (
+            <Card key={field.key} title="团建特色">
+              <Row gutter={FormRowLayoutSpan}>
+                <Col span={16}>
                   <Form.Item
                     {...field}
                     label="特色描述"
@@ -125,27 +85,30 @@ const Step2: React.FC<Step2Props> = (props) => {
                     fieldKey={[field.fieldKey, 'desc']}
                     rules={[{ required: true, message: '请输入特色描述' }]}
                   >
-                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 3 }} />
+                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 4 }} />
                   </Form.Item>
-                </Card>
-              ))
-            }
-          </Form.List>
-        </Col>
-        <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-          <Form.List name={'places'}>
-            {(fields) =>
-              fields.map((field) => (
-                <Card key={field.key} title="场地">
+                </Col>
+                <Col span={FormItemLayoutSpan}>
                   <Form.Item
                     {...field}
-                    label="场地图片(2张)"
                     name={[field.name, 'pictures']}
                     fieldKey={[field.fieldKey, 'pictures']}
-                    rules={[{ required: true, message: '请上传场地图片' }]}
+                    rules={[{ required: true, message: '请团建特色图片' }]}
                   >
-                    <UploadComponent max={2} multiple={true} showUploadList={true} />
+                    <UploadComponent />
                   </Form.Item>
+                </Col>
+              </Row>
+            </Card>
+          ))
+        }
+      </Form.List>
+      <Form.List name={'places'}>
+        {(fields) =>
+          fields.map((field) => (
+            <Card key={field.key} title="场地" style={{ marginTop: 16 }}>
+              <Row gutter={FormRowLayoutSpan}>
+                <Col span={16}>
                   <Form.Item
                     {...field}
                     label="场地描述"
@@ -153,14 +116,24 @@ const Step2: React.FC<Step2Props> = (props) => {
                     fieldKey={[field.fieldKey, 'later']}
                     rules={[{ required: true, message: '请输入详细地址' }]}
                   >
-                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 3 }} />
+                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 4 }} />
                   </Form.Item>
-                </Card>
-              ))
-            }
-          </Form.List>
-        </Col>
-      </Row>
+                </Col>
+                <Col span={FormItemLayoutSpan}>
+                  <Form.Item
+                    {...field}
+                    name={[field.name, 'pictures']}
+                    fieldKey={[field.fieldKey, 'pictures']}
+                    rules={[{ required: true, message: '请上传场地图片' }]}
+                  >
+                    <UploadComponent max={2} multiple={true} showUploadList={true} />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </Card>
+          ))
+        }
+      </Form.List>
       <Space
         style={{
           marginTop: 40,

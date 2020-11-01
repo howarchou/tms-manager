@@ -4,20 +4,8 @@
 import React, { useEffect, useState } from 'react';
 import { message, Upload } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { UploadChangeParam } from 'antd/lib/upload/interface';
+import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import { customSetting } from '../../../config/defaultSettings';
-
-function beforeUpload(file: Blob) {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt20M = file.size / 1024 / 1024 < 20;
-  if (!isLt20M) {
-    message.error('Image must smaller than 20MB!');
-  }
-  return isJpgOrPng && isLt20M;
-}
 
 interface Props {
   onChange?: (value: string | string[]) => void;
@@ -50,6 +38,21 @@ export default function (props: Props) {
       }
     }
   }, [props?.value]);
+
+  const handleBeforeUpload = (file: Blob, files: RcFile[]) => {
+    if (imageUrls.length === max) {
+      return false;
+    }
+    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    if (!isJpgOrPng) {
+      message.error('You can only upload JPG/PNG file!');
+    }
+    const isLt20M = file.size / 1024 / 1024 < 20;
+    if (!isLt20M) {
+      message.error('Image must smaller than 20MB!');
+    }
+    return isJpgOrPng && isLt20M;
+  };
 
   const handleChange = (info: UploadChangeParam) => {
     if (info.file.status === 'error') {
@@ -86,7 +89,7 @@ export default function (props: Props) {
   );
 
   const PhotoList = () => {
-    return <>{imageUrls.length < max ? uploadButton : null}</>;
+    return <>{uploadButton}</>;
   };
 
   const SinglePhoto = () => {
@@ -109,7 +112,7 @@ export default function (props: Props) {
       showUploadList={showUploadList}
       action="http://tms.cicisoft.cn/api/upload"
       multiple={multiple}
-      beforeUpload={beforeUpload}
+      beforeUpload={handleBeforeUpload}
       onChange={handleChange}
     >
       {showUploadList ? <PhotoList /> : <SinglePhoto />}
