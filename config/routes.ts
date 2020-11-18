@@ -126,10 +126,14 @@ const routes: IRoute[] = [
         component: './operation-manage/SeasonHot',
       },
       {
-        path: '/operation/customer-case',
-        name: 'customer-case',
+        path: '/operation/case/list',
+        name: 'case.list',
         icon: 'smile',
-        component: './operation-manage/CustomerCase',
+        component: './operation-manage/Case',
+      },
+      {
+        path: '/operation/edit-case',
+        component: './operation-manage/Case/EditCase',
       },
       {
         path: '/operation/photo-wall',

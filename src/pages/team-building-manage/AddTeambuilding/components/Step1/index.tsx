@@ -14,7 +14,7 @@ import {
   methodConfig,
   profitConfig,
   tagsConfig,
-} from '../../../config';
+} from '@/helpers/config';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
 import { uuid } from '@/helpers';
@@ -256,7 +256,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           name="cover"
           rules={[{ required: true, message: '请上传封面' }]}
         >
-          <UploadComponent />
+          <UploadComponent multiple={true} max={10} />
         </Form.Item>
 
         <Form.Item

@@ -24,7 +24,7 @@ import { API } from '@/services/API';
 import { uuid } from '@/helpers/uuid';
 import UploadComponent from '@/components/Upload';
 import { history } from 'umi';
-import { scheduleIconConfig } from '@/pages/team-building-manage/config';
+import { scheduleIconConfig } from '@/helpers/config';
 
 interface Step3Props {
   data?: StateType['step'];

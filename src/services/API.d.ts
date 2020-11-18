@@ -251,4 +251,29 @@ declare namespace API {
     price: number;
     total_price: number;
   }
+
+  export interface Case {
+    id?: string;
+    activity_id?: number;
+    address: string;
+    banners?: string[];
+    city: integer;
+    cover: string;
+    date: number;
+    days: string;
+    distance: string;
+    logo: string;
+    name: string;
+    people: string;
+    photos?: string[];
+    schedule?: Case_Schedule[];
+    sort: number;
+    title: string;
+    status: HomeBannerStatus;
+  }
+
+  export interface Case_Schedule {
+    time: number;
+    content: string;
+  }
 }

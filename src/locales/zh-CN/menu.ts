@@ -61,7 +61,7 @@ export default {
   'menu.operation.manage.banner': '首页Banner',
   'menu.operation.manage.recommend': '推荐分类',
   'menu.operation.manage.seasonhot': '当季热门',
-  'menu.operation.manage.customer-case': '客户案例',
+  'menu.operation.manage.case.list': '客户案例',
   'menu.operation.manage.photo-wall': '照片墙',
   'menu.supplier.manage': '供应商管理',
   'menu.supplier.manage.list': '供应商列表',

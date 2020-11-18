@@ -30,6 +30,10 @@ export function tagsConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_tags');
 }
 
+export function caseCityConfig(): API.BaseConfig[] {
+  return getCookieValueByKey('case_city');
+}
+
 export function scheduleIconConfig(): any[] {
   return [
     { icon: DB_ICON, text: '大巴车', value: 1 },

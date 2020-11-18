@@ -115,7 +115,7 @@ export default function (props: Props) {
       beforeUpload={handleBeforeUpload}
       onChange={handleChange}
     >
-      {showUploadList ? <PhotoList /> : <SinglePhoto />}
+      {showUploadList ? imageUrls.length >= max ? null : <PhotoList /> : <SinglePhoto />}
     </Upload>
   );
 }

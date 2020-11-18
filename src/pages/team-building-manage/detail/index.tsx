@@ -6,7 +6,7 @@ import { Descriptions } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import { getActivityDetail } from '@/services/activity';
 import { API } from '@/services/API';
-import { detailDescribe } from '../config';
+import { detailDescribe } from '../../../helpers/config';
 import './index.less';
 import Rate from '@/components/Rates';
 import { history } from '@@/core/history';
