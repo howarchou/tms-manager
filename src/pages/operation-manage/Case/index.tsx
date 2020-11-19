@@ -11,6 +11,7 @@ import { API } from '@/services/API';
 import { customSetting } from '../../../../config/defaultSettings';
 import { getCases, saveCase, deleteCase } from '@/services/case';
 import { history } from 'umi';
+import moment from 'moment';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -31,19 +32,20 @@ export default function () {
 
   const columns = [
     {
+      title: '案例标题',
+      dataIndex: 'title',
+      key: 'title',
+    },
+    {
       title: '案例名称',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '跳转链接',
-      dataIndex: 'link',
-      key: 'link',
-    },
-    {
-      title: '排序',
-      dataIndex: 'sort',
-      key: 'sort',
+      title: '团建日期',
+      dataIndex: 'date',
+      key: 'date',
+      render: (text: number) => moment(text).format('YYYY-MM-DD'),
     },
     {
       title: '状态',

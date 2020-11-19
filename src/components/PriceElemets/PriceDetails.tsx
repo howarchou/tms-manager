@@ -11,15 +11,23 @@ interface PriceCPProps {
   onChange?: (value: number | string | undefined) => void;
   onFeeDetailClick: () => void;
   showLabel: boolean;
+  className?: string;
 }
 
 const PriceCP: FC<PriceCPProps> = (props: PriceCPProps) => {
-  const { label = '费用明细', value, onChange, onFeeDetailClick, showLabel } = props;
+  const {
+    label = '费用明细',
+    value,
+    onChange,
+    onFeeDetailClick,
+    showLabel,
+    className = '',
+  } = props;
   return (
     <div className={styles.amountWrapper}>
       <InputNumber style={{ width: '100%' }} placeholder="单价" onChange={onChange} value={value} />
       {showLabel ? (
-        <a className={styles.feeDetail} onClick={onFeeDetailClick}>
+        <a className={className ? styles[className] : styles.feeDetail} onClick={onFeeDetailClick}>
           {label}
         </a>
       ) : null}

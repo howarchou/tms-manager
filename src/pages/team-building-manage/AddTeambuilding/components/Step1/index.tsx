@@ -186,7 +186,11 @@ const Step1: React.FC<Step1Props> = (props) => {
                 },
               ]}
             >
-              <PriceDetails showLabel={!!data?.id} onFeeDetailClick={handleFeeDetail} />
+              <PriceDetails
+                className="activityFeeDetail"
+                showLabel={!!data?.id}
+                onFeeDetailClick={handleFeeDetail}
+              />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>

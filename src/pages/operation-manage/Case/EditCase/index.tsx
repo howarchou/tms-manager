@@ -10,6 +10,9 @@ import moment from 'moment';
 import { saveCase, getCaseById } from '@/services/case';
 import { history } from 'umi';
 import { caseCityConfig } from '@/helpers/config';
+import HeaderBack from '@/components/HeaderBack';
+import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import { uuid } from '@/helpers';
 
 const { Option } = Select;
 const { TimePicker } = DatePicker;
@@ -36,6 +39,7 @@ const SM = 24;
 const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, location }) => {
   const [form] = Form.useForm();
   const [data, setData] = useState<API.Case>();
+  const [listFrom, setListFrom] = useState<FormInstance[]>([]);
   const id = location?.query?.id;
   useEffect(() => {
     if (id) {
@@ -48,24 +52,41 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
         form.setFieldsValue(data);
       });
     } else {
-      form.setFieldsValue({ schedule: [{}] });
+      form.setFieldsValue({ schedule: [{ items: [{}] }] });
     }
   }, [id]);
 
   const onFinish = async (values: API.Case) => {
-    const schedules = values.schedule?.map((schedule) => {
-      return { ...schedule, time: moment(schedule.time).valueOf() };
+    console.log(values);
+    const schedulePromises = listFrom.map(async (form) => {
+      const schedule = await form.getFieldsValue();
+      return schedule.scheduleItems.map((item: API.Case_Schedule_Item) => {
+        return { ...item, time: moment(item.time).valueOf() };
+      });
+    });
+    const scheduleItems = await Promise.all(schedulePromises);
+    const schedules = values.schedule?.map((schedule, index) => {
+      const items = scheduleItems[index];
+      return { ...schedule, items, day: index + 1 };
     });
     values.date = moment(values.date).valueOf();
     if (schedules && schedules.length) {
       values.schedule = schedules;
     }
-    console.log(values);
     await saveCase(values);
     history.push('/operation/case/list');
   };
 
   const onFinishFailed = (errorInfo: any) => {};
+
+  const handleLeftClick = () => {
+    history.push('/operation/case/list');
+  };
+
+  const handleListFrom = (key: string, form: FormInstance) => {
+    listFrom.push(form);
+    setListFrom(listFrom.slice());
+  };
 
   return (
     <Form
@@ -76,7 +97,11 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
-      <PageContainer title={`${id ? `编辑${data?.name}` : '添加案例'}`}>
+      <PageContainer
+        title={
+          <HeaderBack title={id ? `编辑${data?.name}` : '添加案例'} onBackClick={handleLeftClick} />
+        }
+      >
         <Card title="案例基本信息" className={styles.card} bordered={false}>
           <Row gutter={GUTTER}>
             <Col lg={LG} md={MD} sm={SM}>
@@ -170,42 +195,35 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
           <Form.List name={'schedule'}>
             {(fields, { add, remove }) => (
               <>
-                {fields.map((field) => {
+                {fields.map((field, index) => {
+                  const scheduleItem = data?.schedule ? data?.schedule[index] : undefined;
                   return (
-                    <Row key={field.name} gutter={GUTTER}>
-                      <Col lg={LG} md={MD} sm={SM}>
-                        <Form.Item
-                          label={'时间'}
-                          name={[field.name, 'time']}
-                          fieldKey={[field.fieldKey, 'time']}
-                          rules={[{ required: true, message: '请输入时间' }]}
-                        >
-                          <TimePicker style={{ width: '100%' }} placeholder="请输入时间" />
-                        </Form.Item>
-                      </Col>
-                      <Col lg={LG} md={MD} sm={SM}>
-                        <Form.Item
-                          label={'活动内容'}
-                          name={[field.name, 'content']}
-                          fieldKey={[field.fieldKey, 'content']}
-                          rules={[{ required: true, message: '请输入活动内容' }]}
-                        >
-                          <Input placeholder="请输入活动内容" />
-                        </Form.Item>
-                      </Col>
-                      <Space className={styles.actionRow} align={'center'}>
-                        <PlusOutlined onClick={() => add()} />
-                        <MinusCircleOutlined
-                          onClick={() => {
-                            if (fields.length !== 1) {
-                              remove(field.name);
-                            } else {
-                              message.warning('至少保留一个');
-                            }
-                          }}
-                        />
-                      </Space>
-                    </Row>
+                    <Card
+                      style={{ marginBottom: 10 }}
+                      title={`第${index + 1}天`}
+                      extra={
+                        <Space align={'center'}>
+                          <PlusOutlined onClick={() => add()} />
+                          <MinusCircleOutlined
+                            onClick={() => {
+                              if (fields.length !== 1) {
+                                remove(field.name);
+                                listFrom.splice(field.name, 1);
+                                setListFrom(listFrom.slice());
+                              } else {
+                                message.warning('至少保留一个');
+                              }
+                            }}
+                          />
+                        </Space>
+                      }
+                    >
+                      <FormItemList
+                        uuidKey={uuid(8)}
+                        onUpdateFrom={handleListFrom}
+                        value={scheduleItem?.items}
+                      />
+                    </Card>
                   );
                 })}
               </>
@@ -242,6 +260,88 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
           提交
         </Button>
       </FooterToolbar>
+    </Form>
+  );
+};
+
+interface FormItemListProps {
+  uuidKey: string;
+  value?: API.Case_Schedule_Item[];
+  onUpdateFrom: (key: string, form: FormInstance) => void;
+}
+
+const FormItemList = (props: FormItemListProps) => {
+  const { uuidKey, onUpdateFrom, value } = props;
+  const [form] = Form.useForm();
+  useEffect(() => {
+    const scheduleItems = value
+      ? value.map((item) => {
+          return { ...item, time: moment(item.time) };
+        })
+      : [{}];
+    form.setFieldsValue({ scheduleItems });
+    onUpdateFrom(uuidKey, form);
+  }, []);
+
+  return (
+    <Form
+      style={{ height: '100%' }}
+      name={'scheduleItems'}
+      form={form}
+      layout="vertical"
+      autoComplete="off"
+      hideRequiredMark={true}
+    >
+      <Form.List name={'scheduleItems'}>
+        {(fields, { add, remove }) => {
+          return (
+            <>
+              {fields.map((field) => {
+                return (
+                  <Row key={field.name} gutter={GUTTER}>
+                    <Col lg={LG} md={MD} sm={SM}>
+                      <Form.Item
+                        label={'时间'}
+                        name={[field.name, 'time']}
+                        fieldKey={[field.fieldKey, 'time']}
+                        rules={[{ required: true, message: '请输入时间' }]}
+                      >
+                        <TimePicker
+                          style={{ width: '100%' }}
+                          placeholder="请输入时间"
+                          format="HH:mm"
+                        />
+                      </Form.Item>
+                    </Col>
+                    <Col lg={LG} md={MD} sm={SM}>
+                      <Form.Item
+                        label={'活动内容'}
+                        name={[field.name, 'text']}
+                        fieldKey={[field.fieldKey, 'text']}
+                        rules={[{ required: true, message: '请输入活动内容' }]}
+                      >
+                        <Input placeholder="请输入活动内容" />
+                      </Form.Item>
+                    </Col>
+                    <Space className={styles.actionRow} align={'center'}>
+                      <PlusOutlined onClick={() => add()} />
+                      <MinusCircleOutlined
+                        onClick={() => {
+                          if (fields.length !== 1) {
+                            remove(field.name);
+                          } else {
+                            message.warning('至少保留一个');
+                          }
+                        }}
+                      />
+                    </Space>
+                  </Row>
+                );
+              })}
+            </>
+          );
+        }}
+      </Form.List>
     </Form>
   );
 };

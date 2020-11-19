@@ -25,7 +25,7 @@ export default function (props: Props) {
     setVisible(!!open);
     if (id) {
       getFeeDetail(id, type).then((data) => {
-        setData(data);
+        setData(data || []);
         form.setFieldsValue({ fees: data });
       });
     } else {
@@ -193,7 +193,7 @@ const FeeDetailCalculate: FC<FeeDetailCalculateProps> = (props) => {
   };
 
   return (
-    <Card>
+    <Card style={{ marginBottom: 10 }}>
       <Descriptions title={'统计信息'} column={4} extra={<PeopleNum num={num} />}>
         <Descriptions.Item label={'总计'}>{Number(sum).toFixed(SCALE)}</Descriptions.Item>
         <Descriptions.Item label={'含税'}>

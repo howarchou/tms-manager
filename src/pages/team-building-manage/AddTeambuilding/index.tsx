@@ -10,8 +10,8 @@ import Step4 from './components/Step4';
 import styles from './style.less';
 import { getActivityDetail } from '@/services/activity';
 import { Dispatch } from '@@/plugin-dva/connect';
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import { history } from 'umi';
+import HeaderBack from '@/components/HeaderBack';
 
 const { Step } = Steps;
 
@@ -52,17 +52,10 @@ const Addteambuilding: React.FC<AddteambuildingProps> = ({ current, location, di
     });
   };
 
-  const LeftTitle = () => {
-    return (
-      <>
-        <ArrowLeftOutlined onClick={handleLeftClick} style={{ marginRight: 8 }} />
-        {id ? '编辑团建' : '添加团建'}
-      </>
-    );
-  };
-
   return (
-    <PageContainer title={<LeftTitle />}>
+    <PageContainer
+      title={<HeaderBack title={id ? '编辑团建' : '添加团建'} onBackClick={handleLeftClick} />}
+    >
       <Card bordered={false}>
         <div className={styles.pageConntaier}>
           <Steps current={currentStep} className={styles.steps}>

@@ -273,7 +273,12 @@ declare namespace API {
   }
 
   export interface Case_Schedule {
+    day: number;
+    items: Case_Schedule_Item[];
+  }
+
+  export interface Case_Schedule_Item {
     time: number;
-    content: string;
+    text: string;
   }
 }

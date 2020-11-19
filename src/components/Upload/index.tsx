@@ -2,10 +2,11 @@
  *  Created by pw on 2020/10/9 10:29 下午.
  */
 import React, { useEffect, useState } from 'react';
-import { message, Upload } from 'antd';
+import { message, Upload, Modal } from 'antd';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import { customSetting } from '../../../config/defaultSettings';
+import { UploadFile } from 'antd/es/upload/interface';
 
 interface Props {
   onChange?: (value: string | string[]) => void;
@@ -18,29 +19,25 @@ interface Props {
 export default function (props: Props) {
   const { showUploadList = false, multiple = false, max = 1 } = props;
   const [loading, setLoading] = useState(false);
-  const defaultImageUrls = props?.value || showUploadList ? [] : '';
-  const [imageUrls, setImageUrls] = useState<string | string[]>(defaultImageUrls);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string>();
 
   useEffect(() => {
     if (props?.value) {
-      if (showUploadList) {
-        const imgs = (imageUrls as string[]).map((url) => {
-          return !!~url?.indexOf(customSetting.globalFileUrl)
-            ? url
-            : `${customSetting.globalFileUrl}${url}`;
-        });
-        setImageUrls(imgs as string[]);
-      } else {
-        const imgUrl = !!~props?.value?.indexOf(customSetting.globalFileUrl)
-          ? props?.value
-          : `${customSetting.globalFileUrl}${props?.value}`;
-        setImageUrls(imgUrl);
-      }
+      const data = Array.isArray(props?.value) ? props.value : [props?.value];
+      const fileList: any = data.map((url, index) => {
+        const imgUrl = !!~url?.indexOf(customSetting.globalFileUrl)
+          ? url
+          : `${customSetting.globalFileUrl}${url}`;
+        return { url: imgUrl, name: 'image.png', uid: url + index };
+      });
+      setFileList(fileList);
     }
   }, [props?.value]);
 
   const handleBeforeUpload = (file: Blob, files: RcFile[]) => {
-    if (imageUrls.length === max) {
+    if (fileList.length === max) {
       return false;
     }
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
@@ -55,6 +52,7 @@ export default function (props: Props) {
   };
 
   const handleChange = (info: UploadChangeParam) => {
+    setFileList(info.fileList);
     if (info.file.status === 'error') {
       setLoading(false);
       return;
@@ -64,21 +62,40 @@ export default function (props: Props) {
       return;
     }
     if (info.file.status === 'done') {
-      const payload = info.file.response.payload;
       setLoading(false);
-      let data: any;
-      if (showUploadList) {
-        (imageUrls as string[]).push(payload);
-        data = imageUrls?.slice();
-        setImageUrls(data);
-      } else {
-        data = `${customSetting.globalFileUrl}${payload}`;
-        setImageUrls(data);
+      fnUpdateData(info.fileList);
+    }
+  };
+
+  const fnUpdateData = (fileList: UploadFile[]) => {
+    const data = fileList.map((file) => {
+      if (file?.response?.payload) {
+        return file?.response?.payload;
       }
-      if (props.onChange) {
+      return file?.url?.split('/')?.pop();
+    });
+    if (props.onChange) {
+      if (multiple) {
         props.onChange(data);
+      } else {
+        props.onChange(data[0]);
       }
     }
+  };
+
+  const handlePreview = (file: UploadFile) => {
+    setPreviewVisible(true);
+    setPreviewImage(file.url);
+  };
+
+  const handleRemove = (file: UploadFile) => {
+    const data = fileList.filter((line) => line.uid !== file.uid);
+    setFileList(data);
+    fnUpdateData(data);
+  };
+
+  const handleCancel = () => {
+    setPreviewVisible(false);
   };
 
   const uploadButton = (
@@ -93,29 +110,32 @@ export default function (props: Props) {
   };
 
   const SinglePhoto = () => {
+    const [file] = fileList;
     return (
-      <>
-        {imageUrls ? (
-          <img src={imageUrls as string} alt="avatar" style={{ width: '100%' }} />
-        ) : (
-          uploadButton
-        )}
-      </>
+      <>{file ? <img src={file.url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}</>
     );
   };
 
   return (
-    <Upload
-      name="file"
-      listType="picture-card"
-      className="avatar-uploader"
-      showUploadList={showUploadList}
-      action="http://tms.cicisoft.cn/api/upload"
-      multiple={multiple}
-      beforeUpload={handleBeforeUpload}
-      onChange={handleChange}
-    >
-      {showUploadList ? imageUrls.length >= max ? null : <PhotoList /> : <SinglePhoto />}
-    </Upload>
+    <>
+      <Upload
+        name="file"
+        listType="picture-card"
+        className="avatar-uploader"
+        showUploadList={showUploadList}
+        action="http://tms.cicisoft.cn/api/upload"
+        multiple={multiple}
+        fileList={fileList}
+        beforeUpload={handleBeforeUpload}
+        onChange={handleChange}
+        onPreview={handlePreview}
+        onRemove={handleRemove}
+      >
+        {showUploadList ? fileList.length >= max ? null : <PhotoList /> : <SinglePhoto />}
+      </Upload>
+      <Modal visible={previewVisible} title={'预览图片'} footer={null} onCancel={handleCancel}>
+        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+      </Modal>
+    </>
   );
 }
