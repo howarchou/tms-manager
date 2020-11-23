@@ -4,12 +4,12 @@
 import React, { useEffect, useState } from 'react';
 import { Space, Table, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
-// import AddTeambuildPanel from '@/pages/team-building-manage/AddTeambuildPanel';
 import styles from './TeamBuildingList.less';
 import { API } from '@/services/API';
 import { getActivities } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
+import { preview } from '@/helpers';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -49,6 +49,10 @@ export default () => {
       pathname: '/team-building/add',
       query: { id: record.id },
     });
+  };
+
+  const handlePreview = (record: API.TeamBuildingNew) => {
+    preview(`teambuilding-detail?id=${record.encode_id}`);
   };
 
   const handlePageChange = (page: number) => {
@@ -105,10 +109,11 @@ export default () => {
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: any) => (
+      render: (text: string, record: API.TeamBuildingNew) => (
         <Space size="middle">
           <a onClick={() => handleDetail(record)}>查看</a>
           <a onClick={() => handleEdit(record)}>编辑</a>
+          <a onClick={() => handlePreview(record)}>预览</a>
         </Space>
       ),
     },

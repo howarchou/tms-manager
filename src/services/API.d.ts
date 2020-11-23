@@ -77,6 +77,7 @@ declare namespace API {
 
   export interface TeamBuildingNew {
     id?: string;
+    encode_id?: string;
     series_number?: number;
     address: string;
     area: number;
@@ -254,6 +255,7 @@ declare namespace API {
 
   export interface Case {
     id?: string;
+    encode_id?: string;
     activity_id?: number;
     address: string;
     banners?: string[];

@@ -22,7 +22,7 @@ export default {
   },
   pre: {
     '/api/': {
-      target: 'your pre url',
+      target: 'http://tms.cicisoft.cn',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

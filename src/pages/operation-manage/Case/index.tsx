@@ -12,6 +12,7 @@ import { customSetting } from '../../../../config/defaultSettings';
 import { getCases, saveCase, deleteCase } from '@/services/case';
 import { history } from 'umi';
 import moment from 'moment';
+import { preview } from '@/helpers';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -28,6 +29,10 @@ export default function () {
     getCases(params).then((res) => {
       setData(res);
     });
+  };
+
+  const handlePreview = (record: API.Case) => {
+    preview(`case-detail?id=${record.encode_id}`);
   };
 
   const columns = [
@@ -75,6 +80,7 @@ export default function () {
           <a onClick={() => handleState(record)}>
             {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
           </a>
+          <a onClick={() => handlePreview(record)}>预览</a>
           <Popconfirm
             title="确认删除?"
             onConfirm={() => handleDel(record)}
