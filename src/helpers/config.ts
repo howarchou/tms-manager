@@ -1,7 +1,6 @@
 /**
  *  Created by pw on 2020/10/18 12:51 下午.
  */
-import Cookies from 'js-cookie';
 import { GLOBAL_CONFIG } from '@/services/Constants';
 import { API } from '@/services/API';
 import DB_ICON from '@/assets/schedule/大巴车.png';
@@ -34,6 +33,10 @@ export function caseCityConfig(): API.BaseConfig[] {
   return getCookieValueByKey('case_city');
 }
 
+export function starConfig(): any[] {
+  return getCookieValueByKey('activity_star');
+}
+
 export function scheduleIconConfig(): any[] {
   return [
     { icon: DB_ICON, text: '大巴车', value: 1 },
@@ -42,6 +45,10 @@ export function scheduleIconConfig(): any[] {
     { icon: XX_ICON, text: '休息', value: 4 },
     { icon: YC_ICON, text: '用餐', value: 5 },
   ];
+}
+
+export function typeIconnConfig(): any[] {
+  return getCookieValueByKey('activity_type_icon');
 }
 
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
@@ -54,7 +61,7 @@ export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew
 }
 
 function getCookieValueByKey(key: string): API.BaseConfig[] {
-  const result = Cookies.getJSON(GLOBAL_CONFIG) as API.ConfigValue;
+  const result = JSON.parse(localStorage.getItem(GLOBAL_CONFIG) || '') as API.ConfigValue;
   return result[key] || [];
 }
 

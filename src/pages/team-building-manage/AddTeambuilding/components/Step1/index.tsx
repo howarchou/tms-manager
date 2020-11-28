@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Button, Input, Select, Row, Col, Space } from 'antd';
+import { Form, Button, Input, Select, Row, Col, Space, InputNumber } from 'antd';
 const { TextArea } = Input;
 import { connect, Dispatch } from 'umi';
 import styles from './index.less';
 import { StateType } from '../../model';
 import UploadComponent from '@/components/Upload';
-import Rate from '@/components/Rates';
-import HoldInputWrapper from './HoldInputWrapper';
+import { RateGroup } from '@/components/Rates';
+import { IconSelect } from '../IconSelect';
+
 import {
   areaConfig,
   durationConfig,
   getDefaultValue,
   methodConfig,
   profitConfig,
-  tagsConfig,
+  starConfig,
+  typeIconnConfig,
 } from '@/helpers/config';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
@@ -92,7 +94,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name="area"
               rules={[{ required: true, message: '请选择活动地区' }]}
             >
-              <Select>
+              <Select placeholder={'请选择活动地区'}>
                 {areaConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>
@@ -118,7 +120,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name="method"
               rules={[{ required: true, message: '请选择团建玩法' }]}
             >
-              <Select>
+              <Select placeholder={'请选择团建玩法'}>
                 {methodConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>
@@ -132,10 +134,10 @@ const Step1: React.FC<Step1Props> = (props) => {
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
               label="团建收益"
-              name="profit"
+              name="profits"
               rules={[{ required: true, message: '请选择团建收益' }]}
             >
-              <Select>
+              <Select mode={'tags'} placeholder={'请选择团建收益'}>
                 {profitConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>
@@ -152,7 +154,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name="duration"
               rules={[{ required: true, message: '请选择团建天数' }]}
             >
-              <Select>
+              <Select placeholder={'请选择团建天数'}>
                 {durationConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>
@@ -165,13 +167,13 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
         </Row>
         <Row gutter={FormRowLayoutSpan}>
-          <Col span={8} offset={FormItemLayoutOffset}>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="容纳人数"
-              name="hold_people"
-              rules={[{ required: true, message: '请输入容纳人数' }]}
+              label="活动人数"
+              name="people_number"
+              rules={[{ required: true, message: '请输入活动人数' }]}
             >
-              <HoldInputWrapper />
+              <InputNumber placeholder={'请输入活动人数'} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
@@ -212,18 +214,23 @@ const Step1: React.FC<Step1Props> = (props) => {
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>
-              <Select placeholder={'请选择标签'} mode={'multiple'}>
-                {tagsConfig().map((area) => {
-                  return (
-                    <Option key={area.value} value={area.value}>
-                      {area.text}
-                    </Option>
-                  );
-                })}
-              </Select>
+            <Form.Item label="类别" name="type" rules={[{ required: true, message: '请选择类别' }]}>
+              <IconSelect data={typeIconnConfig()} />
             </Form.Item>
           </Col>
+          {/*<Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>*/}
+          {/*  <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>*/}
+          {/*    <Select placeholder={'请选择标签'} mode={'multiple'}>*/}
+          {/*      {tagsConfig().map((area) => {*/}
+          {/*        return (*/}
+          {/*          <Option key={area.value} value={area.value}>*/}
+          {/*            {area.text}*/}
+          {/*          </Option>*/}
+          {/*        );*/}
+          {/*      })}*/}
+          {/*    </Select>*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
         </Row>
         <Row gutter={FormRowLayoutSpan}>
           <Col span={8} offset={FormItemLayoutOffset}>
@@ -255,12 +262,8 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
         </Row>
 
-        <Form.Item
-          label="封面图(最多10张)"
-          name="cover"
-          rules={[{ required: true, message: '请上传封面' }]}
-        >
-          <UploadComponent multiple={true} max={10} />
+        <Form.Item label="封面图" name="cover" rules={[{ required: true, message: '请上传封面' }]}>
+          <UploadComponent />
         </Form.Item>
 
         <Form.Item
@@ -268,13 +271,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           name="stars"
           rules={[{ required: true, message: '请输入推荐指数' }]}
         >
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Rate label="餐饮指数" />
-            <Rate label="体力指数" />
-            <Rate label="风景指数" />
-            <Rate label="住宿指数" />
-            <Rate label="团建指数" />
-          </div>
+          <RateGroup rates={starConfig()} />
         </Form.Item>
         <Space
           style={{

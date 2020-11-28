@@ -101,8 +101,8 @@ const Step2: React.FC<Step2Props> = (props) => {
                 <Col span={FormItemLayoutSpan}>
                   <Form.Item
                     {...field}
-                    name={[field.name, 'pictures']}
-                    fieldKey={[field.fieldKey, 'pictures']}
+                    name={[field.name, 'picture']}
+                    fieldKey={[field.fieldKey, 'picture']}
                     rules={[{ required: true, message: '请团建特色图片' }]}
                   >
                     <UploadComponent />

@@ -1,17 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Button,
-  Space,
-  TimePicker,
-  Row,
-  Col,
-  message,
-  Card,
-  Input,
-  InputNumber,
-  Select,
-} from 'antd';
+import { Form, Button, Space, TimePicker, Row, Col, message, Card, Input } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect, Dispatch } from 'umi';
 import { StateType } from '../../model';
@@ -25,6 +13,7 @@ import { uuid } from '@/helpers/uuid';
 import UploadComponent from '@/components/Upload';
 import { history } from 'umi';
 import { scheduleIconConfig } from '@/helpers/config';
+import { IconSelect } from '../IconSelect';
 
 interface Step3Props {
   data?: StateType['step'];
@@ -32,10 +21,10 @@ interface Step3Props {
   submitting?: boolean;
 }
 
-const FormItemTitleLayoutSpan = 8;
-const FormItemLayoutSpan = 8;
+const FormItemTitleLayoutSpan = 5;
 const FormItemLayoutOffset = 0;
 const FormRowLayoutSpan = 12;
+const FormItemDetailSpan = 5;
 
 const Step3: React.FC<Step3Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
@@ -138,7 +127,7 @@ const Step3: React.FC<Step3Props> = (props) => {
               return (
                 <Card
                   key={field.key}
-                  title={`方案${index + 1}`}
+                  title={`第${index + 1}天`}
                   style={{ marginTop: 20 }}
                   extra={
                     <Space align={'center'}>
@@ -166,10 +155,21 @@ const Step3: React.FC<Step3Props> = (props) => {
                         style={{
                           display: 'flex',
                           marginBottom: 8,
-                          justifyContent: 'center',
+                          justifyContent: 'left',
                           flex: 1,
                         }}
                       >
+                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
+                          <Form.Item
+                            {...field}
+                            label="行程标题"
+                            name={[field.name, 'title']}
+                            fieldKey={[field.fieldKey, 'title']}
+                            rules={[{ required: true, message: '请输入行程标题' }]}
+                          >
+                            <Input placeholder={'请输入行程标题'} />
+                          </Form.Item>
+                        </Col>
                         <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
                           <Form.Item
                             {...field}
@@ -178,43 +178,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                             fieldKey={[field.fieldKey, 'icon']}
                             rules={[{ required: true, message: '请选择图标' }]}
                           >
-                            <Select placeholder={'请选择图标'}>
-                              {scheduleIconConfig().map((icon) => {
-                                return (
-                                  <Select.Option key={icon.value} value={icon.value}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                      <img
-                                        src={icon.icon}
-                                        style={{ marginRight: 8, width: 10, height: 12 }}
-                                      />
-                                      {icon.text}
-                                    </div>
-                                  </Select.Option>
-                                );
-                              })}
-                            </Select>
-                          </Form.Item>
-                        </Col>
-                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
-                          <Form.Item
-                            {...field}
-                            label="标题"
-                            name={[field.name, 'title']}
-                            fieldKey={[field.fieldKey, 'title']}
-                            rules={[{ required: true, message: '请输入标题' }]}
-                          >
-                            <Input placeholder={'请输入标题'} />
-                          </Form.Item>
-                        </Col>
-                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
-                          <Form.Item
-                            {...field}
-                            label="描述"
-                            name={[field.name, 'sub_title']}
-                            fieldKey={[field.fieldKey, 'sub_title']}
-                            rules={[{ required: true, message: '请输入描述' }]}
-                          >
-                            <Input placeholder={'请输入描述'} />
+                            <IconSelect data={scheduleIconConfig()} />
                           </Form.Item>
                         </Col>
                       </Row>
@@ -287,39 +251,84 @@ const FormItemList = (props: FormItemListProps) => {
           return (
             <>
               {fields.map((field) => (
-                <Row
-                  key={field.key}
-                  gutter={FormRowLayoutSpan}
-                  style={{
-                    display: 'flex',
-                    marginBottom: 8,
-                    justifyContent: 'center',
-                    flex: 1,
-                  }}
-                >
-                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                    <Form.Item
-                      {...field}
-                      label="天数"
-                      name={[field.name, 'day']}
-                      fieldKey={[field.fieldKey, 'day']}
-                      rules={[{ required: true, message: '请输入天数' }]}
-                    >
-                      <InputNumber style={{ width: '100%' }} placeholder={'请输入天数'} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                    <Form.Item
-                      {...field}
-                      label="具体时间"
-                      name={[field.name, 'time']}
-                      fieldKey={[field.fieldKey, 'time']}
-                      rules={[{ required: true, message: '请选择时间' }]}
-                    >
-                      <TimePicker style={{ width: '100%' }} format={'HH:mm'} />
-                    </Form.Item>
-                  </Col>
-                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+                <div key={field.key}>
+                  <Row
+                    gutter={FormRowLayoutSpan}
+                    style={{
+                      display: 'flex',
+                      marginBottom: 8,
+                      justifyContent: 'left',
+                      flex: 1,
+                    }}
+                  >
+                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
+                      <Form.Item
+                        {...field}
+                        label="标题"
+                        name={[field.name, 'title']}
+                        fieldKey={[field.fieldKey, 'title']}
+                        rules={[{ required: true, message: '请输入标题' }]}
+                      >
+                        <Input placeholder={'请输入标题'} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
+                      <Form.Item
+                        {...field}
+                        label="描述"
+                        name={[field.name, 'desc']}
+                        fieldKey={[field.fieldKey, 'desc']}
+                        rules={[{ required: true, message: '请输入描述' }]}
+                      >
+                        <Input placeholder={'请输入描述'} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
+                      <Form.Item
+                        {...field}
+                        label="图标"
+                        name={[field.name, 'icon']}
+                        fieldKey={[field.fieldKey, 'icon']}
+                        rules={[{ required: true, message: '请选择图标' }]}
+                      >
+                        <IconSelect data={scheduleIconConfig()} placeholder={'请选择类别'} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
+                      <Form.Item
+                        {...field}
+                        label="具体时间"
+                        name={[field.name, 'time']}
+                        fieldKey={[field.fieldKey, 'time']}
+                        rules={[{ required: true, message: '请选择时间' }]}
+                      >
+                        <TimePicker style={{ width: '100%' }} format={'HH:mm'} showNow={false} />
+                      </Form.Item>
+                    </Col>
+                    <Col span={1} offset={FormItemLayoutOffset}>
+                      <Space className={styles.actionRow} align={'center'}>
+                        <PlusOutlined onClick={() => add()} />
+                        <MinusCircleOutlined
+                          onClick={() => {
+                            if (fields.length !== 1) {
+                              remove(field.name);
+                            } else {
+                              message.warning('至少保留一个');
+                            }
+                          }}
+                        />
+                      </Space>
+                    </Col>
+                  </Row>
+                  <Row
+                    gutter={FormRowLayoutSpan}
+                    style={{
+                      display: 'flex',
+                      marginBottom: 8,
+                      justifyContent: 'left',
+                      flex: 1,
+                    }}
+                  >
                     <Form.Item
                       className={styles.actionRowWrapper}
                       {...field}
@@ -327,22 +336,15 @@ const FormItemList = (props: FormItemListProps) => {
                       fieldKey={[field.fieldKey, 'pictures']}
                       rules={[{ required: true, message: '请选择图片' }]}
                     >
-                      <UploadComponent showUploadList={true} multiple={true} />
-                    </Form.Item>
-                    <Space className={styles.actionRow} align={'center'}>
-                      <PlusOutlined onClick={() => add()} />
-                      <MinusCircleOutlined
-                        onClick={() => {
-                          if (fields.length !== 1) {
-                            remove(field.name);
-                          } else {
-                            message.warning('至少保留一个');
-                          }
-                        }}
+                      <UploadComponent
+                        showUploadList={true}
+                        multiple={true}
+                        label={'上传图片'}
+                        max={100}
                       />
-                    </Space>
-                  </Col>
-                </Row>
+                    </Form.Item>
+                  </Row>
+                </div>
               ))}
             </>
           );

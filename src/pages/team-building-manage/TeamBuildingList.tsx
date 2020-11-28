@@ -81,11 +81,10 @@ export default () => {
       dataIndex: 'price',
     },
     {
-      title: '可接纳人数',
-      key: 'capacity',
-      dataIndex: 'capacity',
-      render: (cycle: number, record: API.TeamBuildingNew) =>
-        `${record.hold_min} ~ ${record.hold_max}人`,
+      title: '团建人数',
+      key: 'people_number',
+      dataIndex: 'people_number',
+      render: (people_number: number, record: API.TeamBuildingNew) => `${people_number} 人`,
     },
     {
       title: '活动周期',
@@ -128,6 +127,7 @@ export default () => {
           </Button>
         </div>
         <Table
+          rowKey="id"
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.page_size, onChange: handlePageChange }}

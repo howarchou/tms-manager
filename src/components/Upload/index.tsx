@@ -9,15 +9,16 @@ import { customSetting } from '../../../config/defaultSettings';
 import { UploadFile } from 'antd/es/upload/interface';
 
 interface Props {
-  onChange?: (value: string | string[]) => void;
+  label?: string;
   value?: string | string[];
   showUploadList?: boolean;
   multiple?: boolean;
   max?: number;
+  onChange?: (value: string | string[]) => void;
 }
 
 export default function (props: Props) {
-  const { showUploadList = false, multiple = false, max = 1 } = props;
+  const { showUploadList = false, multiple = false, max = 1, label = '上传' } = props;
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -26,13 +27,13 @@ export default function (props: Props) {
   useEffect(() => {
     if (props?.value) {
       const data = Array.isArray(props?.value) ? props.value : [props?.value];
-      const fileList: any = data.map((url, index) => {
+      const list: any = data.map((url, index) => {
         const imgUrl = !!~url?.indexOf(customSetting.globalFileUrl)
           ? url
           : `${customSetting.globalFileUrl}${url}`;
         return { url: imgUrl, name: 'image.png', uid: url + index };
       });
-      setFileList(fileList);
+      setFileList(list);
     }
   }, [props?.value]);
 
@@ -101,7 +102,7 @@ export default function (props: Props) {
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>上传</div>
+      <div style={{ marginTop: 8 }}>{label}</div>
     </div>
   );
 
@@ -110,9 +111,11 @@ export default function (props: Props) {
   };
 
   const SinglePhoto = () => {
-    const [file] = fileList;
+    const [file] = fileList || [];
     return (
-      <>{file ? <img src={file.url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}</>
+      <>
+        {file?.url ? <img src={file.url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+      </>
     );
   };
 
