@@ -60,6 +60,7 @@ export default {
   'menu.operation.manage': '运营管理',
   'menu.operation.manage.banner': '首页Banner',
   'menu.operation.manage.recommend': '推荐分类',
+  'menu.operation.manage.homeCategory': '首页分类',
   'menu.operation.manage.seasonhot': '当季热门',
   'menu.operation.manage.case.list': '客户案例',
   'menu.operation.manage.photo-wall': '照片墙',

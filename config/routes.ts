@@ -113,11 +113,17 @@ const routes: IRoute[] = [
         icon: 'smile',
         component: './operation-manage/HomeBanner',
       },
+      // {
+      //   path: '/operation/recommend',
+      //   name: 'recommend',
+      //   icon: 'smile',
+      //   component: './operation-manage/RecommendCategory',
+      // },
       {
-        path: '/operation/recommend',
-        name: 'recommend',
+        path: '/operation/homeCategory',
+        name: 'homeCategory',
         icon: 'smile',
-        component: './operation-manage/RecommendCategory',
+        component: './operation-manage/HomeCategory',
       },
       {
         path: '/operation/seasonhot',
