@@ -126,7 +126,7 @@ export default function (props: Props) {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={showUploadList}
-        action="http://tms.cicisoft.cn/api/upload"
+        action={UploadUrl()}
         multiple={multiple}
         fileList={fileList}
         beforeUpload={handleBeforeUpload}
@@ -142,3 +142,10 @@ export default function (props: Props) {
     </>
   );
 }
+
+const UploadUrl = (): string => {
+  if (process.env.NODE_ENV === 'production') {
+    return location.origin + '/api/upload';
+  }
+  return 'http://tms.cicisoft.cn/api/upload';
+};
