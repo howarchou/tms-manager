@@ -27,13 +27,14 @@ export default function (props: Props) {
   useEffect(() => {
     if (props?.value) {
       const data = Array.isArray(props?.value) ? props.value : [props?.value];
-      const list: any = data.map((url, index) => {
+      const list: any[] = data.map((url, index) => {
         const imgUrl = !!~url?.indexOf(customSetting.globalFileUrl)
           ? url
           : `${customSetting.globalFileUrl}${url}`;
         return { url: imgUrl, name: 'image.png', uid: url + index };
       });
-      setFileList(list);
+      const uploadingList = fileList.filter((file) => file.status === 'uploading');
+      setFileList(list.concat(uploadingList));
     }
   }, [props?.value]);
 
@@ -69,12 +70,14 @@ export default function (props: Props) {
   };
 
   const fnUpdateData = (fileList: UploadFile[]) => {
-    const data = fileList.map((file) => {
-      if (file?.response?.payload) {
-        return file?.response?.payload;
-      }
-      return file?.url?.split('/')?.pop();
-    });
+    const data = fileList
+      .map((file) => {
+        if (file?.response?.payload) {
+          return file?.response?.payload;
+        }
+        return file?.url?.split('/')?.pop();
+      })
+      .filter((url) => !!url);
     if (props.onChange) {
       if (multiple) {
         props.onChange(data);

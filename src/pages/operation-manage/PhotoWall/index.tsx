@@ -63,7 +63,9 @@ export default function () {
       render: (text: string, record: API.PhotoWall) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleState(record)}>下架</a>
+          <a onClick={() => handleState(record)}>
+            {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
+          </a>
           <Popconfirm
             title="确认删除?"
             onConfirm={() => handleDel(record)}
@@ -112,6 +114,7 @@ export default function () {
         </div>
         <Table
           size="large"
+          rowKey={'id'}
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.page_size, onChange: handlePageChange }}
