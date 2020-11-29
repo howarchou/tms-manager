@@ -8,8 +8,9 @@ import { Popconfirm, Space, Table } from 'antd';
 import AddSeasonHotModal from './AddSeasonHotModal';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { API } from '@/services/API';
-import { getSeasonHots, saveSeasonHot } from '@/services/seasonHot';
+import { getSeasonHots, saveSeasonHot, deleteSeasonHot } from '@/services/seasonHot';
 import { uuid } from '@/helpers';
+import { customSetting } from '../../../../config/defaultSettings';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -46,7 +47,10 @@ export default function () {
       key: 'cover',
       dataIndex: 'cover',
       render: (text: string) => {
-        return <img className={styles.home_banner_column_img} src={text} />;
+        const imgUrl = !!~text.indexOf(customSetting.globalFileUrl)
+          ? text
+          : `${customSetting.globalFileUrl}${text}`;
+        return <img className={styles.home_banner_column_img} src={imgUrl} />;
       },
     },
     {
@@ -64,7 +68,9 @@ export default function () {
       render: (text: string, record: API.SeasonHot) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleState(record)}>下架</a>
+          <a onClick={() => handleState(record)}>
+            {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
+          </a>
           <Popconfirm
             title="确认删除?"
             onConfirm={() => handleDel(record)}
@@ -83,8 +89,9 @@ export default function () {
     setOpenModal(uuid(8));
   };
 
-  const handleDel = (record: API.SeasonHot) => {
-    // setData(data.filter((item) => item.id !== record.id));
+  const handleDel = async (record: API.SeasonHot) => {
+    await deleteSeasonHot(record);
+    await fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
   const handleState = async (record: API.SeasonHot) => {
@@ -111,6 +118,7 @@ export default function () {
           <AddSeasonHotModal onAdd={handAddResult} open={openModal} data={editData} />
         </div>
         <Table
+          rowKey={'id'}
           size="large"
           columns={columns}
           dataSource={data?.data}
