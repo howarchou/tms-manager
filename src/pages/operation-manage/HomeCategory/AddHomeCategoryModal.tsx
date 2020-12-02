@@ -37,6 +37,7 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
+    setData(props?.data);
     setVisible(!!open);
     form.setFieldsValue(props?.data);
   }, [open + data?.id]);

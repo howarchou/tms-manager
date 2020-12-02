@@ -6,10 +6,10 @@ import styles from './index.less';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Popconfirm, Space, Table } from 'antd';
 import AddHomeCategoryModal from './AddHomeCategoryModal';
-import { HomeBannerStatus } from '@/services/API.Enum';
+// import { HomeBannerStatus } from '@/services/API.Enum';
 import { API } from '@/services/API';
 import { customSetting } from '../../../../config/defaultSettings';
-import { getHomeCategorys, saveHomeCategory, deleteHomeCategory } from '@/services/homeCategory';
+import { getHomeCategorys, deleteHomeCategory } from '@/services/homeCategory';
 import { uuid } from '@/helpers';
 
 const DEFAULT_PAGE_SIZE = 10;
@@ -63,14 +63,14 @@ export default function () {
         return <img className={styles.home_banner_column_img} src={imgUrl} />;
       },
     },
-    {
-      title: '状态',
-      key: 'status',
-      dataIndex: 'status',
-      render: (text: string, record: API.Home_Category) => {
-        return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
-      },
-    },
+    // {
+    //   title: '状态',
+    //   key: 'status',
+    //   dataIndex: 'status',
+    //   render: (text: string, record: API.Home_Category) => {
+    //     return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
+    //   },
+    // },
 
     {
       title: '操作',
@@ -78,7 +78,7 @@ export default function () {
       render: (text: string, record: API.Home_Category) => (
         <Space size="middle">
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleState(record)}>下架</a>
+          {/*<a onClick={() => handleState(record)}>下架</a>*/}
           <Popconfirm
             title="确认删除?"
             onConfirm={() => handleDel(record)}
@@ -102,13 +102,13 @@ export default function () {
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
-  const handleState = async (record: API.Home_Category) => {
-    await saveHomeCategory({
-      ...record,
-      status: record.status === HomeBannerStatus.DOWN ? HomeBannerStatus.UP : HomeBannerStatus.DOWN,
-    });
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
-  };
+  // const handleState = async (record: API.Home_Category) => {
+  //   await saveHomeCategory({
+  //     ...record,
+  //     status: record.status === HomeBannerStatus.DOWN ? HomeBannerStatus.UP : HomeBannerStatus.DOWN,
+  //   });
+  //   fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
+  // };
 
   const handAddResult = (banner: API.Home_Category) => {
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
@@ -130,7 +130,10 @@ export default function () {
           size="large"
           columns={columns}
           dataSource={data?.data}
-          pagination={{ total: data?.page_size, onChange: handlePageChange }}
+          pagination={{
+            total: data?.page_size,
+            onChange: handlePageChange,
+          }}
         />
       </div>
     </PageContainer>

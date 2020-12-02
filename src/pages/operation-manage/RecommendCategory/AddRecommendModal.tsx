@@ -40,8 +40,8 @@ const AddRecommendModal = (props: AddModalIF) => {
     const results = await saveBanner({
       ...values,
       status: data?.status || 0,
-      ID: data?.ID,
-    } as API.HomeBanner);
+      id: data?.id,
+    } as any);
     props.onAdd(results);
     setVisible(false);
   };

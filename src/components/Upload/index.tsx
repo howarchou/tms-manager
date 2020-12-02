@@ -8,10 +8,10 @@ import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import { customSetting } from '../../../config/defaultSettings';
 import { UploadFile } from 'antd/es/upload/interface';
 
-const IMG_REG = /^(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|tiff|png|raw|tga)$/i;
-const IS_IMAGE = (name: string) => {
-  return IMG_REG.test(name);
-};
+// const IMG_REG = /^(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|tiff|png|raw|tga)$/i;
+// const IS_IMAGE = (name: string) => {
+//   return IMG_REG.test(name);
+// };
 interface Props {
   label?: string;
   value?: string | string[];
