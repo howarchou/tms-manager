@@ -73,6 +73,7 @@ const Login: React.FC<{}> = () => {
       // @ts-ignore
       setUserLoginState({ status: response.status as API.LoginType, type: response.type });
     } catch (error) {
+      console.log(error);
       message.error('登录失败，请重试！');
     }
     setSubmitting(false);
@@ -94,38 +95,38 @@ const Login: React.FC<{}> = () => {
 
         <div className={styles.main}>
           <LoginFrom activeKey={type} onTabChange={setType} onSubmit={handleSubmit}>
-            <Tab key="mobile" tab="手机号登录">
-              {status === 'error' && loginType === 'mobile' && !submitting && (
-                <LoginMessage content="验证码错误" />
-              )}
-              <Mobile
-                name="mobile"
-                placeholder="手机号"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入手机号！',
-                  },
-                  {
-                    pattern: /^1\d{10}$/,
-                    message: '手机号格式错误！',
-                  },
-                ]}
-              />
-              <Captcha
-                name="captcha"
-                placeholder="验证码"
-                countDown={120}
-                getCaptchaButtonText=""
-                getCaptchaSecondText="秒"
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入验证码！',
-                  },
-                ]}
-              />
-            </Tab>
+            {/*<Tab key="mobile" tab="手机号登录">*/}
+            {/*  {status === 'error' && loginType === 'mobile' && !submitting && (*/}
+            {/*    <LoginMessage content="验证码错误" />*/}
+            {/*  )}*/}
+            {/*  <Mobile*/}
+            {/*    name="mobile"*/}
+            {/*    placeholder="手机号"*/}
+            {/*    rules={[*/}
+            {/*      {*/}
+            {/*        required: true,*/}
+            {/*        message: '请输入手机号！',*/}
+            {/*      },*/}
+            {/*      {*/}
+            {/*        pattern: /^1\d{10}$/,*/}
+            {/*        message: '手机号格式错误！',*/}
+            {/*      },*/}
+            {/*    ]}*/}
+            {/*  />*/}
+            {/*  <Captcha*/}
+            {/*    name="captcha"*/}
+            {/*    placeholder="验证码"*/}
+            {/*    countDown={120}*/}
+            {/*    getCaptchaButtonText=""*/}
+            {/*    getCaptchaSecondText="秒"*/}
+            {/*    rules={[*/}
+            {/*      {*/}
+            {/*        required: true,*/}
+            {/*        message: '请输入验证码！',*/}
+            {/*      },*/}
+            {/*    ]}*/}
+            {/*  />*/}
+            {/*</Tab>*/}
             <Tab key="account" tab="账户密码登录">
               {status === 'error' && loginType === 'account' && !submitting && (
                 <LoginMessage content="账户或密码错误" />

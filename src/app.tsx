@@ -5,7 +5,7 @@ import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { RequestOptionsInit, ResponseError } from 'umi-request';
-import { queryCurrent } from './services/user';
+import { authUser } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 import { API } from '@/services/API';
 import { globalConfig } from '@/services/config';
@@ -17,8 +17,7 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     try {
-      const userId = localStorage.getItem('userId') as string;
-      const currentUser = await queryCurrent(userId);
+      const currentUser = await authUser();
       await globalConfig();
       return {
         currentUser,
@@ -102,7 +101,25 @@ const responseInterceptor = (response: Response, options: RequestOptionsInit) =>
   return response;
 };
 
+const requestInterceptor = (url: string, options: RequestOptionsInit) => {
+  return { url, options };
+};
+//
+// const request = extend({
+//   errorHandler,
+//   // requestInterceptors: [requestInterceptor],
+//   // responseInterceptors: [responseInterceptor],
+//   credentials: 'include',
+// });
+//
+// request.interceptors.request.use(requestInterceptor);
+// request.interceptors.response.use(responseInterceptor);
+//
+// export { request };
+
 export const request: RequestConfig = {
   errorHandler,
+  requestInterceptors: [requestInterceptor],
   responseInterceptors: [responseInterceptor],
+  credentials: 'include',
 };

@@ -10,6 +10,11 @@ export async function queryCurrent(id?: string) {
   return status === 0 ? converToUser(payload as API.LoginData) : undefined;
 }
 
+export async function authUser() {
+  const { payload, status } = await request<API.LoginResponse>(`/api/auth`);
+  return status === 0 ? converToUser(payload as API.LoginData) : undefined;
+}
+
 function converToUser(payload: API.LoginData): API.CurrentUser {
   return {
     userid: payload.id,
