@@ -73,7 +73,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
     if (schedules && schedules.length) {
       values.schedule = schedules;
     }
-    await saveCase(values);
+    await saveCase({ ...values, id });
     history.push('/operation/case/list');
   };
 

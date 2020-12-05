@@ -33,11 +33,6 @@ export default function () {
 
   const columns = [
     {
-      title: '序号',
-      dataIndex: 'sort',
-      key: 'sort',
-    },
-    {
       title: '图片',
       key: 'cover',
       dataIndex: 'cover',

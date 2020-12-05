@@ -7,6 +7,7 @@ import { StateType } from '../../model';
 import UploadComponent from '@/components/Upload';
 import { RateGroup } from '@/components/Rates';
 import { IconSelect } from '../IconSelect';
+import RichTextBox from '@/components/RichTextBox';
 
 import {
   areaConfig,
@@ -242,15 +243,15 @@ const Step1: React.FC<Step1Props> = (props) => {
               <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
-          <Col span={8} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="预订须知"
-              name="booking_notes"
-              rules={[{ required: true, message: '请输入预订须知' }]}
-            >
-              <TextArea placeholder="预订须知" autoSize={{ minRows: 3, maxRows: 5 }} />
-            </Form.Item>
-          </Col>
+          {/*<Col span={8} offset={FormItemLayoutOffset}>*/}
+          {/*  <Form.Item*/}
+          {/*    label="预订须知"*/}
+          {/*    name="booking_notes"*/}
+          {/*    rules={[{ required: true, message: '请输入预订须知' }]}*/}
+          {/*  >*/}
+          {/*    <TextArea placeholder="预订须知" autoSize={{ minRows: 3, maxRows: 5 }} />*/}
+          {/*  </Form.Item>*/}
+          {/*</Col>*/}
           <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
               label="温馨提示"
@@ -260,6 +261,11 @@ const Step1: React.FC<Step1Props> = (props) => {
               <TextArea placeholder="温馨提示" autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={FormRowLayoutSpan}>
+          <Form.Item name="booking_notes" rules={[{ required: true, message: '请输入预定须知' }]}>
+            <RichTextBox label={'预定须知'} placeholder={'请输入预定须知'} />
+          </Form.Item>
         </Row>
 
         <Form.Item label="封面图" name="cover" rules={[{ required: true, message: '请上传封面' }]}>

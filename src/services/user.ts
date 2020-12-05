@@ -23,3 +23,7 @@ function converToUser(payload: API.LoginData): API.CurrentUser {
 export async function queryNotices(): Promise<any> {
   return request<{ data: API.NoticeIconData[] }>('/api/notices');
 }
+
+export async function logout(): Promise<any> {
+  return request('/api/logout', { method: 'POST' });
+}
