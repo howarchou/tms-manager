@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Space, TimePicker, Row, Col, message, Card, Input } from 'antd';
+import { Form, Button, Space, Row, Col, message, Card, Input } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { connect, Dispatch } from 'umi';
 import { StateType } from '../../model';
@@ -59,7 +59,8 @@ const Step3: React.FC<Step3Props> = (props) => {
       const planPromises = listFrom.map(async (form) => {
         const plan = await form.getFieldsValue();
         return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-          return { ...plan, time: moment(plan.time).valueOf() };
+          const time = moment(plan.time, 'HH:mm').valueOf();
+          return { ...plan, time };
         });
       });
       const plans = await Promise.all(planPromises);
@@ -231,7 +232,7 @@ const FormItemList = (props: FormItemListProps) => {
   useEffect(() => {
     const plans = value
       ? value.map((item) => {
-          return { ...item, time: moment(item.time) };
+          return { ...item, time: moment(item.time).format('HH:mm') };
         })
       : [{}];
     form.setFieldsValue({ plans });
@@ -302,7 +303,7 @@ const FormItemList = (props: FormItemListProps) => {
                         fieldKey={[field.fieldKey, 'time']}
                         rules={[{ required: true, message: '请选择时间' }]}
                       >
-                        <TimePicker style={{ width: '100%' }} format={'HH:mm'} showNow={false} />
+                        <Input placeholder={'请输入时间例如:11:30'} />
                       </Form.Item>
                     </Col>
                     <Col span={1} offset={FormItemLayoutOffset}>

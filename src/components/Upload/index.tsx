@@ -37,8 +37,12 @@ export default function (props: Props) {
           : `${customSetting.globalFileUrl}${url}`;
         return { url: imgUrl, name: 'image.png', uid: url + index };
       });
-      const uploadingList = fileList.filter((file) => file.status === 'uploading');
-      setFileList(list.concat(uploadingList));
+      if (multiple) {
+        const uploadingList = fileList.filter((file) => file.status === 'uploading');
+        setFileList(list.concat(uploadingList));
+      } else {
+        setFileList(list.concat(fileList));
+      }
     }
   }, [props?.value]);
 
@@ -86,7 +90,8 @@ export default function (props: Props) {
       if (multiple) {
         props.onChange(data);
       } else {
-        props.onChange(data[0]);
+        const last = data[data.length - 1];
+        props.onChange(last);
       }
     }
   };
@@ -132,7 +137,7 @@ export default function (props: Props) {
         name="file"
         listType="picture-card"
         className="avatar-uploader"
-        showUploadList={showUploadList}
+        showUploadList={multiple ? showUploadList : false}
         action={UploadUrl()}
         multiple={multiple}
         fileList={fileList}
@@ -141,7 +146,7 @@ export default function (props: Props) {
         onPreview={handlePreview}
         onRemove={handleRemove}
       >
-        {showUploadList ? fileList.length >= max ? null : <PhotoList /> : <SinglePhoto />}
+        {multiple ? fileList.length >= max ? null : <PhotoList /> : <SinglePhoto />}
       </Upload>
       <Modal visible={previewVisible} title={'预览图片'} footer={null} onCancel={handleCancel}>
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
