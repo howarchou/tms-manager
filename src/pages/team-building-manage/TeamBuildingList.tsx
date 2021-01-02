@@ -52,7 +52,7 @@ export default () => {
   };
 
   const handlePreview = (record: API.TeamBuildingNew) => {
-    preview(`teambuilding-detail?id=${record.encode_id}`);
+    preview(`teambuilding-teambuilding-detail?id=${record.encode_id}`);
   };
 
   const handlePageChange = (page: number) => {
