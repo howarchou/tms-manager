@@ -232,6 +232,13 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
         </Card>
         <Card title="案例素材" className={styles.card} bordered={false}>
           <Form.Item
+            label="案例Logo"
+            name="logo"
+            rules={[{ required: true, message: '请上传图片' }]}
+          >
+            <UploadComponent />
+          </Form.Item>
+          <Form.Item
             label="案例封面"
             name="cover"
             rules={[{ required: true, message: '请上传图片' }]}
