@@ -25,6 +25,11 @@ export async function saveActivitying(params: API.TeamBuildingNew) {
   return result.payload;
 }
 
+export async function updateActivityState(id: string, state: boolean) {
+  const path = state ? `/api/activities/${id}/enable` : `/api/activities/${id}/disable`;
+  return request(path, { method: 'PUT' });
+}
+
 export async function getActivityDetail(id: string): Promise<API.TeamBuildingNew> {
   const restult = await request<API.BaseResponse<API.TeamBuildingNew>>(`/api/activities/${id}`, {
     method: 'GET',

@@ -39,6 +39,21 @@ export default function (props: Props) {
     setData(value.fees);
   };
 
+  const handleTotalPrice = () => {
+    const value = form.getFieldsValue();
+    const fees: API.FeeDetail[] = value.fees;
+    if (fees && fees.length) {
+      const calFees = fees.map((fee) => {
+        if (Number.isNaN(fee.days) || Number.isNaN(fee.price) || Number.isNaN(fee.num)) {
+          return fee;
+        }
+        const total_price = fee.days * fee.price * fee.num;
+        return { ...fee, total_price };
+      });
+      form.setFieldsValue({ fees: calFees });
+    }
+  };
+
   const handleOk = async () => {
     const values: any = await form.validateFields();
     console.log(values);
@@ -117,7 +132,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'cost_price']}
                     rules={[{ required: true, message: '请填写优惠价', type: 'number' }]}
                   >
-                    <InputNumber placeholder="优惠价" />
+                    <InputNumber placeholder="优惠价" onChange={handleTotalPrice} />
                   </Form.Item>
                   <Form.Item
                     {...field}
@@ -126,7 +141,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'num']}
                     rules={[{ required: true, message: '请填写数量', type: 'number' }]}
                   >
-                    <InputNumber placeholder="数量" />
+                    <InputNumber placeholder="数量" onChange={handleTotalPrice} />
                   </Form.Item>
                   <Form.Item
                     {...field}
@@ -135,7 +150,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'days']}
                     rules={[{ required: true, message: '请填写天数', type: 'number' }]}
                   >
-                    <InputNumber placeholder="天数" />
+                    <InputNumber placeholder="天数" onChange={handleTotalPrice} />
                   </Form.Item>
                   <Form.Item
                     {...field}
@@ -144,7 +159,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'total_price']}
                     rules={[{ required: true, message: '请填写总价', type: 'number' }]}
                   >
-                    <InputNumber placeholder="总价" />
+                    <InputNumber disabled={true} placeholder="总价" />
                   </Form.Item>
                   <MinusCircleOutlined onClick={() => remove(field.name)} />
                 </Space>

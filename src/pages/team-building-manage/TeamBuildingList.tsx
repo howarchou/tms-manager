@@ -6,7 +6,7 @@ import { Space, Table, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
 import { API } from '@/services/API';
-import { getActivities } from '@/services/activity';
+import { getActivities, saveActivitying, updateActivityState } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
 import { preview } from '@/helpers';
@@ -37,12 +37,17 @@ export default () => {
     history.push({ pathname: '/team-building/add' });
   };
 
-  const handleDetail = (record: API.TeamBuildingNew) => {
-    history.push({
-      pathname: '/team-building/detail',
-      query: { id: record.id },
-    });
+  const handleState = async (record: API.TeamBuildingNew) => {
+    await updateActivityState(record.id!!, !record.status);
+    await fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
   };
+
+  // const handleDetail = (record: API.TeamBuildingNew) => {
+  //   history.push({
+  //     pathname: '/team-building/detail',
+  //     query: { id: record.id },
+  //   });
+  // };
 
   const handleEdit = (record: API.TeamBuildingNew) => {
     history.push({
@@ -110,7 +115,9 @@ export default () => {
       key: 'action',
       render: (text: string, record: API.TeamBuildingNew) => (
         <Space size="middle">
-          <a onClick={() => handleDetail(record)}>查看</a>
+          <a onClick={() => handleState(record)}>
+            {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
+          </a>
           <a onClick={() => handleEdit(record)}>编辑</a>
           <a onClick={() => handlePreview(record)}>预览</a>
         </Space>

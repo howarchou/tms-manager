@@ -56,7 +56,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
     }
   }, [id]);
 
-  const onFinish = async (values: API.Case) => {
+  const onFinish = async (values: any) => {
     console.log(values);
     const schedulePromises = listFrom.map(async (form) => {
       const schedule = await form.getFieldsValue();
@@ -65,7 +65,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
       });
     });
     const scheduleItems = await Promise.all(schedulePromises);
-    const schedules = values.schedule?.map((schedule, index) => {
+    const schedules = values.schedule?.map((schedule: any, index: number) => {
       const items = scheduleItems[index];
       return { ...schedule, items, day: index + 1 };
     });
