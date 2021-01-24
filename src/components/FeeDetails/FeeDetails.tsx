@@ -123,7 +123,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'price']}
                     rules={[{ required: true, message: '请填写价格', type: 'number' }]}
                   >
-                    <InputNumber placeholder="价格" />
+                    <InputNumber placeholder="优惠价" onChange={handleTotalPrice}/>
                   </Form.Item>
                   <Form.Item
                     {...field}
@@ -132,7 +132,7 @@ export default function (props: Props) {
                     fieldKey={[field.fieldKey, 'cost_price']}
                     rules={[{ required: true, message: '请填写优惠价', type: 'number' }]}
                   >
-                    <InputNumber placeholder="优惠价" onChange={handleTotalPrice} />
+                    <InputNumber placeholder="成本价"  />
                   </Form.Item>
                   <Form.Item
                     {...field}
