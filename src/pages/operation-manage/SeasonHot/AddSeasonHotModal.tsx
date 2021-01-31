@@ -36,7 +36,7 @@ const AddSeasonHotModal = (props: AddModalIF) => {
     console.log(values);
     const results = await saveSeasonHot({
       ...values,
-      status: data?.status || 0,
+      status: data?.status !== undefined ? data?.status : 1,
       id: data?.id,
     } as API.SeasonHot);
     props.onAdd(results);
