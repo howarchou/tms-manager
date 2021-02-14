@@ -84,15 +84,15 @@ export default () => {
       title: '团建玩法',
       dataIndex: 'method',
       key: 'method',
-      render:(method: string) =>
+      render:(value: string) =>
       {
-        let value: string = "";
-        methodConfig().forEach(area => {
-          if (area.value === method) {
-            value = area.text;
+        let text: string = "";
+        methodConfig().forEach(method => {
+          if (method.value === value) {
+            text = method.text;
           }
         });
-        return value
+        return text
       }
     },
     {
@@ -110,12 +110,31 @@ export default () => {
       title: '活动周期',
       key: 'duration',
       dataIndex: 'duration',
-      render: (duration: number) => `${duration}天`,
+      render:(value: string) =>
+      {
+        let text: string = "";
+        durationConfig().forEach(duration => {
+          if (duration.value === value) {
+            text = duration.text;
+          }
+        });
+        return text
+      }
     },
     {
       title: '活动地区',
       key: 'area',
       dataIndex: 'area',
+      render:(value: string) =>
+      {
+        let text: string = "";
+        areaConfig().forEach(area => {
+          if (area.value === value) {
+            text = area.text;
+          }
+        });
+        return text
+      }
     },
     {
       title: '是否展示',
