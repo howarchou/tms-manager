@@ -9,7 +9,12 @@ import { API } from '@/services/API';
 import { getActivities, saveActivitying, updateActivityState } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
-import { preview } from '@/helpers';
+
+import {
+  areaConfig,
+  durationConfig,
+  methodConfig,
+} from '@/helpers/config';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -79,6 +84,16 @@ export default () => {
       title: '团建玩法',
       dataIndex: 'method',
       key: 'method',
+      render:(method: string) =>
+      {
+        let value: string = "";
+        methodConfig().forEach(area => {
+          if (area.value === method) {
+            value = area.text;
+          }
+        });
+        return value
+      }
     },
     {
       title: '人均价格',
