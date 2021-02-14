@@ -107,7 +107,7 @@ export default () => {
       render: (people_number: number, record: API.TeamBuildingNew) => `${people_number} 人`,
     },
     {
-      title: '活动周期',
+      title: '团建天数',
       key: 'duration',
       dataIndex: 'duration',
       render:(value: string) =>
