@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Button, Input, Select, Row, Col, Space, InputNumber } from 'antd';
-const { TextArea } = Input;
 import { connect, Dispatch } from 'umi';
 import styles from './index.less';
 import { StateType } from '../../model';
@@ -22,6 +21,7 @@ import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
 import { uuid } from '@/helpers';
 
+const { TextArea } = Input;
 const { Option } = Select;
 
 interface Step1Props {
@@ -219,19 +219,6 @@ const Step1: React.FC<Step1Props> = (props) => {
               <IconSelect data={typeIconnConfig()} />
             </Form.Item>
           </Col>
-          {/*<Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>*/}
-          {/*  <Form.Item label="标签" name="tags" rules={[{ required: true, message: '请输入标签' }]}>*/}
-          {/*    <Select placeholder={'请选择标签'} mode={'multiple'}>*/}
-          {/*      {tagsConfig().map((area) => {*/}
-          {/*        return (*/}
-          {/*          <Option key={area.value} value={area.value}>*/}
-          {/*            {area.text}*/}
-          {/*          </Option>*/}
-          {/*        );*/}
-          {/*      })}*/}
-          {/*    </Select>*/}
-          {/*  </Form.Item>*/}
-          {/*</Col>*/}
         </Row>
         <Row gutter={FormRowLayoutSpan}>
           <Col span={8} offset={FormItemLayoutOffset}>
@@ -243,15 +230,6 @@ const Step1: React.FC<Step1Props> = (props) => {
               <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
-          {/*<Col span={8} offset={FormItemLayoutOffset}>*/}
-          {/*  <Form.Item*/}
-          {/*    label="预订须知"*/}
-          {/*    name="booking_notes"*/}
-          {/*    rules={[{ required: true, message: '请输入预订须知' }]}*/}
-          {/*  >*/}
-          {/*    <TextArea placeholder="预订须知" autoSize={{ minRows: 3, maxRows: 5 }} />*/}
-          {/*  </Form.Item>*/}
-          {/*</Col>*/}
           <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
               label="温馨提示"

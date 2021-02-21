@@ -1,7 +1,7 @@
-import { Effect, Reducer } from 'umi';
+import type { Effect, Reducer } from 'umi';
 
-import { getDefaultValue } from '../../../helpers/config';
-import { API } from '@/services/API';
+import { getDefaultValue } from '@/helpers';
+import type { API } from '@/services/API';
 
 export interface StateType {
   current?: string;
