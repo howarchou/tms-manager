@@ -99,7 +99,7 @@ const Step3: React.FC<Step3Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'info',
+        payload: 'notice',
       });
     }
   };
