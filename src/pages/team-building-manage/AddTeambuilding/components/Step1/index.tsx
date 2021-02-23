@@ -61,7 +61,7 @@ const Step1: React.FC<Step1Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'feature',
+        payload: 'place',
       });
     }
   };
