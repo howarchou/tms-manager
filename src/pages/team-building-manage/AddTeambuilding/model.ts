@@ -25,7 +25,7 @@ const Model: ModelType = {
   namespace: 'addteambuilding',
 
   state: {
-    current: 'info',
+    current: 'basic',
     step: { ...(getDefaultValue() as any) },
   },
 
