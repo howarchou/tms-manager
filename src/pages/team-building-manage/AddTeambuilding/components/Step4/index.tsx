@@ -6,7 +6,7 @@ import { StateType } from '../../model';
 // import { saveActivitying } from '@/services/activity';
 import UploadComponent from '@/components/Upload';
 
-interface Step2Props {
+interface Step4Props {
   data?: StateType['step'];
   dispatch?: Dispatch;
   submitting?: boolean;
@@ -15,7 +15,7 @@ interface Step2Props {
 const FormItemLayoutSpan = 8;
 const FormRowLayoutSpan = 16;
 
-const Step2: React.FC<Step2Props> = (props) => {
+const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
@@ -68,7 +68,7 @@ const Step2: React.FC<Step2Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'notic',
+        payload: 'notice',
       });
     }
   };
@@ -177,4 +177,4 @@ export default connect(
     submitting: loading.effects['addteambuilding/submitStepForm'],
     data: addteambuilding.step,
   }),
-)(Step2);
+)(Step4);
