@@ -47,7 +47,7 @@ export function scheduleIconConfig(): any[] {
   ];
 }
 
-export function typeIconnConfig(): any[] {
+export function typeIconConfig(): any[] {
   return getCookieValueByKey('activity_type_icon');
 }
 

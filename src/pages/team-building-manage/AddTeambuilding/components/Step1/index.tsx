@@ -15,7 +15,7 @@ import {
   methodConfig,
   profitConfig,
   starConfig,
-  typeIconnConfig,
+  typeIconConfig,
 } from '@/helpers/config';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
@@ -216,7 +216,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item label="类别" name="type" rules={[{ required: true, message: '请选择类别' }]}>
-              <IconSelect data={typeIconnConfig()} />
+              <IconSelect data={typeIconConfig()} />
             </Form.Item>
           </Col>
         </Row>

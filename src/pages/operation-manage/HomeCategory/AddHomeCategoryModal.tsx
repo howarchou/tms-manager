@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 const { Option } = Select;
 import { API } from '@/services/API';
 import { saveHomeCategory } from '@/services/homeCategory';
-import { typeIconnConfig } from '@/helpers/config';
+import { typeIconConfig } from '@/helpers/config';
 import { IconSelect } from '@/pages/team-building-manage/AddTeambuilding/components/IconSelect';
 import { getActivities } from '@/services/activity';
 
@@ -82,7 +82,7 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
             name="type_id"
             rules={[{ required: true, message: '请选择类别' }]}
           >
-            <IconSelect placeholder={'请选择类别'} data={typeIconnConfig()} />
+            <IconSelect placeholder={'请选择类别'} data={typeIconConfig()} />
           </Form.Item>
           <Form.Item
             name="activity_id"
