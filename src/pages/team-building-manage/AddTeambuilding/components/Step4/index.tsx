@@ -51,7 +51,7 @@ const Step4: React.FC<Step4Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'fee',
+        payload: 'schedule',
       });
     }
   };
