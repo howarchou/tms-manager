@@ -67,7 +67,7 @@ const Step2: React.FC<Step2Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'fee',
+        payload: 'schedule',
       });
     }
   };
