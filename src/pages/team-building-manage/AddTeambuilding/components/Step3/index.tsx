@@ -61,14 +61,13 @@ const Step3: React.FC<Step3Props> = (props) => {
     if (dispatch) {
       const { hold_people = {}, ...others }: any = data;
       const params: any = { ...others, ...hold_people, ...values };
-      console.log(params);
       dispatch({
         type: 'addteambuilding/saveStepFormData',
         payload: params,
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'notice',
+        payload: 'fee',
       });
     }
   };
