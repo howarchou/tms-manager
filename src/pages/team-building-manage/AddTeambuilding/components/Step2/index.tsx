@@ -51,7 +51,7 @@ const Step2: React.FC<Step2Props> = (props) => {
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'place',
+        payload: 'basic',
       });
     }
   };
@@ -61,14 +61,13 @@ const Step2: React.FC<Step2Props> = (props) => {
     if (dispatch) {
       const { hold_people = {}, ...others }: any = data;
       const params: any = { ...others, ...hold_people, ...values };
-      console.log(params);
       dispatch({
         type: 'addteambuilding/saveStepFormData',
         payload: params,
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'confirm',
+        payload: 'fee',
       });
     }
   };
