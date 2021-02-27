@@ -83,6 +83,39 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
+              label="团建天数"
+              name="duration"
+              rules={[{ required: true, message: '请选择团建天数' }]}
+            >
+              <Select placeholder={'请选择团建天数'}>
+                {durationConfig().map((area) => {
+                  return (
+                    <Option key={area.value} value={area.value}>
+                      {area.text}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item
+              label="活动人数"
+              name="people_number"
+              rules={[{ required: true, message: '请输入活动人数' }]}
+            >
+              <InputNumber placeholder={'请输入活动人数'} style={{ width: '100%' }} />
+            </Form.Item>
+          </Col>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item label="类别" name="type" rules={[{ required: true, message: '请选择类别' }]}>
+              <IconSelect data={typeIconConfig()} />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={FormRowLayoutSpan}>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item
               label="活动地区"
               name="area"
               rules={[{ required: true, message: '请选择活动地区' }]}
@@ -141,34 +174,8 @@ const Step1: React.FC<Step1Props> = (props) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="团建天数"
-              name="duration"
-              rules={[{ required: true, message: '请选择团建天数' }]}
-            >
-              <Select placeholder={'请选择团建天数'}>
-                {durationConfig().map((area) => {
-                  return (
-                    <Option key={area.value} value={area.value}>
-                      {area.text}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
         </Row>
         <Row gutter={FormRowLayoutSpan}>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="活动人数"
-              name="people_number"
-              rules={[{ required: true, message: '请输入活动人数' }]}
-            >
-              <InputNumber placeholder={'请输入活动人数'} style={{ width: '100%' }} />
-            </Form.Item>
-          </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
               label="团建策划师"
@@ -187,11 +194,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               <Input placeholder="策划师电话" />
             </Form.Item>
           </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item label="类别" name="type" rules={[{ required: true, message: '请选择类别' }]}>
-              <IconSelect data={typeIconConfig()} />
-            </Form.Item>
-          </Col>
+
         </Row>
         <Row gutter={FormRowLayoutSpan}>
           <Col span={8} offset={FormItemLayoutOffset}>
