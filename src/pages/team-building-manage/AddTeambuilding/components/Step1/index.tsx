@@ -112,6 +112,23 @@ const Step1: React.FC<Step1Props> = (props) => {
               <IconSelect data={typeIconConfig()} />
             </Form.Item>
           </Col>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item
+              label="团建玩法"
+              name="method"
+              rules={[{ required: true, message: '请选择团建玩法' }]}
+            >
+              <Select placeholder={'请选择团建玩法'}>
+                {methodConfig().map((area) => {
+                  return (
+                    <Option key={area.value} value={area.value}>
+                      {area.text}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={FormRowLayoutSpan}>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
@@ -131,7 +148,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+          <Col span={2 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
               label="详细地址"
               name="address"
@@ -140,42 +157,6 @@ const Step1: React.FC<Step1Props> = (props) => {
               <Input placeholder="请输入详细地址" />
             </Form.Item>
           </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="团建玩法"
-              name="method"
-              rules={[{ required: true, message: '请选择团建玩法' }]}
-            >
-              <Select placeholder={'请选择团建玩法'}>
-                {methodConfig().map((area) => {
-                  return (
-                    <Option key={area.value} value={area.value}>
-                      {area.text}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="团建收益"
-              name="profits"
-              rules={[{ required: true, message: '请选择团建收益' }]}
-            >
-              <Select mode={'tags'} placeholder={'请选择团建收益'}>
-                {profitConfig().map((area) => {
-                  return (
-                    <Option key={area.value} value={area.value}>
-                      {area.text}
-                    </Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={FormRowLayoutSpan}>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
               label="团建策划师"
@@ -194,7 +175,25 @@ const Step1: React.FC<Step1Props> = (props) => {
               <Input placeholder="策划师电话" />
             </Form.Item>
           </Col>
-
+        </Row>
+        <Row gutter={2 * FormRowLayoutSpan}>
+          <Col span={5 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item
+              label="团建收益"
+              name="profits"
+              rules={[{ required: true, message: '请选择团建收益' }]}
+            >
+              <Select mode={'tags'} placeholder={'请选择团建收益'}>
+                {profitConfig().map((area) => {
+                  return (
+                    <Option key={area.value} value={area.value}>
+                      {area.text}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
         </Row>
         <Row gutter={FormRowLayoutSpan}>
           <Col span={8} offset={FormItemLayoutOffset}>
