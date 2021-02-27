@@ -112,6 +112,7 @@ const Step3: React.FC<Step3Props> = (props) => {
           ))
         }
       </Form.List>
+
       <Form.List name={'places'}>
         {(fields) =>
           fields.map((field) => (

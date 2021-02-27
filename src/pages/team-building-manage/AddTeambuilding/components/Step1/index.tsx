@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Button, Input, Select, Row, Col, Space, InputNumber } from 'antd';
 import { connect, Dispatch } from 'umi';
 import styles from './index.less';
@@ -17,9 +17,6 @@ import {
   starConfig,
   typeIconConfig,
 } from '@/helpers/config';
-import PriceDetails from '@/components/PriceElemets/PriceDetails';
-import FeeDetails from '@/components/FeeDetails/FeeDetails';
-import { uuid } from '@/helpers';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -36,7 +33,6 @@ const FormRowLayoutSpan = 12;
 const Step1: React.FC<Step1Props> = (props) => {
   const { dispatch, data = getDefaultValue() } = props;
   const [form] = Form.useForm();
-  const [open, setOpen] = useState('');
 
   useEffect(() => {
     if (data) {
@@ -66,10 +62,6 @@ const Step1: React.FC<Step1Props> = (props) => {
     }
   };
 
-  const handleFeeDetail = () => {
-    setOpen(uuid(8));
-  };
-
   return (
     <>
       <Form
@@ -82,11 +74,11 @@ const Step1: React.FC<Step1Props> = (props) => {
         <Row gutter={FormRowLayoutSpan}>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="订单名称"
+              label="团建名称"
               name="name"
-              rules={[{ required: true, message: '请输入订单名称' }]}
+              rules={[{ required: true, message: '请输入团建名称' }]}
             >
-              <Input placeholder="请输入订单名称" />
+              <Input placeholder="请输入团建名称" />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
@@ -179,25 +171,6 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="人均消费"
-              name="price"
-              rules={[
-                { required: true, message: '请输入人均消费' },
-                {
-                  pattern: /^(\d+)((?:\.\d+)?)$/,
-                  message: '请输入合法金额数字',
-                },
-              ]}
-            >
-              <PriceDetails
-                className="activityFeeDetail"
-                showLabel={!!data?.id}
-                onFeeDetailClick={handleFeeDetail}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item
               label="团建策划师"
               name="planner"
               rules={[{ required: true, message: '请输入团建策划师' }]}
@@ -274,7 +247,6 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Form.Item>
         </Space>
       </Form>
-      <FeeDetails open={open} id={data?.id} type={'activity'} />
     </>
   );
 };
