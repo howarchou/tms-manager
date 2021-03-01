@@ -6,7 +6,6 @@ import { StateType } from '../../model';
 import UploadComponent from '@/components/Upload';
 import { RateGroup } from '@/components/Rates';
 import { IconSelect } from '../IconSelect';
-import RichTextBox from '@/components/RichTextBox';
 
 import {
   areaConfig,
@@ -18,7 +17,6 @@ import {
   typeIconConfig,
 } from '@/helpers/config';
 
-const { TextArea } = Input;
 const { Option } = Select;
 
 interface Step1Props {
@@ -195,33 +193,12 @@ const Step1: React.FC<Step1Props> = (props) => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={FormRowLayoutSpan}>
-          <Col span={8} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="活动特色"
-              name="description"
-              rules={[{ required: true, message: '请输入活动特色' }]}
-            >
-              <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
-            </Form.Item>
-          </Col>
-          <Col span={8} offset={FormItemLayoutOffset}>
-            <Form.Item
-              label="温馨提示"
-              name="warm_tips"
-              rules={[{ required: true, message: '请输入温馨提示' }]}
-            >
-              <TextArea placeholder="温馨提示" autoSize={{ minRows: 3, maxRows: 5 }} />
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={FormRowLayoutSpan}>
-          <Form.Item name="booking_notes" rules={[{ required: true, message: '请输入预定须知' }]}>
-            <RichTextBox label={'预定须知'} placeholder={'请输入预定须知'} />
-          </Form.Item>
-        </Row>
 
         <Form.Item label="封面图" name="cover" rules={[{ required: true, message: '请上传封面' }]}>
+          <UploadComponent />
+        </Form.Item>
+
+        <Form.Item label="策划者头像" name="avatar" rules={[{ message: '请上传策划者头像' }]}>
           <UploadComponent />
         </Form.Item>
 

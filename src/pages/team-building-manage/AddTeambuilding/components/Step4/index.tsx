@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Button, Space, Row, Col, Input, Card } from 'antd';
 import { connect, Dispatch } from 'umi';
 import { StateType } from '../../model';
+import PriceDetails from '@/components/PriceElemets/PriceDetails';
+import FeeDetails from '@/components/FeeDetails/FeeDetails';
+import { uuid } from '@/helpers';
 
 // import { saveActivitying } from '@/services/activity';
 import UploadComponent from '@/components/Upload';
@@ -11,13 +14,14 @@ interface Step4Props {
   dispatch?: Dispatch;
   submitting?: boolean;
 }
-
-const FormItemLayoutSpan = 8;
-const FormRowLayoutSpan = 16;
+const FormItemLayoutSpan = 4;
+const FormItemLayoutOffset = 0;
+const FormRowLayoutSpan = 12;
 
 const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
+  const [open, setOpen] = useState('');
   useEffect(() => {
     form.setFieldsValue({
       themes: data?.themes?.length || [{}],
@@ -72,8 +76,13 @@ const Step4: React.FC<Step4Props> = (props) => {
       });
     }
   };
+  const handleFeeDetail = () => {
+    setOpen(uuid(8));
+  };
+
 
   return (
+    <>
     <Form
       style={{ height: '100%', marginTop: 40 }}
       name={'plan'}
@@ -118,27 +127,26 @@ const Step4: React.FC<Step4Props> = (props) => {
           fields.map((field) => (
             <Card key={field.key} title="场地" style={{ marginTop: 16 }}>
               <Row gutter={FormRowLayoutSpan}>
-                <Col span={16}>
+                <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
                   <Form.Item
-                    {...field}
-                    label="场地描述"
-                    name={[field.name, 'later']}
-                    fieldKey={[field.fieldKey, 'later']}
-                    rules={[{ required: true, message: '请输入详细地址' }]}
+                    label="人均消费"
+                    name="price"
+                    rules={[
+                      { required: true, message: '请输入人均消费' },
+                      {
+                        pattern: /^(\d+)((?:\.\d+)?)$/,
+                        message: '请输入合法金额数字',
+                      },
+                    ]}
                   >
-                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 4 }} />
+                    <PriceDetails
+                      className="activityFeeDetail"
+                      showLabel={!!data?.id}
+                      onFeeDetailClick={handleFeeDetail}
+                    />
                   </Form.Item>
                 </Col>
-                <Col span={FormItemLayoutSpan}>
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'pictures']}
-                    fieldKey={[field.fieldKey, 'pictures']}
-                    rules={[{ required: true, message: '请上传场地图片' }]}
-                  >
-                    <UploadComponent max={2} multiple={true} showUploadList={true} />
-                  </Form.Item>
-                </Col>
+
               </Row>
             </Card>
           ))
@@ -162,6 +170,8 @@ const Step4: React.FC<Step4Props> = (props) => {
         </Button>
       </Space>
     </Form>
+      <FeeDetails open={open} id={data?.id} type={'activity'} />
+    </>
   );
 };
 export default connect(

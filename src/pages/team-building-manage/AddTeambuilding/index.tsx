@@ -38,7 +38,7 @@ const getCurrentStepAndComponent = (current?: string) => {
   }
 };
 
-const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({ current, location, dispatch }) => {
+const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({ current, location  }) => {
   const [stepComponent, setStepComponent] = useState<React.ReactNode>(<Step1 />);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const id = location?.query?.id;
@@ -62,12 +62,11 @@ const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({ current, location, di
       <Card bordered={false}>
         <div className={styles.pageContainer}>
           <Steps current={currentStep} className={styles.steps}>
-            <Step title="基本信息" />
-            <Step title="场地介绍" />
-            <Step title="团建行程" />
-            <Step title="费用包含" />
-            <Step title="预定&案例须知" />
-            {/*<Step title="完成" />*/}
+            <Step title="团建" />
+            <Step title="场地" />
+            <Step title="行程" />
+            <Step title="费用" />
+            <Step title="须知" />
           </Steps>
           {stepComponent}
         </div>
