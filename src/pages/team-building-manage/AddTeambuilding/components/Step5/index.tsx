@@ -74,7 +74,7 @@ const Step5: React.FC<Step5Props> = (props) => {
         });
       });
       const plans = await Promise.all(planPromises);
-      const schedules = values.schedules.map(
+      const schedules = values?.schedules?.map(
         (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
           const { title, sub_title, icon } = schedule;
           const items = plans[index];
