@@ -6,7 +6,7 @@ import { Space, Table, Button } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
 import { API } from '@/services/API';
-import { getActivities, saveActivitying, updateActivityState } from '@/services/activity';
+import { getActivities, saveActivity, updateActivityState } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
 

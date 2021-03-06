@@ -24,7 +24,6 @@ export async function getInitialState(): Promise<{
         settings: defaultSettings,
       };
     } catch (error) {
-      console.log(error);
       history.push('/user/login');
     }
   }

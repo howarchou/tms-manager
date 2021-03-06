@@ -4,7 +4,7 @@ import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
 
-import { saveActivitying } from '@/services/activity';
+import { saveActivity } from '@/services/activity';
 import type { FormInstance } from 'antd/lib/form/hooks/useForm';
 import moment from 'moment';
 import type { API } from '@/services/API';
@@ -78,7 +78,6 @@ const Step5: React.FC<Step5Props> = (props) => {
         (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
           const { title, sub_title, icon } = schedule;
           const items = plans[index];
-          // console.log(moment(date).valueOf());
           return { title, sub_title, icon, items };
         },
       );
@@ -92,7 +91,7 @@ const Step5: React.FC<Step5Props> = (props) => {
         sort: 1,
         status: 1,
       };
-      await saveActivitying(params);
+      await saveActivity(params);
       history.push({
         pathname: '/team-building/list',
       });

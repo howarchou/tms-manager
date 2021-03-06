@@ -59,11 +59,9 @@ const Step2: React.FC<Step2Props> = (props) => {
     // const values = await validateFields();
     const values = await getFieldsValue();
     if (dispatch) {
-      const { hold_people = {}, ...others }: any = data;
-      const params: any = { ...others, ...hold_people, ...values };
       dispatch({
         type: 'addteambuilding/saveStepFormData',
-        payload: params,
+        payload: values,
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',

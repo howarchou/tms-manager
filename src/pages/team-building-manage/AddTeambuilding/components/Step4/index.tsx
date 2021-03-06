@@ -84,12 +84,9 @@ const Step4: React.FC<Step4Props> = (props) => {
     // const values = await validateFields();
     const values = await getFieldsValue();
     if (dispatch) {
-      const { hold_people = {}, ...others }: any = data;
-      const params: any = { ...others, ...hold_people, ...values };
-      console.log(params);
       dispatch({
         type: 'addteambuilding/saveStepFormData',
-        payload: params,
+        payload: values,
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
