@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Space, Row, Col, Input, Card } from 'antd';
+import React, { useEffect} from 'react';
+import { Form, Button, Space, Row, Col, Input} from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
-import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
-import { uuid } from '@/helpers';
 
 interface Step4Props {
   data?: StateType['step'];
@@ -13,14 +11,10 @@ interface Step4Props {
   submitting?: boolean;
 }
 const { TextArea } = Input;
-const FormItemLayoutSpan = 4;
 const FormItemLayoutOffset = 0;
-const FormRowLayoutSpan = 12;
-
 const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
-  const [setOpen] = useState('');
   useEffect(() => {
     if (data?.feature !== undefined) {
       if (data?.places !== undefined) {

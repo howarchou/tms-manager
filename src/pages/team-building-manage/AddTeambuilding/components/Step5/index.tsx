@@ -20,9 +20,10 @@ const { TextArea } = Input;
 const FormItemLayoutOffset = 0;
 
 const Step5: React.FC<Step5Props> = (props) => {
-  const [listFrom, setListFrom] = useState<FormInstance[]>([]);
+  const [listFrom] = useState<FormInstance[]>([]);
   const [form] = Form.useForm();
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
   }, []);
   const { data, dispatch, submitting } = props;
@@ -63,8 +64,10 @@ const Step5: React.FC<Step5Props> = (props) => {
   const onValidateForm = async () => {
     const values = await getFieldsValue();
     if (dispatch) {
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       const planPromises = listFrom.map(async (form) => {
         const plan = await form.getFieldsValue();
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
           const time = moment(plan.time, 'HH:mm').valueOf();
           return { ...plan, time };
@@ -96,12 +99,6 @@ const Step5: React.FC<Step5Props> = (props) => {
       onFinish();
     }
   };
-
-  const handleListFrom = (key: string, form: FormInstance) => {
-    listFrom.push(form);
-    setListFrom(listFrom.slice());
-  };
-
   return (
     <Form
       style={{ height: '100%', marginTop: 40 }}
@@ -166,49 +163,6 @@ const Step5: React.FC<Step5Props> = (props) => {
     </Form>
   );
 };
-
-interface FormItemListProps {
-  uuidKey: string;
-  value?: API.TeamBuilding_Schedule_Item[];
-  onUpdateFrom: (key: string, form: FormInstance) => void;
-}
-
-const FormItemList = (props: FormItemListProps) => {
-  const { uuidKey, onUpdateFrom, value } = props;
-  const [form] = Form.useForm();
-  useEffect(() => {
-    const plans = value
-      ? value.map((item) => {
-          return { ...item, time: moment(item.time).format('HH:mm') };
-        })
-      : [{}];
-    form.setFieldsValue({ plans });
-    onUpdateFrom(uuidKey, form);
-  }, []);
-  return (
-    <Form
-      style={{ height: '100%' }}
-      name={'plan'}
-      form={form}
-      layout="vertical"
-      autoComplete="off"
-      hideRequiredMark={true}
-    >
-      <Row>
-        <Col span={24} offset={FormItemLayoutOffset}>
-          <Form.Item
-            label="不包含"
-            name="description"
-            rules={[{ required: true, message: '请输入不包含说明' }]}
-          >
-            <TextArea placeholder="费用不包含说明" autoSize={{ minRows: 3, maxRows: 5 }} />
-          </Form.Item>
-        </Col>
-      </Row>
-    </Form>
-  );
-};
-
 export default connect(
   ({
     addteambuilding,
