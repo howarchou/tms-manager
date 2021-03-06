@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Space, Row, Col, message, Card, Input } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { connect, Dispatch } from 'umi';
-import { StateType } from '../../model';
-import styles from './index.less';
+import { Form, Button, Space, Row, Col, Input } from 'antd';
+import type { Dispatch } from 'umi';
+import { connect } from 'umi';
+import type { StateType } from '../../model';
 
 import { saveActivitying } from '@/services/activity';
-import { FormInstance } from 'antd/lib/form/hooks/useForm';
+import type { FormInstance } from 'antd/lib/form/hooks/useForm';
 import moment from 'moment';
-import { API } from '@/services/API';
-import { uuid } from '@/helpers/uuid';
-import UploadComponent from '@/components/Upload';
+import type { API } from '@/services/API';
 import { history } from 'umi';
-import { scheduleIconConfig } from '@/helpers/config';
-import { IconSelect } from '../IconSelect';
 
 interface Step5Props {
   data?: StateType['step'];
@@ -21,10 +16,8 @@ interface Step5Props {
   submitting?: boolean;
 }
 
-const FormItemTitleLayoutSpan = 5;
+const { TextArea } = Input;
 const FormItemLayoutOffset = 0;
-const FormRowLayoutSpan = 12;
-const FormItemDetailSpan = 5;
 
 const Step5: React.FC<Step5Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
@@ -37,6 +30,20 @@ const Step5: React.FC<Step5Props> = (props) => {
     return null;
   }
   const { getFieldsValue } = form;
+
+  const onFinish = () => {
+    if (dispatch) {
+      dispatch({
+        type: 'addteambuilding/saveStepFormData',
+        payload: {},
+      });
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: 'notice',
+      });
+    }
+  };
+
   const onPrev = () => {
     if (dispatch) {
       const values = getFieldsValue();
@@ -82,25 +89,11 @@ const Step5: React.FC<Step5Props> = (props) => {
         sort: 1,
         status: 1,
       };
-      console.log(params);
       await saveActivitying(params);
       history.push({
         pathname: '/team-building/list',
       });
       onFinish();
-    }
-  };
-
-  const onFinish = () => {
-    if (dispatch) {
-      dispatch({
-        type: 'addteambuilding/saveStepFormData',
-        payload: {},
-      });
-      dispatch({
-        type: 'addteambuilding/saveCurrentStep',
-        payload: 'notice',
-      });
     }
   };
 
@@ -118,85 +111,39 @@ const Step5: React.FC<Step5Props> = (props) => {
       autoComplete="off"
       hideRequiredMark={true}
     >
-      <Form.List name={'schedules'}>
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map((field, index) => {
-              const section = data?.schedules?.sections
-                ? data?.schedules?.sections[index]
-                : undefined;
-              return (
-                <Card
-                  key={field.key}
-                  title={`第${index + 1}天`}
-                  style={{ marginTop: 20 }}
-                  extra={
-                    <Space align={'center'}>
-                      <PlusOutlined onClick={() => add()} />
-                      <MinusCircleOutlined
-                        onClick={() => {
-                          if (fields.length !== 1) {
-                            remove(field.name);
-                            listFrom.splice(field.name, 1);
-                            setListFrom(listFrom.slice());
-                          } else {
-                            message.warning('至少保留一个');
-                          }
-                        }}
-                      />
-                    </Space>
-                  }
-                >
-                  <Card
-                    type="inner"
-                    title={
-                      <Row
-                        key={field.key}
-                        gutter={FormRowLayoutSpan}
-                        style={{
-                          display: 'flex',
-                          marginBottom: 8,
-                          justifyContent: 'left',
-                          flex: 1,
-                        }}
-                      >
-                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
-                          <Form.Item
-                            {...field}
-                            label="行程标题"
-                            name={[field.name, 'title']}
-                            fieldKey={[field.fieldKey, 'title']}
-                            rules={[{ required: true, message: '请输入行程标题' }]}
-                          >
-                            <Input placeholder={'请输入行程标题'} />
-                          </Form.Item>
-                        </Col>
-                        <Col span={FormItemTitleLayoutSpan} offset={FormItemLayoutOffset}>
-                          <Form.Item
-                            {...field}
-                            label="图标"
-                            name={[field.name, 'icon']}
-                            fieldKey={[field.fieldKey, 'icon']}
-                            rules={[{ required: true, message: '请选择图标' }]}
-                          >
-                            <IconSelect data={scheduleIconConfig()} />
-                          </Form.Item>
-                        </Col>
-                      </Row>
-                    }
-                  >
-                    <FormItemList
-                      uuidKey={uuid(8)}
-                      onUpdateFrom={handleListFrom}
-                      value={section?.items}
-                    />
-                  </Card>
-                </Card>
-              );
-            })}
-          </>
-        )}
-      </Form.List>
+      <Row>
+        <Col span={24} offset={FormItemLayoutOffset}>
+          <Form.Item
+            label="预定须知"
+            name="booking_notes"
+            rules={[{ required: true, message: '请输入预定须知' }]}
+          >
+            <TextArea placeholder="预定须知" autoSize={{ minRows: 3, maxRows: 5 }} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24} offset={FormItemLayoutOffset}>
+          <Form.Item
+            label="安全须知"
+            name="safety_notes"
+            rules={[{ required: true, message: '请输入安全须知' }]}
+          >
+            <TextArea placeholder="安全须知" autoSize={{ minRows: 3, maxRows: 5 }} />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24} offset={FormItemLayoutOffset}>
+          <Form.Item
+            label="温馨提示"
+            name="warm_tips"
+            rules={[{ required: true, message: '请输入温馨提示' }]}
+          >
+            <TextArea placeholder="温馨提示" autoSize={{ minRows: 3, maxRows: 5 }} />
+          </Form.Item>
+        </Col>
+      </Row>
       <Row>
         <Space
           style={{
@@ -247,110 +194,17 @@ const FormItemList = (props: FormItemListProps) => {
       autoComplete="off"
       hideRequiredMark={true}
     >
-      <Form.List name={'plans'}>
-        {(fields, { add, remove }) => {
-          return (
-            <>
-              {fields.map((field) => (
-                <div key={field.key}>
-                  <Row
-                    gutter={FormRowLayoutSpan}
-                    style={{
-                      display: 'flex',
-                      marginBottom: 8,
-                      justifyContent: 'left',
-                      flex: 1,
-                    }}
-                  >
-                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="标题"
-                        name={[field.name, 'title']}
-                        fieldKey={[field.fieldKey, 'title']}
-                        rules={[{ required: true, message: '请输入标题' }]}
-                      >
-                        <Input placeholder={'请输入标题'} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="描述"
-                        name={[field.name, 'desc']}
-                        fieldKey={[field.fieldKey, 'desc']}
-                        rules={[{ required: true, message: '请输入描述' }]}
-                      >
-                        <Input placeholder={'请输入描述'} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="图标"
-                        name={[field.name, 'icon']}
-                        fieldKey={[field.fieldKey, 'icon']}
-                        rules={[{ required: true, message: '请选择图标' }]}
-                      >
-                        <IconSelect data={scheduleIconConfig()} placeholder={'请选择类别'} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={FormItemDetailSpan} offset={FormItemLayoutOffset}>
-                      <Form.Item
-                        {...field}
-                        label="具体时间"
-                        name={[field.name, 'time']}
-                        fieldKey={[field.fieldKey, 'time']}
-                        rules={[{ required: true, message: '请选择时间' }]}
-                      >
-                        <Input placeholder={'请输入时间例如:11:30'} />
-                      </Form.Item>
-                    </Col>
-                    <Col span={1} offset={FormItemLayoutOffset}>
-                      <Space className={styles.actionRow} align={'center'}>
-                        <PlusOutlined onClick={() => add()} />
-                        <MinusCircleOutlined
-                          onClick={() => {
-                            if (fields.length !== 1) {
-                              remove(field.name);
-                            } else {
-                              message.warning('至少保留一个');
-                            }
-                          }}
-                        />
-                      </Space>
-                    </Col>
-                  </Row>
-                  <Row
-                    gutter={FormRowLayoutSpan}
-                    style={{
-                      display: 'flex',
-                      marginBottom: 8,
-                      justifyContent: 'left',
-                      flex: 1,
-                    }}
-                  >
-                    <Form.Item
-                      className={styles.actionRowWrapper}
-                      {...field}
-                      name={[field.name, 'pictures']}
-                      fieldKey={[field.fieldKey, 'pictures']}
-                      rules={[{ required: true, message: '请选择图片' }]}
-                    >
-                      <UploadComponent
-                        showUploadList={true}
-                        multiple={true}
-                        label={'上传图片'}
-                        max={100}
-                      />
-                    </Form.Item>
-                  </Row>
-                </div>
-              ))}
-            </>
-          );
-        }}
-      </Form.List>
+      <Row>
+        <Col span={24} offset={FormItemLayoutOffset}>
+          <Form.Item
+            label="不包含"
+            name="description"
+            rules={[{ required: true, message: '请输入不包含说明' }]}
+          >
+            <TextArea placeholder="费用不包含说明" autoSize={{ minRows: 3, maxRows: 5 }} />
+          </Form.Item>
+        </Col>
+      </Row>
     </Form>
   );
 };

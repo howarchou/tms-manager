@@ -2,13 +2,13 @@
  *  Created by pw on 2020/10/24 2:02 下午.
  */
 import React, { useState, useEffect, FC } from 'react';
-import { Modal, Form, Input, Button, Space, Row, Col, InputNumber, Descriptions, Card } from 'antd';
+import { Form, Input, Button, Space, Row, Col, InputNumber, Descriptions, Card } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { FeeDetailSaveIF, saveFeeDetail, getFeeDetail } from '@/services/feeDetail';
 import { API } from '@/services/API';
+import PriceDetails from '@/components/PriceElemets/PriceDetails';
 
 interface Props {
-  open: string;
   id: string | undefined;
   type?: 'order' | 'activity';
 }
@@ -16,13 +16,11 @@ interface Props {
 const SCALE = 2;
 
 export default function (props: Props) {
-  const { open, id, type = 'order' } = props;
-  const [visible, setVisible] = useState(!!open);
+  const { id, type = 'order' } = props;
   const [data, setData] = useState<API.FeeDetail[]>([]);
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setVisible(!!open);
     if (id) {
       getFeeDetail(id, type).then((data) => {
         setData(data || []);
@@ -31,11 +29,10 @@ export default function (props: Props) {
     } else {
       form.setFieldsValue({ fees: [{}] });
     }
-  }, [open]);
+  });
 
   const handleValueChange = (values: any) => {
     const value = form.getFieldsValue();
-    console.log(value.fees);
     setData(value.fees);
   };
 
@@ -59,32 +56,11 @@ export default function (props: Props) {
     console.log(values);
     const key = type === 'order' ? 'order_id' : 'activity_id';
     await saveFeeDetail(type, { fees: values.fees, [key]: id! } as FeeDetailSaveIF);
-    setVisible(false);
-  };
-
-  const handleCancel = () => {
-    setVisible(false);
   };
 
   return (
-    <Modal
-      maskClosable={false}
-      width={900}
-      title="添加明细"
-      visible={visible}
-      okText={'保存'}
-      onOk={handleOk}
-      onCancel={handleCancel}
-    >
-      {type === 'activity' ? <FeeDetailCalculate data={data} /> : null}
-      <Form
-        form={form}
-        name="feeDetailForm"
-        layout="vertical"
-        autoComplete="off"
-        hideRequiredMark={true}
-        onValuesChange={handleValueChange}
-      >
+    <>
+        {type === 'activity' ? <FeeDetailCalculate data={data} /> : null}
         <Form.List name="fees">
           {(fields, { add, remove }) => (
             <>
@@ -176,8 +152,7 @@ export default function (props: Props) {
             </>
           )}
         </Form.List>
-      </Form>
-    </Modal>
+      </>
   );
 }
 
@@ -215,9 +190,19 @@ const FeeDetailCalculate: FC<FeeDetailCalculateProps> = (props) => {
           {Number(sum * Number(1 + 0.26)).toFixed(SCALE)}
         </Descriptions.Item>
         <Descriptions.Item label={'税率'}>{'6.00%'}</Descriptions.Item>
-        <Descriptions.Item label={'人均'}>
-          {num ? Number(sum / num).toFixed(SCALE) : '0.00'}
-        </Descriptions.Item>
+            <Form.Item
+              label="人均消费"
+              name="price"
+              rules={[
+                { required: true, message: '请输入人均消费' },
+                {
+                  pattern: /^(\d+)((?:\.\d+)?)$/,
+                  message: '请输入合法金额数字',
+                },
+              ]}
+            >
+              <InputNumber style={{ width: '100%' }} placeholder="单价" />
+            </Form.Item>
       </Descriptions>
     </Card>
   );
