@@ -1,5 +1,5 @@
 import React, { useEffect} from 'react';
-import { Form, Button, Space, Row, Col, Input} from 'antd';
+import { Form, Button, Space, Row, Col, Input, InputNumber} from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
@@ -106,6 +106,23 @@ const Step4: React.FC<Step4Props> = (props) => {
       initialValues={data}
     >
       <FeeDetails id={data?.id} type={'activity'} />
+      <Row>
+        <Col span={6} offset={FormItemLayoutOffset}>
+          <Form.Item
+            label="单价"
+            name="price"
+            rules={[
+              { required: true, message: '请输入单价' },
+              {
+                pattern: /^(\d+)((?:\.\d+)?)$/,
+                message: '请输入合法金额数字',
+              },
+            ]}
+          >
+            <InputNumber style={{ width: '100%' }} placeholder="单价" />
+          </Form.Item>
+        </Col>
+      </Row>
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
           <Form.Item

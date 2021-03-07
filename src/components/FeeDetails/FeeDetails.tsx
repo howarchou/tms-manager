@@ -7,6 +7,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { FeeDetailSaveIF, saveFeeDetail, getFeeDetail } from '@/services/feeDetail';
 import { API } from '@/services/API';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
+import styles from '@/pages/team-building-manage/AddTeambuilding/components/Step1/index.less';
 
 interface Props {
   id: string | undefined;
@@ -190,19 +191,9 @@ const FeeDetailCalculate: FC<FeeDetailCalculateProps> = (props) => {
           {Number(sum * Number(1 + 0.26)).toFixed(SCALE)}
         </Descriptions.Item>
         <Descriptions.Item label={'税率'}>{'6.00%'}</Descriptions.Item>
-            <Form.Item
-              label="人均消费"
-              name="price"
-              rules={[
-                { required: true, message: '请输入人均消费' },
-                {
-                  pattern: /^(\d+)((?:\.\d+)?)$/,
-                  message: '请输入合法金额数字',
-                },
-              ]}
-            >
-              <InputNumber style={{ width: '100%' }} placeholder="单价" />
-            </Form.Item>
+        <Descriptions.Item label={'人均'}>
+          {num ? Number(sum / num).toFixed(SCALE) : '0.00'}
+        </Descriptions.Item>
       </Descriptions>
     </Card>
   );
