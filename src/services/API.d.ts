@@ -76,6 +76,7 @@ declare namespace API {
   }
 
   export interface TeamBuildingNew {
+    avatar?: string;
     id?: string;
     encode_id?: string;
     series_number?: number;
@@ -83,6 +84,7 @@ declare namespace API {
     area: number;
     booking_notes?: string;
     cost_statement?: string;
+    safety_notes?: string;
     cover: string;
     description: string;
     duration: number; // 团建天数
