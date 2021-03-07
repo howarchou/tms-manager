@@ -286,8 +286,8 @@ declare namespace API {
 
   export interface Home_Category {
     id?: number;
-    type_icon:string
-    type_name:string
+    type_icon: string;
+    type_name: string;
     type_id: number;
     activity_id: number;
     status: HomeBannerStatus;

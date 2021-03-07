@@ -7,7 +7,7 @@ export default (): React.ReactNode => (
   <PageContainer>
     <Card>
       <Typography.Title level={2} style={{ textAlign: 'center' }}>
-        <SmileTwoTone /> 鱼跃团建 <HeartTwoTone twoToneColor="#eb2f96" /> You
+        <SmileTwoTone /> 鱼悦团建 <HeartTwoTone twoToneColor="#eb2f96" /> You
       </Typography.Title>
     </Card>
   </PageContainer>

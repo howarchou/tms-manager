@@ -103,7 +103,7 @@ const Step4: React.FC<Step4Props> = (props) => {
       form={form}
       layout="horizontal"
       autoComplete="off"
-      hideRequiredMark={true}
+      initialValues={data}
     >
       <FeeDetails id={data?.id} type={'activity'} />
       <Row>

@@ -5,6 +5,7 @@ import { StateType } from '../../model';
 
 // import { saveActivitying } from '@/services/activity';
 import UploadComponent from '@/components/Upload';
+import { getDefaultValue } from '@/helpers';
 
 interface Step2Props {
   data?: StateType['step'];
@@ -16,7 +17,7 @@ const FormItemLayoutSpan = 8;
 const FormRowLayoutSpan = 16;
 
 const Step2: React.FC<Step2Props> = (props) => {
-  const { data, dispatch, submitting } = props;
+  const { data = getDefaultValue(), dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
@@ -77,7 +78,6 @@ const Step2: React.FC<Step2Props> = (props) => {
       form={form}
       layout="horizontal"
       autoComplete="off"
-      hideRequiredMark={true}
     >
       <Form.List name={'feature'}>
         {(fields) =>

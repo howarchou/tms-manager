@@ -18,6 +18,7 @@ import {
 } from '@/helpers/config';
 
 const { Option } = Select;
+const { TextArea } = Input;
 
 interface Step1Props {
   data?: StateType['step'];
@@ -66,7 +67,6 @@ const Step1: React.FC<Step1Props> = (props) => {
         className={styles.stepForm}
         form={form}
         layout="vertical"
-        hideRequiredMark
         initialValues={data}
       >
         <Row gutter={FormRowLayoutSpan}>
@@ -201,6 +201,18 @@ const Step1: React.FC<Step1Props> = (props) => {
         <Form.Item label="策划者头像" name="avatar" rules={[{ message: '请上传策划者头像' }]}>
           <UploadComponent />
         </Form.Item>
+
+        <Row gutter={FormRowLayoutSpan}>
+          <Col span={8} offset={FormItemLayoutOffset}>
+            <Form.Item
+              label="活动特色"
+              name="description"
+              rules={[{ required: true, message: '请输入活动特色' }]}
+            >
+              <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
+            </Form.Item>
+          </Col>
+        </Row>
 
         <Form.Item
           label="推荐指数"

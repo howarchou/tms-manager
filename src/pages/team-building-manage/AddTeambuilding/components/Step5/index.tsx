@@ -105,7 +105,7 @@ const Step5: React.FC<Step5Props> = (props) => {
       form={form}
       layout="vertical"
       autoComplete="off"
-      hideRequiredMark={true}
+      initialValues={data}
     >
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
