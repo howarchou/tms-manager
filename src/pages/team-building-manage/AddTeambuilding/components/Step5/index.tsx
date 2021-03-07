@@ -81,6 +81,9 @@ const Step5: React.FC<Step5Props> = (props) => {
           return { title, sub_title, icon, items };
         },
       );
+      const booking_notes = values?.booking_notes;
+      const safety_notes = values?.safety_notes;
+      const warm_tips = values?.warm_tips;
       const { hold_people = {}, feature = [], ...others }: any = data;
       const [first] = Array.isArray(feature) ? feature : [feature];
       const params: any = {
@@ -88,6 +91,9 @@ const Step5: React.FC<Step5Props> = (props) => {
         ...hold_people,
         feature: first,
         schedules,
+        booking_notes,
+        safety_notes,
+        warm_tips,
         sort: 1,
         status: 1,
       };

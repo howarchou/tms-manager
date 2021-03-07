@@ -4,7 +4,7 @@
 import React, { useState, useEffect, FC } from 'react';
 import { Form, Input, Button, Space, Row, Col, InputNumber, Descriptions, Card } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { FeeDetailSaveIF, saveFeeDetail, getFeeDetail } from '@/services/feeDetail';
+//import { FeeDetailSaveIF, saveFeeDetail, getFeeDetail } from '@/services/feeDetail';
 import { API } from '@/services/API';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 import styles from '@/pages/team-building-manage/AddTeambuilding/components/Step1/index.less';
@@ -22,14 +22,7 @@ export default function (props: Props) {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (id) {
-      getFeeDetail(id, type).then((data) => {
-        setData(data || []);
-        form.setFieldsValue({ fees: data });
-      });
-    } else {
-      form.setFieldsValue({ fees: [{}] });
-    }
+      form.setFieldsValue({ fees: data ?? [{}] });
   });
 
   const handleValueChange = (values: any) => {
