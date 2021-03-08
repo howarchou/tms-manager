@@ -90,15 +90,16 @@ declare namespace API {
     duration: number; // 团建天数
     hold_max: number; // 容纳人数(最大)
     hold_min: number; // 容纳人数(最小)
-    method: number; //玩法
-    name: string;
-    planner: string; //团建策划师
-    price: number; //人均消费(单位分)
-    profit: number; //收益
+    method: number; // 玩法
+    name: string; // 团建名称
+    planner: string; // 团建策划师
+    price: number; // 人均消费(单位分)
+    profit: number; // 收益
     schedules: TeamBuilding_Schedules; // 行程安排
-    stars: string; //推荐指数
-    tags: string; //标签，多个以空格分隔
-    warm_tips: string; //温馨提示
+    fees: FeeDetail; // 费用明细
+    stars: string; // 推荐指数
+    tags: string; // 标签，多个以空格分隔
+    warm_tips: string; // 温馨提示
     mobile: string;
     status: HomeBannerStatus;
     places?: TeamBuilding_Place[];

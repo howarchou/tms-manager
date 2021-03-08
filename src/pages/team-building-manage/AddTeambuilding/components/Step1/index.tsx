@@ -45,9 +45,21 @@ const Step1: React.FC<Step1Props> = (props) => {
   if (!data) {
     return null;
   }
+  const onCheck = async () => {
+    try {
+      const values = await form.validateFields();
+      console.log('Success:', values);
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
+    }
+  };
   const { getFieldsValue } = form;
   const onValidateForm = async () => {
     // const values = await validateFields();
+    try {
+      const values1 = await form.validateFields();
+      console.log('Success:', values1);
+
     const values = await getFieldsValue();
     if (dispatch) {
       dispatch({
@@ -58,6 +70,9 @@ const Step1: React.FC<Step1Props> = (props) => {
         type: 'addteambuilding/saveCurrentStep',
         payload: 'place',
       });
+    }
+    } catch (errorInfo) {
+      console.log('Failed:', errorInfo);
     }
   };
 
