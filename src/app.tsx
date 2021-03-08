@@ -5,7 +5,7 @@ import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { RequestOptionsInit, ResponseError } from 'umi-request';
-import { authUser } from './services/user';
+import { authUser, queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 import { API } from '@/services/API';
 import { globalConfig } from '@/services/config';
@@ -17,7 +17,9 @@ export async function getInitialState(): Promise<{
   // 如果是登录页面，不执行
   if (history.location.pathname !== '/user/login') {
     try {
-      const currentUser = await authUser();
+      // todo: just for test
+      const currentUser = await queryCurrent();
+      //const currentUser = await authUser();
       await globalConfig();
       return {
         currentUser,
