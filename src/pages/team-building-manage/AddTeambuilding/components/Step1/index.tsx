@@ -45,35 +45,21 @@ const Step1: React.FC<Step1Props> = (props) => {
   if (!data) {
     return null;
   }
-  const onCheck = async () => {
-    try {
-      const values = await form.validateFields();
-      console.log('Success:', values);
-    } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
-    }
-  };
+
   const { getFieldsValue } = form;
   const onValidateForm = async () => {
-    // const values = await validateFields();
-    try {
-      const values1 = await form.validateFields();
-      console.log('Success:', values1);
-
-    const values = await getFieldsValue();
-    if (dispatch) {
-      dispatch({
-        type: 'addteambuilding/saveStepFormData',
-        payload: values,
-      });
-      dispatch({
-        type: 'addteambuilding/saveCurrentStep',
-        payload: 'place',
-      });
-    }
-    } catch (errorInfo) {
-      console.log('Failed:', errorInfo);
-    }
+    // const values = await form.validateFields();
+      const values = await getFieldsValue();
+      if (dispatch) {
+        dispatch({
+          type: 'addteambuilding/saveStepFormData',
+          payload: values,
+        });
+        dispatch({
+          type: 'addteambuilding/saveCurrentStep',
+          payload: 'place',
+        });
+      }
   };
 
   return (
@@ -81,23 +67,23 @@ const Step1: React.FC<Step1Props> = (props) => {
       <Form
         className={styles.stepForm}
         form={form}
-        layout="vertical"
+        layout='vertical'
         initialValues={data}
       >
         <Row gutter={FormRowLayoutSpan}>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="团建名称"
-              name="name"
+              label='团建名称'
+              name='name'
               rules={[{ required: true, message: '请输入团建名称' }]}
             >
-              <Input placeholder="请输入团建名称" />
+              <Input placeholder='请输入团建名称' />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="团建天数"
-              name="duration"
+              label='团建天数'
+              name='duration'
               rules={[{ required: true, message: '请选择团建天数' }]}
             >
               <Select placeholder={'请选择团建天数'}>
@@ -113,22 +99,22 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="活动人数"
-              name="people_number"
+              label='活动人数'
+              name='people_number'
               rules={[{ required: true, message: '请输入活动人数' }]}
             >
               <InputNumber placeholder={'请输入活动人数'} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-            <Form.Item label="类别" name="type" rules={[{ required: true, message: '请选择类别' }]}>
+            <Form.Item label='类别' name='type' rules={[{ required: true, message: '请选择类别' }]}>
               <IconSelect data={typeIconConfig()} />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="团建玩法"
-              name="method"
+              label='团建玩法'
+              name='method'
               rules={[{ required: true, message: '请选择团建玩法' }]}
             >
               <Select placeholder={'请选择团建玩法'}>
@@ -146,8 +132,8 @@ const Step1: React.FC<Step1Props> = (props) => {
         <Row gutter={FormRowLayoutSpan}>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="活动地区"
-              name="area"
+              label='活动地区'
+              name='area'
               rules={[{ required: true, message: '请选择活动地区' }]}
             >
               <Select placeholder={'请选择活动地区'}>
@@ -163,37 +149,37 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
           <Col span={2 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="详细地址"
-              name="address"
+              label='详细地址'
+              name='address'
               rules={[{ required: true, message: '请输入详细地址' }]}
             >
-              <Input placeholder="请输入详细地址" />
+              <Input placeholder='请输入详细地址' />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="团建策划师"
-              name="planner"
+              label='团建策划师'
+              name='planner'
               rules={[{ required: true, message: '请输入团建策划师' }]}
             >
-              <Input placeholder="团建策划师" />
+              <Input placeholder='团建策划师' />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="策划师电话"
-              name="mobile"
+              label='策划师电话'
+              name='mobile'
               rules={[{ required: true, message: '请输入策划师电话' }]}
             >
-              <Input placeholder="策划师电话" />
+              <Input placeholder='策划师电话' />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={2 * FormRowLayoutSpan}>
           <Col span={5 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="团建收益"
-              name="profits"
+              label='团建收益'
+              name='profits'
               rules={[{ required: true, message: '请选择团建收益' }]}
             >
               <Select mode={'tags'} placeholder={'请选择团建收益'}>
@@ -209,29 +195,29 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
         </Row>
 
-        <Form.Item label="封面图" name="cover" rules={[{ required: true, message: '请上传封面' }]}>
+        <Form.Item label='封面图' name='cover' rules={[{ required: true, message: '请上传封面' }]}>
           <UploadComponent />
         </Form.Item>
 
-        <Form.Item label="策划者头像" name="avatar" rules={[{ message: '请上传策划者头像' }]}>
+        <Form.Item label='策划者头像' name='avatar' rules={[{ message: '请上传策划者头像' }]}>
           <UploadComponent />
         </Form.Item>
 
         <Row gutter={FormRowLayoutSpan}>
           <Col span={8} offset={FormItemLayoutOffset}>
             <Form.Item
-              label="活动特色"
-              name="description"
+              label='活动特色'
+              name='description'
               rules={[{ required: true, message: '请输入活动特色' }]}
             >
-              <TextArea placeholder="活动特色" autoSize={{ minRows: 3, maxRows: 5 }} />
+              <TextArea placeholder='活动特色' autoSize={{ minRows: 3, maxRows: 5 }} />
             </Form.Item>
           </Col>
         </Row>
 
         <Form.Item
-          label="推荐指数"
-          name="stars"
+          label='推荐指数'
+          name='stars'
           rules={[{ required: true, message: '请输入推荐指数' }]}
         >
           <RateGroup rates={starConfig()} />
@@ -247,7 +233,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           align={'baseline'}
         >
           <Form.Item>
-            <Button type="primary" onClick={onValidateForm}>
+            <Button type='primary' onClick={onValidateForm}>
               下一步
             </Button>
           </Form.Item>

@@ -62,42 +62,51 @@ const Step5: React.FC<Step5Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    const values = await getFieldsValue();
+    const values = await form.validateFields();;
+    // const values = await getFieldsValue();
     if (dispatch) {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const planPromises = listFrom.map(async (form) => {
-        const plan = await form.getFieldsValue();
-        // eslint-disable-next-line @typescript-eslint/no-shadow
-        return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-          const time = moment(plan.time, 'HH:mm').valueOf();
-          return { ...plan, time };
-        });
+      dispatch({
+        type: 'addteambuilding/saveStepFormData',
+        payload: values,
       });
-      const plans = await Promise.all(planPromises);
-      const schedules = values?.schedules?.map(
-        (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-          const { title, sub_title, icon } = schedule;
-          const items = plans[index];
-          return { title, sub_title, icon, items };
-        },
-      );
-      const booking_notes = values?.booking_notes;
-      const safety_notes = values?.safety_notes;
-      const warm_tips = values?.warm_tips;
-      const { hold_people = {}, feature = [], ...others }: any = data;
-      const [first] = Array.isArray(feature) ? feature : [feature];
-      const params: any = {
-        ...others,
-        ...hold_people,
-        feature: first,
-        schedules,
-        booking_notes,
-        safety_notes,
-        warm_tips,
-        sort: 1,
-        status: 1,
-      };
-      await saveActivity(params);
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: {},
+      });
+      // eslint-disable-next-line @typescript-eslint/no-shadow
+      // const planPromises = listFrom.map(async (form) => {
+      //   const plan = await form.getFieldsValue();
+      //   // eslint-disable-next-line @typescript-eslint/no-shadow
+      //   return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
+      //     const time = moment(plan.time, 'HH:mm').valueOf();
+      //     return { ...plan, time };
+      //   });
+      // });
+      // const plans = await Promise.all(planPromises);
+      // const schedules = values?.schedules?.map(
+      //   (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
+      //     const { title, sub_title, icon } = schedule;
+      //     const items = plans[index];
+      //     return { title, sub_title, icon, items };
+      //   },
+      // );
+      // const booking_notes = values?.booking_notes;
+      // const safety_notes = values?.safety_notes;
+      // const warm_tips = values?.warm_tips;
+      // const { hold_people = {}, feature = [], ...others }: any = data;
+      // const [first] = Array.isArray(feature) ? feature : [feature];
+      // const params: any = {
+      //   ...others,
+      //   ...hold_people,
+      //   feature: first,
+      //   schedules,
+      //   booking_notes,
+      //   safety_notes,
+      //   warm_tips,
+      //   sort: 1,
+      //   status: 1,
+      // };
+      // await saveActivity(params);
       history.push({
         pathname: '/team-building/list',
       });

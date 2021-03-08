@@ -57,7 +57,7 @@ const Step2: React.FC<Step2Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    // const values = await validateFields();
+    // const values = await form.validateFields();
     const values = await getFieldsValue();
     if (dispatch) {
       dispatch({
@@ -100,7 +100,7 @@ const Step2: React.FC<Step2Props> = (props) => {
                     {...field}
                     name={[field.name, 'picture']}
                     fieldKey={[field.fieldKey, 'picture']}
-                    rules={[{ required: true, message: '请团建特色图片' }]}
+                    rules={[{ message: '请团建特色图片' }]}
                   >
                     <UploadComponent />
                   </Form.Item>
@@ -121,9 +121,9 @@ const Step2: React.FC<Step2Props> = (props) => {
                     label="场地描述"
                     name={[field.name, 'later']}
                     fieldKey={[field.fieldKey, 'later']}
-                    rules={[{ required: true, message: '请输入详细地址' }]}
+                    rules={[{ required: true, message: '请输入场地描述' }]}
                   >
-                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 4 }} />
+                    <Input.TextArea placeholder="请输入场地描述" autoSize={{ minRows: 4 }} />
                   </Form.Item>
                 </Col>
                 <Col span={FormItemLayoutSpan}>
