@@ -62,7 +62,7 @@ const Step5: React.FC<Step5Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    const values = await form.validateFields();;
+    const values = await form.validateFields();
     // const values = await getFieldsValue();
     if (dispatch) {
       dispatch({

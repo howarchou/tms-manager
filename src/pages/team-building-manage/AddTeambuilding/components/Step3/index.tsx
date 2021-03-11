@@ -10,7 +10,7 @@ import moment from 'moment';
 import { API } from '@/services/API';
 import { uuid } from '@/helpers/uuid';
 import UploadComponent from '@/components/Upload';
-import { getDefaultValue, scheduleIconConfig } from '@/helpers/config';
+import { scheduleIconConfig } from '@/helpers/config';
 import { IconSelect } from '../IconSelect';
 
 interface Step3Props {
@@ -26,11 +26,11 @@ const FormItemDetailSpan = 5;
 
 const Step3: React.FC<Step3Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
-  const { data = getDefaultValue(), dispatch, submitting } = props;
+  const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
-  }, []);
+      form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
+  }, [data?.schedules?.sections, form]);
   if (!data) {
     return null;
   }
@@ -52,29 +52,19 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    // const values = await validateFields();
+    // const values = await form.validateFields();
     const values = await getFieldsValue();
+    console.log(values);
+    // const values2 = await form.validateFields();
+    // console.log(values2);
+    //  form.setFieldsValue({ schedules: values?.schedules ?? [{}] });
+    form.setFieldsValue({ title: "测试" });
     if (dispatch) {
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      const planPromises = listFrom.map(async (form) => {
-        const plan = await form.getFieldsValue();
-        return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-          const time = moment(plan.time, 'HH:mm').valueOf();
-          return { ...plan, time };
-        });
-      });
-      const plans = await Promise.all(planPromises);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      values?.schedules?.map(
-        (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-          const { title, sub_title, icon } = schedule;
-          const items = plans[index];
-          return { title, sub_title, icon, items };
-        },
-      );
       dispatch({
         type: 'addteambuilding/saveStepFormData',
-        payload: values,
+        payload: {
+          ...values
+        },
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
@@ -92,11 +82,10 @@ const Step3: React.FC<Step3Props> = (props) => {
   return (
     <Form
       style={{ height: '100%', marginTop: 40 }}
-      name={'plan'}
+      name={'schedule'}
       form={form}
       layout="vertical"
       autoComplete="off"
-      hideRequiredMark={true}
     >
       <Form.List name={'schedules'}>
         {(fields, { add, remove }) => (
@@ -165,11 +154,11 @@ const Step3: React.FC<Step3Props> = (props) => {
                       </Row>
                     }
                   >
-                    <FormItemList
-                      uuidKey={uuid(8)}
-                      onUpdateFrom={handleListFrom}
-                      value={section?.items}
-                    />
+                    {/*<FormItemList*/}
+                    {/*  uuidKey={uuid(8)}*/}
+                    {/*  onUpdateFrom={handleListFrom}*/}
+                    {/*  value={section?.items}*/}
+                    {/*/>*/}
                   </Card>
                 </Card>
               );
@@ -215,9 +204,10 @@ const FormItemList = (props: FormItemListProps) => {
         return { ...item, time: moment(item.time).format('HH:mm') };
       })
       : [{}];
+    console.log(plans)
     form.setFieldsValue({ plans });
     onUpdateFrom(uuidKey, form);
-  }, []);
+  }, [form, value]);
   return (
     <Form
       style={{ height: '100%' }}
@@ -225,6 +215,7 @@ const FormItemList = (props: FormItemListProps) => {
       form={form}
       layout="vertical"
       autoComplete="off"
+      initialValues={value}
     >
       <Form.List name={'plans'}>
         {(fields, { add, remove }) => {
