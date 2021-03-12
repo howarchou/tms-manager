@@ -90,7 +90,7 @@ export default function () {
   };
 
   const handlePageChange = (page: number) => {
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_NO });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
   return (
@@ -104,7 +104,7 @@ export default function () {
         <Table
           columns={columns}
           dataSource={data?.data}
-          pagination={{ total: data?.page_size, onChange: handlePageChange }}
+          pagination={{ total: data?.total_count, onChange: handlePageChange }}
         />
       </div>
     </PageContainer>

@@ -98,7 +98,7 @@ export default function () {
 
   const handlePageChange = (page: number) => {
     setPage(page);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_NO });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
   return (
@@ -112,7 +112,11 @@ export default function () {
           rowKey={'id'}
           columns={columns}
           dataSource={data?.data}
-          pagination={{ total: data?.page_size, onChange: handlePageChange }}
+          pagination={{
+            total: data?.total_count,
+            pageSize: data?.page_size,
+            current: data?.page_no,
+            onChange: handlePageChange }}
         />
       </div>
     </PageContainer>
