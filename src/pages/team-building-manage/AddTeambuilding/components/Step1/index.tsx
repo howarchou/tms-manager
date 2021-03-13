@@ -46,20 +46,20 @@ const Step1: React.FC<Step1Props> = (props) => {
     return null;
   }
 
-  const { getFieldsValue } = form;
+  // const { getFieldsValue } = form;
   const onValidateForm = async () => {
-    // const values = await form.validateFields();
-      const values = await getFieldsValue();
-      if (dispatch) {
-        dispatch({
-          type: 'addteambuilding/saveStepFormData',
-          payload: values,
-        });
-        dispatch({
-          type: 'addteambuilding/saveCurrentStep',
-          payload: 'place',
-        });
-      }
+    const values = await form.validateFields();
+    // const values = await getFieldsValue();
+    if (dispatch) {
+      dispatch({
+        type: 'addteambuilding/saveStepFormData',
+        payload: values,
+      });
+      dispatch({
+        type: 'addteambuilding/saveCurrentStep',
+        payload: 'place',
+      });
+    }
   };
 
   return (
@@ -176,7 +176,7 @@ const Step1: React.FC<Step1Props> = (props) => {
           </Col>
         </Row>
         <Row gutter={2 * FormRowLayoutSpan}>
-          <Col span={5 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+          <Col span={4 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item
               label='团建收益'
               name='profits'
@@ -191,6 +191,16 @@ const Step1: React.FC<Step1Props> = (props) => {
                   );
                 })}
               </Select>
+            </Form.Item>
+          </Col>
+          <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
+            <Form.Item
+              label='排序'
+              name='sort'
+              rules={[{ required: true, message: '请输入排序' }]}
+            >
+              <InputNumber placeholder={'请输入排序'} style={{ width: '100%' }} min={0} max={99999}
+                           defaultValue={data.sort} />
             </Form.Item>
           </Col>
         </Row>

@@ -52,7 +52,8 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    const values = await getFieldsValue();
+    const values = await form.validateFields
+    // const values = await getFieldsValue();
 
     const planPromises = listFrom.map(async (form) => {
       const plan = await form.getFieldsValue();

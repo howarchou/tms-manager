@@ -57,8 +57,8 @@ const Step2: React.FC<Step2Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    // const values = await form.validateFields();
-    const values = await getFieldsValue();
+    const values = await form.validateFields();
+    // const values = await getFieldsValue();
     if (dispatch) {
       dispatch({
         type: 'addteambuilding/saveStepFormData',

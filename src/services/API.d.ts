@@ -88,6 +88,7 @@ declare namespace API {
     cover: string;
     description: string;
     duration: number; // 团建天数
+    sort: number; // 排序
     hold_max: number; // 容纳人数(最大)
     hold_min: number; // 容纳人数(最小)
     method: number; // 玩法
