@@ -55,10 +55,30 @@ const Step3: React.FC<Step3Props> = (props) => {
     // const values = await form.validateFields();
     const values = await getFieldsValue();
     console.log(values);
+    const params = {
+      ...data,
+      ...values
+    }
+    const planPromises = listFrom.map(async (form) => {
+      const plan = await form.getFieldsValue();
+      return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
+        const time = moment(plan.time, 'HH:mm').valueOf();
+        return { ...plan, time };
+      });
+    });
+    const plans = await Promise.all(planPromises);
+    console.log("plans: ", plans)
+    const schedules = values.schedules.map(
+      (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
+        const { title, sub_title, icon } = schedule;
+        const items = plans[index];
+        // console.log(moment(date).valueOf());
+        return { title, sub_title, icon, items };
+      },
+    );
     // const values2 = await form.validateFields();
     // console.log(values2);
-    //  form.setFieldsValue({ schedules: values?.schedules ?? [{}] });
-    form.setFieldsValue({ title: "测试" });
+    // form.setFieldsValue({ schedules: schedules ?? [{}] });
     if (dispatch) {
       dispatch({
         type: 'addteambuilding/saveStepFormData',
@@ -82,10 +102,11 @@ const Step3: React.FC<Step3Props> = (props) => {
   return (
     <Form
       style={{ height: '100%', marginTop: 40 }}
-      name={'schedule'}
+      name={'plan'}
       form={form}
       layout="vertical"
       autoComplete="off"
+      initialValues={data}
     >
       <Form.List name={'schedules'}>
         {(fields, { add, remove }) => (

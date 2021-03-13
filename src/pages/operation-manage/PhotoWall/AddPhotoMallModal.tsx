@@ -43,7 +43,7 @@ const AddPhotoMall = (props: AddModalIF) => {
     const promises = (values.cover as string[]).map((url) => {
       return savePhotoWall({
         name: values.name || '图片',
-        sort: 0,
+        sort: 1,
         cover: url,
         status: data?.status || 0,
         id: data?.id,
