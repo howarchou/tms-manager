@@ -95,22 +95,17 @@ const Step5: React.FC<Step5Props> = (props) => {
       // const warm_tips = values?.warm_tips;
       // const { hold_people = {}, feature = [], ...others }: any = data;
       // const [first] = Array.isArray(feature) ? feature : [feature];
-      // const params: any = {
-      //   ...others,
-      //   ...hold_people,
-      //   feature: first,
-      //   schedules,
-      //   booking_notes,
-      //   safety_notes,
-      //   warm_tips,
-      //   sort: 1,
-      //   status: 1,
-      // };
-      // await saveActivity(params);
-      history.push({
-        pathname: '/team-building/list',
-      });
-      onFinish();
+      const params: any = {
+        ...data,
+        ...values,
+      };
+      const result = await saveActivity(params);
+      if (result) {
+        history.push({
+          pathname: '/team-building/list',
+        });
+        onFinish();
+      }
     }
   };
   return (

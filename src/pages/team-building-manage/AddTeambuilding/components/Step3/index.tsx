@@ -30,7 +30,7 @@ const Step3: React.FC<Step3Props> = (props) => {
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({ schedules: data?.schedules ?? [{}] });
-  }, [data?.schedules?.sections, form]);
+  }, [data?.schedules, form]);
   if (!data) {
     return null;
   }
@@ -53,11 +53,30 @@ const Step3: React.FC<Step3Props> = (props) => {
   };
   const onValidateForm = async () => {
     const values = await getFieldsValue();
+
+    const planPromises = listFrom.map(async (form) => {
+      const plan = await form.getFieldsValue();
+      return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
+        const time = moment(plan.time, 'HH:mm').valueOf();
+        return { ...plan, time };
+      });
+    });
+    const plans = await Promise.all(planPromises);
+    const schedules = values.schedules.map(
+      (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
+        const { title, sub_title, icon } = schedule;
+        const items = plans[index];
+        // console.log(moment(date).valueOf());
+        return { title, sub_title, icon, items };
+      },
+    );
+    console.log(schedules);
+
     if (dispatch) {
       dispatch({
         type: 'addteambuilding/saveStepFormData',
         payload: {
-          ...values,
+          schedules,
         },
       });
       dispatch({
@@ -85,9 +104,7 @@ const Step3: React.FC<Step3Props> = (props) => {
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => {
-              const section = data?.schedules?.sections
-                ? data?.schedules?.sections[index]
-                : undefined;
+              const section = data?.schedules ? data?.schedules[index] : undefined;
               return (
                 <Card
                   key={field.key}
