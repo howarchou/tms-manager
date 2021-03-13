@@ -29,7 +29,7 @@ const Step3: React.FC<Step3Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-      form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
+    form.setFieldsValue({ schedules: data?.schedules ?? [{}] });
   }, [data?.schedules?.sections, form]);
   if (!data) {
     return null;
@@ -52,38 +52,12 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    // const values = await form.validateFields();
     const values = await getFieldsValue();
-    console.log(values);
-    const params = {
-      ...data,
-      ...values
-    }
-    const planPromises = listFrom.map(async (form) => {
-      const plan = await form.getFieldsValue();
-      return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-        const time = moment(plan.time, 'HH:mm').valueOf();
-        return { ...plan, time };
-      });
-    });
-    const plans = await Promise.all(planPromises);
-    console.log("plans: ", plans)
-    const schedules = values.schedules.map(
-      (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-        const { title, sub_title, icon } = schedule;
-        const items = plans[index];
-        // console.log(moment(date).valueOf());
-        return { title, sub_title, icon, items };
-      },
-    );
-    // const values2 = await form.validateFields();
-    // console.log(values2);
-    // form.setFieldsValue({ schedules: schedules ?? [{}] });
     if (dispatch) {
       dispatch({
         type: 'addteambuilding/saveStepFormData',
         payload: {
-          ...values
+          ...values,
         },
       });
       dispatch({
@@ -93,7 +67,6 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handleListFrom = (key: string, form: FormInstance) => {
     listFrom.push(form);
     setListFrom(listFrom.slice());
@@ -175,11 +148,11 @@ const Step3: React.FC<Step3Props> = (props) => {
                       </Row>
                     }
                   >
-                    {/*<FormItemList*/}
-                    {/*  uuidKey={uuid(8)}*/}
-                    {/*  onUpdateFrom={handleListFrom}*/}
-                    {/*  value={section?.items}*/}
-                    {/*/>*/}
+                    <FormItemList
+                      uuidKey={uuid(8)}
+                      onUpdateFrom={handleListFrom}
+                      value={section?.items}
+                    />
                   </Card>
                 </Card>
               );
@@ -225,7 +198,7 @@ const FormItemList = (props: FormItemListProps) => {
         return { ...item, time: moment(item.time).format('HH:mm') };
       })
       : [{}];
-    console.log(plans)
+    console.log(plans);
     form.setFieldsValue({ plans });
     onUpdateFrom(uuidKey, form);
   }, [form, value]);
