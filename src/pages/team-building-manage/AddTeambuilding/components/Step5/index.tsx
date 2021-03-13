@@ -98,6 +98,7 @@ const Step5: React.FC<Step5Props> = (props) => {
       const params: any = {
         ...data,
         ...values,
+        status: 0,
       };
       const result = await saveActivity(params);
       if (result) {
