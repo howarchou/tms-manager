@@ -52,8 +52,8 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
   const onValidateForm = async () => {
-    const values = await form.validateFields
     // const values = await getFieldsValue();
+    const values = await form.validateFields()
 
     const planPromises = listFrom.map(async (form) => {
       const plan = await form.getFieldsValue();
@@ -71,7 +71,6 @@ const Step3: React.FC<Step3Props> = (props) => {
         return { title, sub_title, icon, items };
       },
     );
-    console.log(schedules);
 
     if (dispatch) {
       dispatch({
@@ -216,7 +215,6 @@ const FormItemList = (props: FormItemListProps) => {
         return { ...item, time: moment(item.time).format('HH:mm') };
       })
       : [{}];
-    console.log(plans);
     form.setFieldsValue({ plans });
     onUpdateFrom(uuidKey, form);
   }, [form, value]);
