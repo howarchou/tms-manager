@@ -95,10 +95,12 @@ const Step5: React.FC<Step5Props> = (props) => {
       // const warm_tips = values?.warm_tips;
       // const { hold_people = {}, feature = [], ...others }: any = data;
       // const [first] = Array.isArray(feature) ? feature : [feature];
+      if (data?.id === undefined || data?.id === 0) {
+        data.status = 0;
+      }
       const params: any = {
         ...data,
         ...values,
-        status: 0,
       };
       const result = await saveActivity(params);
       if (result) {
@@ -114,40 +116,40 @@ const Step5: React.FC<Step5Props> = (props) => {
       style={{ height: '100%', marginTop: 40 }}
       name={'plan'}
       form={form}
-      layout="vertical"
-      autoComplete="off"
+      layout='vertical'
+      autoComplete='off'
       initialValues={data}
     >
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
           <Form.Item
-            label="预定须知"
-            name="booking_notes"
+            label='预定须知'
+            name='booking_notes'
             rules={[{ required: true, message: '请输入预定须知' }]}
           >
-            <TextArea placeholder="预定须知" autoSize={{ minRows: 3, maxRows: 5 }} />
+            <TextArea placeholder='预定须知' autoSize={{ minRows: 3, maxRows: 5 }} />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
           <Form.Item
-            label="安全须知"
-            name="safety_notes"
+            label='安全须知'
+            name='safety_notes'
             rules={[{ required: true, message: '请输入安全须知' }]}
           >
-            <TextArea placeholder="安全须知" autoSize={{ minRows: 3, maxRows: 5 }} />
+            <TextArea placeholder='安全须知' autoSize={{ minRows: 3, maxRows: 5 }} />
           </Form.Item>
         </Col>
       </Row>
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
           <Form.Item
-            label="温馨提示"
-            name="warm_tips"
+            label='温馨提示'
+            name='warm_tips'
             rules={[{ required: true, message: '请输入温馨提示' }]}
           >
-            <TextArea placeholder="温馨提示" autoSize={{ minRows: 3, maxRows: 5 }} />
+            <TextArea placeholder='温馨提示' autoSize={{ minRows: 3, maxRows: 5 }} />
           </Form.Item>
         </Col>
       </Row>
@@ -165,7 +167,7 @@ const Step5: React.FC<Step5Props> = (props) => {
           <Button onClick={onPrev} style={{ marginRight: 8 }}>
             上一步
           </Button>
-          <Button type="primary" onClick={onValidateForm} loading={submitting}>
+          <Button type='primary' onClick={onValidateForm} loading={submitting}>
             提交
           </Button>
         </Space>
@@ -175,9 +177,9 @@ const Step5: React.FC<Step5Props> = (props) => {
 };
 export default connect(
   ({
-    addteambuilding,
-    loading,
-  }: {
+     addteambuilding,
+     loading,
+   }: {
     addteambuilding: StateType;
     loading: {
       effects: { [key: string]: boolean };

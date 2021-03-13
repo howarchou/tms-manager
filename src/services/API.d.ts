@@ -89,6 +89,7 @@ declare namespace API {
     description: string;
     duration: number; // 团建天数
     sort: number; // 排序
+    status?: number; // 状态(0 下架; 1 上架）
     people_number: number; // 团建人数
     hold_max: number; // 容纳人数(最大)
     hold_min: number; // 容纳人数(最小)
@@ -103,7 +104,6 @@ declare namespace API {
     tags: string; // 标签，多个以空格分隔
     warm_tips: string; // 温馨提示
     mobile: string;
-    status: HomeBannerStatus;
     places?: TeamBuilding_Place[];
     themes?: TeamBuilding_Theme[];
     feature: TeamBuilding_Feature;
