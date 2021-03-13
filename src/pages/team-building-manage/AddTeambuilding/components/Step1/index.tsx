@@ -103,7 +103,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name='people_number'
               rules={[{ required: true, message: '请输入活动人数' }]}
             >
-              <InputNumber placeholder={'请输入活动人数'} style={{ width: '100%' }} />
+              <InputNumber placeholder={'请输入活动人数'} min={1} style={{ width: '100%' }} defaultValue={data?.people_number} />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>

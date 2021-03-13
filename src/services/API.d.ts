@@ -77,7 +77,7 @@ declare namespace API {
 
   export interface TeamBuildingNew {
     avatar?: string;
-    id?: string;
+    id?: number;
     encode_id?: string;
     series_number?: number;
     address: string;
@@ -89,6 +89,7 @@ declare namespace API {
     description: string;
     duration: number; // 团建天数
     sort: number; // 排序
+    people_number: number; // 团建人数
     hold_max: number; // 容纳人数(最大)
     hold_min: number; // 容纳人数(最小)
     method: number; // 玩法

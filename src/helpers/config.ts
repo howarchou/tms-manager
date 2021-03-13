@@ -57,6 +57,7 @@ export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew
     method: data?.method || 1,
     profit: data?.profit || 1,
     duration: data?.duration || 1,
+    people_number: data?.people_number || 1,
     sort: data?.sort || 0,
   } as API.TeamBuildingNew;
 }

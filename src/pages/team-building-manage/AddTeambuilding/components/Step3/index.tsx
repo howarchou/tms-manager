@@ -28,11 +28,17 @@ const Step3: React.FC<Step3Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
-  useEffect(() => {
-    form.setFieldsValue({ schedules: data?.schedules ?? [{}] });
-  }, [data?.schedules, form]);
   if (!data) {
     return null;
+  }
+  if (data?.id !== undefined && data?.id > 0) {
+    useEffect(() => {
+      form.setFieldsValue({ schedules: data?.schedules.sections ?? [{}] });
+    }, [data?.schedules, form]);
+  } else {
+    useEffect(() => {
+      form.setFieldsValue({ schedules: data?.schedules ?? [{}] });
+    }, [data?.schedules, form]);
   }
   const { getFieldsValue } = form;
   const onPrev = () => {
