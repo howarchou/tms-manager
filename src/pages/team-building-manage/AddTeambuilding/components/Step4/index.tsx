@@ -1,9 +1,10 @@
-import React, { useEffect} from 'react';
-import { Form, Button, Space, Row, Col, Input, InputNumber} from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { Form, Button, Space, Row, Col, Input, InputNumber, Card, Descriptions } from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
-import FeeDetails from '@/components/FeeDetails/FeeDetails';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import { API } from '@/services/API';
 
 interface Step4Props {
   data?: StateType['step'];
@@ -12,6 +13,10 @@ interface Step4Props {
 }
 const { TextArea } = Input;
 const FormItemLayoutOffset = 0;
+const SCALE = 2;
+let sum: number = 0;
+const num = 0;
+
 const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
@@ -95,6 +100,23 @@ const Step4: React.FC<Step4Props> = (props) => {
     }
   };
 
+  const handleTotalPrice = () => {
+    const value = form.getFieldsValue();
+    console.log("values", value)
+    const {fees} = value;
+    if (fees && fees.length) {
+      const calFees = fees.map((fee: { days: number; price: number; num: number; }) => {
+        if (Number.isNaN(fee.days) || Number.isNaN(fee.price) || Number.isNaN(fee.num)) {
+          return fee;
+        }
+        const total_price = fee.days * fee.price * fee.num;
+        return { ...fee, total_price};
+      });
+      console.log("fees:", calFees)
+      form.setFieldsValue({ fees: calFees });
+    }
+  };
+
   return (
     <>
     <Form
@@ -105,7 +127,98 @@ const Step4: React.FC<Step4Props> = (props) => {
       autoComplete="off"
       initialValues={data}
     >
-      <FeeDetails id={data?.id} type={'activity'} />
+      {/*<FeeDetails id={data?.id} type={'activity'} />*/}
+      <Form.List name="fees">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map((field) => (
+              <Space
+                key={field.key}
+                style={{
+                  display: 'flex',
+                  marginTop: 20,
+                  marginBottom: 8,
+                }}
+                align="center"
+              >
+                <Form.Item
+                  {...field}
+                  label={'项目:'}
+                  name={[field.name, 'name']}
+                  fieldKey={[field.fieldKey, 'name']}
+                  rules={[{ required: true, message: '请填写项目' }]}
+                >
+                  <Input placeholder="项目" />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'描述:'}
+                  name={[field.name, 'intro']}
+                  fieldKey={[field.fieldKey, 'intro']}
+                  rules={[{ required: true, message: '请填写描述' }]}
+                >
+                  <Input placeholder="描述" />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'优惠价:'}
+                  name={[field.name, 'price']}
+                  fieldKey={[field.fieldKey, 'price']}
+                  rules={[{ required: true, message: '请填写价格', type: 'number' }]}
+                >
+                  <InputNumber placeholder="优惠价" onChange={handleTotalPrice}/>
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'成本价:'}
+                  name={[field.name, 'cost_price']}
+                  fieldKey={[field.fieldKey, 'cost_price']}
+                  rules={[{ required: true, message: '请填写优惠价', type: 'number' }]}
+                >
+                  <InputNumber placeholder="成本价"  />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'数量:'}
+                  name={[field.name, 'num']}
+                  fieldKey={[field.fieldKey, 'num']}
+                  rules={[{ required: true, message: '请填写数量', type: 'number' }]}
+                >
+                  <InputNumber placeholder="数量" onChange={handleTotalPrice} />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'天数:'}
+                  name={[field.name, 'days']}
+                  fieldKey={[field.fieldKey, 'days']}
+                  rules={[{ required: true, message: '请填写天数', type: 'number' }]}
+                >
+                  <InputNumber placeholder="天数" onChange={handleTotalPrice} />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label={'总价:'}
+                  name={[field.name, 'total_price']}
+                  fieldKey={[field.fieldKey, 'total_price']}
+                  rules={[{ required: true, message: '请填写总价', type: 'number' }]}
+                >
+                  <InputNumber disabled={true} placeholder="总价" />
+                </Form.Item>
+                <MinusCircleOutlined onClick={() => remove(field.name)} />
+              </Space>
+            ))}
+            <Form.Item>
+              <Row justify="space-around" align={'middle'}>
+                <Col span={6}>
+                  <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                    添加项目
+                  </Button>
+                </Col>
+              </Row>
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
       <Row>
         <Col span={6} offset={FormItemLayoutOffset}>
           <Form.Item
