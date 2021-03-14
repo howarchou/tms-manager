@@ -18,8 +18,8 @@ export async function getInitialState(): Promise<{
   if (history.location.pathname !== '/user/login') {
     try {
       // todo: just for test
-      const currentUser = await queryCurrent('1');
-      //const currentUser = await authUser();
+      // const currentUser = await queryCurrent('1');
+      const currentUser = await authUser();
       await globalConfig();
       return {
         currentUser,
