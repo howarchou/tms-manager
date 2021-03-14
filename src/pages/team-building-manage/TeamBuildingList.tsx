@@ -58,7 +58,7 @@ export default () => {
   const handleEdit = (record: API.TeamBuildingNew) => {
     history.push({
       pathname: '/team-building/add',
-      query: { id: record.id },
+      query: { id: record?.id ? record.id.toString() : '' },
     });
   };
 
@@ -85,16 +85,15 @@ export default () => {
       title: '团建玩法',
       dataIndex: 'method',
       key: 'method',
-      render:(value: string) =>
-      {
-        let text: string = "";
+      render: (value: string) => {
+        let text: string = '';
         methodConfig().forEach(method => {
           if (method.value === value) {
             text = method.text;
           }
         });
-        return text
-      }
+        return text;
+      },
     },
     {
       title: '人均价格',
@@ -111,31 +110,32 @@ export default () => {
       title: '团建天数',
       key: 'duration',
       dataIndex: 'duration',
-      render:(value: string) =>
-      {
-        let text: string = "";
+      render: (value: string) => {
+        let text: string = '';
         durationConfig().forEach(duration => {
           if (duration.value === value) {
             text = duration.text;
           }
         });
-        return text
-      }
+        return text;
+      },
     },
     {
       title: '活动地区',
       key: 'area',
       dataIndex: 'area',
-      render:(value: string) =>
-      {
-        let text: string = "";
-        areaConfig().forEach(area => {
-          if (area.value === value) {
-            text = area.text;
+      render: (value: string) => {
+        let text: string = '';
+        areaConfig().forEach(province => {
+          province.items?.forEach(area => {
+            if (area.value === value) {
+              text = area.text;
+            }
           }
+        )
         });
-        return text
-      }
+        return text;
+      },
     },
     {
       title: '是否展示',
@@ -149,7 +149,7 @@ export default () => {
       title: '操作',
       key: 'action',
       render: (text: string, record: API.TeamBuildingNew) => (
-        <Space size="middle">
+        <Space size='middle'>
           <a onClick={() => handleState(record)}>
             {record.status === HomeBannerStatus.UP ? '下架' : '上架'}
           </a>
@@ -164,12 +164,12 @@ export default () => {
       <div className={styles.team_buildin_list}>
         {/*<AddTeambuildPanel onResult={() => handAddResult()} />*/}
         <div className={styles.team_buildin_add}>
-          <Button type="primary" onClick={handleAdd}>
+          <Button type='primary' onClick={handleAdd}>
             添加
           </Button>
         </div>
         <Table
-          rowKey="id"
+          rowKey='id'
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}

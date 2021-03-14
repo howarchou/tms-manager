@@ -224,6 +224,7 @@ declare namespace API {
   export interface BaseConfig {
     value: string;
     text: string;
+    items?: BaseConfig[];
   }
 
   export interface Order {

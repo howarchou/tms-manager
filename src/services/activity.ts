@@ -24,7 +24,7 @@ export async function saveActivity(params: API.TeamBuildingNew) {
   return result.payload;
 }
 
-export async function updateActivityState(id: string, state: boolean) {
+export async function updateActivityState(id: number, state: boolean) {
   const path = state ? `/api/activities/${id}/enable` : `/api/activities/${id}/disable`;
   return request(path, { method: 'PUT' });
 }
