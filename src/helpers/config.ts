@@ -53,7 +53,7 @@ export function typeIconConfig(): any[] {
 
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
   return {
-    area: data?.area || 1,
+    area: data?.area || 110101,
     method: data?.method || 1,
     profit: data?.profit || 1,
     duration: data?.duration || 1,
