@@ -28,17 +28,11 @@ const Step3: React.FC<Step3Props> = (props) => {
   const [listFrom, setListFrom] = useState<FormInstance[]>([]);
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
+  useEffect(() => {
+    form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
+  }, [data?.schedules, form]);
   if (!data) {
     return null;
-  }
-  if (data?.id !== undefined && data?.id > 0) {
-    useEffect(() => {
-      form.setFieldsValue({ schedules: data?.schedules.sections ?? [{}] });
-    }, [data?.schedules, form]);
-  } else {
-    useEffect(() => {
-      form.setFieldsValue({ schedules: data?.schedules ?? [{}] });
-    }, [data?.schedules, form]);
   }
   const { getFieldsValue } = form;
   const onPrev = () => {
@@ -69,7 +63,7 @@ const Step3: React.FC<Step3Props> = (props) => {
       });
     });
     const plans = await Promise.all(planPromises);
-    const schedules = values.schedules.map(
+    const sections = values.schedules.map(
       (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
         const { title, sub_title, icon } = schedule;
         const items = plans[index];
@@ -77,6 +71,10 @@ const Step3: React.FC<Step3Props> = (props) => {
         return { title, sub_title, icon, items };
       },
     );
+    const schedules = {
+      activity_id: data?.id ?? undefined,
+      sections,
+    }
 
     if (dispatch) {
       dispatch({
@@ -110,7 +108,7 @@ const Step3: React.FC<Step3Props> = (props) => {
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => {
-              const section = data?.schedules ? data?.schedules[index] : undefined;
+              const section = data?.schedules?.sections ? data?.schedules?.sections[index] : undefined;
               return (
                 <Card
                   key={field.key}
