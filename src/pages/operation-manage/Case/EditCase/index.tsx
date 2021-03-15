@@ -1,4 +1,4 @@
-import { Button, Card, Col, DatePicker, Form, Input, message, Row, Select, Space } from 'antd';
+import { Button, Card, Col, DatePicker, Form, Input, InputNumber, message, Row, Select, Space } from 'antd';
 import React, { FC, useEffect, useState } from 'react';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { PageContainer, FooterToolbar } from '@ant-design/pro-layout';
@@ -24,6 +24,8 @@ const fieldLabels = {
   day: '天数',
   distance: '车程',
   address: '地点',
+  company: '公司名称',
+  view: '浏览数',
 };
 
 interface FormadvancedformtwoProps {
@@ -33,6 +35,8 @@ interface FormadvancedformtwoProps {
 
 const GUTTER = 16;
 const LG = 6;
+const DLG = 4;
+const NLG = 2;
 const MD = 12;
 const SM = 24;
 
@@ -77,7 +81,8 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
     history.push('/operation/case/list');
   };
 
-  const onFinishFailed = (errorInfo: any) => {};
+  const onFinishFailed = (errorInfo: any) => {
+  };
 
   const handleLeftClick = () => {
     history.push('/operation/case/list');
@@ -91,8 +96,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
   return (
     <Form
       form={form}
-      layout="vertical"
-      hideRequiredMark
+      layout='vertical'
       initialValues={{}}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -102,53 +106,62 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
           <HeaderBack title={id ? `编辑${data?.name}` : '添加案例'} onBackClick={handleLeftClick} />
         }
       >
-        <Card title="案例基本信息" className={styles.card} bordered={false}>
+        <Card title='案例基本信息' className={styles.card} bordered={false}>
           <Row gutter={GUTTER}>
             <Col lg={LG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.title}
-                name="title"
+                name='title'
                 rules={[{ required: true, message: '请输入案例标题' }]}
               >
-                <Input placeholder="请输入案例标题" />
+                <Input placeholder='请输入案例标题' />
+              </Form.Item>
+            </Col>
+            <Col lg={LG} md={MD} sm={SM}>
+              <Form.Item
+                label={fieldLabels.company}
+                name='company'
+                rules={[{ required: true, message: '请输入公司名字' }]}
+              >
+                <Input placeholder='请输入案例标题' />
               </Form.Item>
             </Col>
             <Col lg={LG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.name}
-                name="name"
+                name='name'
                 rules={[{ required: true, message: '请输入案例名称' }]}
               >
-                <Input placeholder="请输入案例名称" />
+                <Input placeholder='请输入案例名称' />
               </Form.Item>
             </Col>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={DLG} md={MD} sm={SM}>
               <Form.Item
                 label={'团建日期'}
                 name={'date'}
                 rules={[{ required: true, message: '请团建日期' }]}
               >
-                <DatePicker style={{ width: '100%' }} placeholder="请团建日期" />
+                <DatePicker style={{ width: '100%' }} placeholder='请团建日期' />
               </Form.Item>
             </Col>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={NLG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.people}
-                name="people"
+                name='people'
                 rules={[{ required: true, message: '请输入团建人数' }]}
               >
-                <Input placeholder="请输入团建人数" />
+                <InputNumber placeholder='人数' min={1} max={99999} />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={GUTTER}>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={DLG} md={MD} sm={SM}>
               <Form.Item
                 label={'团建城市'}
                 name={'city'}
                 rules={[{ required: true, message: '请选择团建城市' }]}
               >
-                <Select placeholder="请选择团建城市">
+                <Select placeholder='请选择团建城市'>
                   {caseCityConfig().map((area) => {
                     return (
                       <Option key={area.value} value={area.value}>
@@ -159,39 +172,45 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 </Select>
               </Form.Item>
             </Col>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={NLG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.day}
-                name="days"
-                rules={[{ required: true, message: '请选择团建天数' }]}
+                name='days'
+                rules={[{ required: true, message: '请输入团建天数' }]}
               >
-                <Select placeholder="请选择团建天数">
-                  <Option value="1">1天</Option>
-                  <Option value="2">2天</Option>
-                </Select>
+                <InputNumber placeholder='天数' min={1} max={999} />
               </Form.Item>
             </Col>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={NLG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.distance}
-                name="distance"
+                name='distance'
                 rules={[{ required: true, message: '请输入车程' }]}
               >
-                <Input placeholder="请输入车程" />
+                <InputNumber placeholder='车程' min={1} max={9999} />
               </Form.Item>
             </Col>
-            <Col lg={LG} md={MD} sm={SM}>
+            <Col lg={2*LG + 2} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.address}
-                name="address"
+                name='address'
                 rules={[{ required: true, message: '请输入地址' }]}
               >
-                <Input placeholder="请输入地址" />
+                <Input placeholder='请输入地址' />
+              </Form.Item>
+            </Col>
+            <Col lg={NLG} md={MD} sm={SM}>
+              <Form.Item
+                label={fieldLabels.view}
+                name='view'
+                rules={[{ required: true, message: '请输入浏览量' }]}
+              >
+                <InputNumber placeholder='流览' min={0} max={9999} />
               </Form.Item>
             </Col>
           </Row>
         </Card>
-        <Card title="案例行程" className={styles.card} bordered={false}>
+        <Card title='案例行程' className={styles.card} bordered={false}>
           <Form.List name={'schedule'}>
             {(fields, { add, remove }) => (
               <>
@@ -230,32 +249,32 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             )}
           </Form.List>
         </Card>
-        <Card title="案例素材" className={styles.card} bordered={false}>
+        <Card title='案例素材' className={styles.card} bordered={false}>
           <Form.Item
-            label="案例Logo"
-            name="logo"
+            label='案例Logo'
+            name='logo'
             rules={[{ required: true, message: '请上传图片' }]}
           >
             <UploadComponent />
           </Form.Item>
           <Form.Item
-            label="案例封面"
-            name="cover"
+            label='案例封面'
+            name='cover'
             rules={[{ required: true, message: '请上传图片' }]}
           >
             <UploadComponent />
           </Form.Item>
           <Form.Item
-            label="案例头图(最多10张)"
-            name="banners"
+            label='案例头图(最多10张)'
+            name='banners'
             rules={[{ required: true, message: '请上传图片' }]}
           >
             <UploadComponent multiple={true} max={10} showUploadList />
           </Form.Item>
 
           <Form.Item
-            label="案例图片(最多10张)"
-            name="photos"
+            label='案例图片(最多10张)'
+            name='photos'
             rules={[{ required: true, message: '请上传图片' }]}
           >
             <UploadComponent multiple={true} max={10} showUploadList />
@@ -263,7 +282,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
         </Card>
       </PageContainer>
       <FooterToolbar>
-        <Button type="primary" onClick={() => form?.submit()} loading={submitting}>
+        <Button type='primary' onClick={() => form?.submit()} loading={submitting}>
           提交
         </Button>
       </FooterToolbar>
@@ -283,8 +302,8 @@ const FormItemList = (props: FormItemListProps) => {
   useEffect(() => {
     const scheduleItems = value
       ? value.map((item) => {
-          return { ...item, time: moment(item.time) };
-        })
+        return { ...item, time: moment(item.time) };
+      })
       : [{}];
     form.setFieldsValue({ scheduleItems });
     onUpdateFrom(uuidKey, form);
@@ -295,8 +314,8 @@ const FormItemList = (props: FormItemListProps) => {
       style={{ height: '100%' }}
       name={'scheduleItems'}
       form={form}
-      layout="vertical"
-      autoComplete="off"
+      layout='vertical'
+      autoComplete='off'
       hideRequiredMark={true}
     >
       <Form.List name={'scheduleItems'}>
@@ -315,8 +334,8 @@ const FormItemList = (props: FormItemListProps) => {
                       >
                         <TimePicker
                           style={{ width: '100%' }}
-                          placeholder="请输入时间"
-                          format="HH:mm"
+                          placeholder='请输入时间'
+                          format='HH:mm'
                         />
                       </Form.Item>
                     </Col>
@@ -327,7 +346,7 @@ const FormItemList = (props: FormItemListProps) => {
                         fieldKey={[field.fieldKey, 'text']}
                         rules={[{ required: true, message: '请输入活动内容' }]}
                       >
-                        <Input placeholder="请输入活动内容" />
+                        <Input placeholder='请输入活动内容' />
                       </Form.Item>
                     </Col>
                     <Space className={styles.actionRow} align={'center'}>
