@@ -205,7 +205,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 name='view'
                 rules={[{ required: true, message: '请输入浏览量' }]}
               >
-                <InputNumber placeholder='流览' min={0} max={9999} />
+                <InputNumber placeholder='浏览' min={0} max={9999} />
               </Form.Item>
             </Col>
           </Row>
@@ -265,19 +265,19 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             <UploadComponent />
           </Form.Item>
           <Form.Item
-            label='案例头图(最多10张)'
+            label='案例头图'
             name='banners'
             rules={[{ required: true, message: '请上传图片' }]}
           >
-            <UploadComponent multiple={true} max={10} showUploadList />
+            <UploadComponent />
           </Form.Item>
 
           <Form.Item
-            label='案例图片(最多10张)'
+            label='案例图片(多张)'
             name='photos'
             rules={[{ required: true, message: '请上传图片' }]}
           >
-            <UploadComponent multiple={true} max={10} showUploadList />
+            <UploadComponent multiple={true} max={1000} showUploadList />
           </Form.Item>
         </Card>
       </PageContainer>
