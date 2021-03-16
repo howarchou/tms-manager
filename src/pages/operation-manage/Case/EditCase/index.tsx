@@ -187,7 +187,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 name='distance'
                 rules={[{ required: true, message: '请输入车程' }]}
               >
-                <InputNumber placeholder='车程' min={1} max={9999} />
+                <Input placeholder='车程' />
               </Form.Item>
             </Col>
             <Col lg={2*LG + 2} md={MD} sm={SM}>
@@ -316,7 +316,6 @@ const FormItemList = (props: FormItemListProps) => {
       form={form}
       layout='vertical'
       autoComplete='off'
-      hideRequiredMark={true}
     >
       <Form.List name={'scheduleItems'}>
         {(fields, { add, remove }) => {
