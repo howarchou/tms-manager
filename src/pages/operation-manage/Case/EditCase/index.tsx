@@ -269,7 +269,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             name='banners'
             rules={[{ required: true, message: '请上传图片' }]}
           >
-            <UploadComponent multiple={true} max={1} showUploadList />
+            <UploadComponent showUploadList />
           </Form.Item>
 
           <Form.Item
