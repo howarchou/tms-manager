@@ -202,7 +202,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             <Col lg={NLG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.view}
-                name='view'
+                name='views'
                 rules={[{ required: true, message: '请输入浏览量' }]}
               >
                 <InputNumber placeholder='浏览' min={0} max={9999} />
