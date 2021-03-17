@@ -26,6 +26,7 @@ const fieldLabels = {
   address: '地点',
   company: '公司名称',
   view: '浏览数',
+  sort: '排序',
 };
 
 interface FormadvancedformtwoProps {
@@ -190,13 +191,22 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 <Input placeholder='车程' />
               </Form.Item>
             </Col>
-            <Col lg={2*LG + 2} md={MD} sm={SM}>
+            <Col lg={2*LG} md={MD} sm={SM}>
               <Form.Item
                 label={fieldLabels.address}
                 name='address'
                 rules={[{ required: true, message: '请输入地址' }]}
               >
                 <Input placeholder='请输入地址' />
+              </Form.Item>
+            </Col>
+            <Col lg={NLG} md={MD} sm={SM}>
+              <Form.Item
+                label={fieldLabels.sort}
+                name='sort'
+                rules={[{ required: true, message: '请输入排序' }]}
+              >
+                <InputNumber placeholder='排序' min={0} max={9999} />
               </Form.Item>
             </Col>
             <Col lg={NLG} md={MD} sm={SM}>
