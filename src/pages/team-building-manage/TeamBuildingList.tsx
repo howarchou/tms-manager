@@ -2,11 +2,11 @@
  *  Created by pw on 2020/8/29 5:23 下午.
  */
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button } from 'antd';
+import { Space, Table, Button, Popconfirm } from 'antd';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
 import { API } from '@/services/API';
-import { getActivities, saveActivity, updateActivityState } from '@/services/activity';
+import { deleteActivity, getActivities, saveActivity, updateActivityState } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
 
@@ -16,6 +16,7 @@ import {
   methodConfig,
 } from '@/helpers/config';
 import { preview } from '@/helpers';
+import { deleteBanner } from '@/services/banner';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -26,6 +27,7 @@ export default () => {
   useEffect(() => {
     fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
   }, []);
+  const [page, setPage] = useState(DEFAULT_PAGE_NO);
 
   const fetchData = async (params: API.ListParam) => {
     const data = await getActivities(params);
@@ -67,6 +69,12 @@ export default () => {
   };
 
   const handlePageChange = (page: number) => {
+    setPage(page);
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
+  };
+
+  const handleDel = async (record: API.TeamBuildingNew) => {
+    await deleteActivity(record);
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
@@ -155,6 +163,14 @@ export default () => {
           </a>
           <a onClick={() => handleEdit(record)}>编辑</a>
           <a onClick={() => handlePreview(record)}>预览</a>
+          <Popconfirm
+            title="确认删除?"
+            onConfirm={() => handleDel(record)}
+            okText="删除"
+            cancelText="取消"
+          >
+            <a>删除</a>
+          </Popconfirm>
         </Space>
       ),
     },

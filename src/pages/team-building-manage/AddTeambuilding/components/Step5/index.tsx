@@ -123,28 +123,6 @@ const Step5: React.FC<Step5Props> = (props) => {
       <Row>
         <Col span={24} offset={FormItemLayoutOffset}>
           <Form.Item
-            label='预定须知'
-            name='booking_notes'
-            rules={[{ required: true, message: '请输入预定须知' }]}
-          >
-            <TextArea placeholder='预定须知' autoSize={{ minRows: 3, maxRows: 5 }} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24} offset={FormItemLayoutOffset}>
-          <Form.Item
-            label='安全须知'
-            name='safety_notes'
-            rules={[{ required: true, message: '请输入安全须知' }]}
-          >
-            <TextArea placeholder='安全须知' autoSize={{ minRows: 3, maxRows: 5 }} />
-          </Form.Item>
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24} offset={FormItemLayoutOffset}>
-          <Form.Item
             label='温馨提示'
             name='warm_tips'
             rules={[{ required: true, message: '请输入温馨提示' }]}

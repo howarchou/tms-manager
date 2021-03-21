@@ -35,3 +35,7 @@ export async function getActivityDetail(id: string): Promise<API.TeamBuildingNew
   });
   return result.payload;
 }
+
+export async function deleteActivity(params: API.TeamBuildingNew) {
+  return await request(`/api/activities/${params.id}`, { method: 'DELETE' });
+}

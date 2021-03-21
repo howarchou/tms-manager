@@ -175,15 +175,6 @@ const Step1: React.FC<Step1Props> = (props) => {
                   <Input placeholder='团建策划师' />
                   </Form.Item>
                   </Col>
-                  <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
-                  <Form.Item
-                  label='策划师电话'
-                  name='mobile'
-                  rules={[{required: true, message: '请输入策划师电话'}]}
-                  >
-                  <Input placeholder='策划师电话' />
-                  </Form.Item>
-                  </Col>
                   </Row>
                   <Row gutter={2 * FormRowLayoutSpan}>
                   <Col span={4 * FormItemLayoutSpan} offset={FormItemLayoutOffset}>

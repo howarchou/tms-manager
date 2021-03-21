@@ -90,9 +90,9 @@ const Step2: React.FC<Step2Props> = (props) => {
                     label="特色描述"
                     name={[field.name, 'desc']}
                     fieldKey={[field.fieldKey, 'desc']}
-                    rules={[{ required: true, message: '请输入特色描述' }]}
+                    rules={[{ message: '请输入特色描述' }]}
                   >
-                    <Input.TextArea placeholder="请输入详细地址" autoSize={{ minRows: 4 }} />
+                    <Input.TextArea placeholder="请输入特色描述" autoSize={{ minRows: 4 }} />
                   </Form.Item>
                 </Col>
                 <Col span={FormItemLayoutSpan}>
