@@ -13,6 +13,7 @@ import { caseCityConfig } from '@/helpers/config';
 import HeaderBack from '@/components/HeaderBack';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { uuid } from '@/helpers';
+import SelectSearchBox from '@/pages/SelectSearchBox';
 
 const { Option } = Select;
 const { TimePicker } = DatePicker;
@@ -216,6 +217,15 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 rules={[{ required: true, message: '请输入浏览量' }]}
               >
                 <InputNumber placeholder='浏览' min={0} max={99999999999} />
+              </Form.Item>
+            </Col>
+            <Col lg={LG} md={MD} sm={SM}>
+              <Form.Item
+                label={'关联团建'}
+                name={'city'}
+                rules={[{ required: true, message: '请选择团建城市' }]}
+                >
+              <SelectSearchBox />
               </Form.Item>
             </Col>
           </Row>

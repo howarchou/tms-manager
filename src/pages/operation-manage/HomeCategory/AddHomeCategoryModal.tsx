@@ -78,13 +78,6 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
           scrollToFirstError
         >
           <Form.Item
-            label="类别"
-            name="type_id"
-            rules={[{ required: true, message: '请选择类别' }]}
-          >
-            <IconSelect placeholder={'请选择类别'} data={typeIconConfig()} />
-          </Form.Item>
-          <Form.Item
             name="activity_id"
             label="关联团建"
             rules={[

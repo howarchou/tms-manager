@@ -36,7 +36,6 @@ const AddRecommendModal = (props: AddModalIF) => {
 
   const handleOk = async () => {
     const values = await form.validateFields();
-    console.log(values);
     const results = await saveBanner({
       ...values,
       status: data?.status || 0,
