@@ -222,8 +222,8 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             <Col lg={LG} md={MD} sm={SM}>
               <Form.Item
                 label={'关联团建'}
-                name={'city'}
-                rules={[{ required: true, message: '请选择团建城市' }]}
+                name={'activity_id'}
+                rules={[{ message: '请选择关联团建' }]}
                 >
               <SelectSearchBox />
               </Form.Item>
