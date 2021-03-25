@@ -14,6 +14,7 @@ import HeaderBack from '@/components/HeaderBack';
 import { FormInstance } from 'antd/lib/form/hooks/useForm';
 import { uuid } from '@/helpers';
 import SelectSearchBox from '@/pages/SelectSearchBox';
+import ActivitySelect from '@/components/ActivitySelect';
 
 const { Option } = Select;
 const { TimePicker } = DatePicker;
@@ -28,6 +29,7 @@ const fieldLabels = {
   company: '公司名称',
   view: '浏览数',
   sort: '排序',
+  activity: '关联团建',
 };
 
 interface FormadvancedformtwoProps {
@@ -221,11 +223,10 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
             </Col>
             <Col lg={LG} md={MD} sm={SM}>
               <Form.Item
-                label={'关联团建'}
+                label={fieldLabels.activity}
                 name={'activity_id'}
-                rules={[{ message: '请选择关联团建' }]}
                 >
-              <SelectSearchBox />
+                <ActivitySelect/>
               </Form.Item>
             </Col>
           </Row>
