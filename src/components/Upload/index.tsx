@@ -137,7 +137,7 @@ export default function (props: Props) {
         name="file"
         listType="picture-card"
         className="avatar-uploader"
-        showUploadList={multiple ? showUploadList : false}
+        //showUploadList={multiple ? showUploadList : false}
         action={UploadUrl()}
         multiple={multiple}
         fileList={fileList}
@@ -146,7 +146,7 @@ export default function (props: Props) {
         onPreview={handlePreview}
         onRemove={handleRemove}
       >
-        {multiple ? fileList.length >= max ? null : <PhotoList /> : <SinglePhoto />}
+        { fileList.length >= max ? null : <PhotoList /> }
       </Upload>
       <Modal visible={previewVisible} title={'预览图片'} footer={null} onCancel={handleCancel}>
         <img alt="example" style={{ width: '100%' }} src={previewImage} />
