@@ -293,6 +293,7 @@ declare namespace API {
 
   export interface Home_Category {
     id?: number;
+    province?: string;
     type_icon: string;
     type_name: string;
     type_id: number;
