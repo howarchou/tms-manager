@@ -21,7 +21,7 @@ interface Props {
   onChange?: (value: string | string[]) => void;
 }
 
-export default function (props: Props) {
+export default function(props: Props) {
   const { showUploadList = false, multiple = false, max = 1, label = '上传' } = props;
   const [loading, setLoading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -31,18 +31,15 @@ export default function (props: Props) {
   useEffect(() => {
     if (props?.value) {
       const data = Array.isArray(props?.value) ? props.value : [props?.value];
+      console.log('data', data);
       const list: any[] = data.map((url, index) => {
         const imgUrl = !!~url?.indexOf(customSetting.globalFileUrl)
           ? url
           : `${customSetting.globalFileUrl}${url}`;
         return { url: imgUrl, name: 'image.png', uid: url + index };
       });
-      if (multiple) {
-        const uploadingList = fileList.filter((file) => file.status === 'uploading');
-        setFileList(list.concat(uploadingList));
-      } else {
-        setFileList(list.concat(fileList));
-      }
+      const uploadingList = fileList.filter((file) => file.status === 'uploading');
+      setFileList(list.concat(uploadingList));
     }
   }, [props?.value]);
 
@@ -126,7 +123,7 @@ export default function (props: Props) {
     const [file] = fileList || [];
     return (
       <>
-        {file?.url ? <img src={file.url} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+        {file?.url ? <img src={file.url} alt='avatar' style={{ width: '100%' }} /> : uploadButton}
       </>
     );
   };
@@ -134,9 +131,9 @@ export default function (props: Props) {
   return (
     <>
       <Upload
-        name="file"
-        listType="picture-card"
-        className="avatar-uploader"
+        name='file'
+        listType='picture-card'
+        className='avatar-uploader'
         //showUploadList={multiple ? showUploadList : false}
         action={UploadUrl()}
         multiple={multiple}
@@ -146,10 +143,10 @@ export default function (props: Props) {
         onPreview={handlePreview}
         onRemove={handleRemove}
       >
-        { fileList.length >= max ? null : <PhotoList /> }
+        {fileList.length >= max ? null : <PhotoList />}
       </Upload>
       <Modal visible={previewVisible} title={'预览图片'} footer={null} onCancel={handleCancel}>
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        <img alt='example' style={{ width: '100%' }} src={previewImage} />
       </Modal>
     </>
   );
