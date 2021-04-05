@@ -33,17 +33,27 @@ export default function () {
 
   const columns = [
     {
-      title: '目的地名称',
-      dataIndex: 'name',
+      title: '城市',
+      key: 'province',
+      dataIndex: 'province',
+    },
+    {
+      title: '区域',
+      key: 'area',
+      dataIndex: 'area',
+    },
+    {
+      title: '目的地',
       key: 'name',
+      dataIndex: 'name',
     },
     {
-      title: '封面跳转链接',
-      dataIndex: 'link',
-      key: 'link',
+      title: '关键词',
+      key: 'keywords',
+      dataIndex: 'keywords',
     },
     {
-      title: '分类封面',
+      title: '封面',
       key: 'cover',
       dataIndex: 'cover',
       render: (text: string) => {
@@ -54,6 +64,11 @@ export default function () {
       },
     },
     {
+      title: '排序',
+      key: 'sort',
+      dataIndex: 'sort',
+    },
+    {
       title: '状态',
       key: 'status',
       dataIndex: 'status',
@@ -61,7 +76,6 @@ export default function () {
         return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
       },
     },
-
     {
       title: '操作',
       key: 'action',

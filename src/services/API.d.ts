@@ -202,7 +202,8 @@ declare namespace API {
   export interface SeasonHot {
     id: string;
     name: string;
-    link: string;
+    keywords: string;
+    area: string;
     sort: number;
     status: HomeBannerStatus;
     cover: string;

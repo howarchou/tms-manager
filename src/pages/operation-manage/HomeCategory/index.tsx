@@ -33,6 +33,11 @@ export default function () {
 
   const columns = [
     {
+      title: '城市',
+      key: 'province',
+      dataIndex: 'province',
+    },
+    {
       title: '分类名称',
       dataIndex: 'type_name',
       key: 'type_name',
@@ -44,6 +49,11 @@ export default function () {
           </div>
         );
       },
+    },
+    {
+      title: '排序',
+      key: 'sort',
+      dataIndex: 'sort',
     },
     {
       title: '关联团建',
