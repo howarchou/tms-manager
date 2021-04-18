@@ -51,6 +51,10 @@ export function typeIconConfig(): any[] {
   return getCookieValueByKey('activity_type_icon');
 }
 
+export function activityTypeConfig(): any[] {
+  return getCookieValueByKey('activity_type');
+}
+
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
   return {
     area: data?.area || 110101,
