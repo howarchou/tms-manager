@@ -55,6 +55,14 @@ export function activityTypeConfig(): any[] {
   return getCookieValueByKey('activity_type');
 }
 
+export function orderSourceConfig(): any[] {
+  return getCookieValueByKey('order_source');
+}
+
+export function orderStatusConfig(): any[] {
+  return getCookieValueByKey('order_status');
+}
+
 export function getDefaultValue(data?: API.TeamBuildingNew): API.TeamBuildingNew {
   return {
     area: data?.area || 110101,

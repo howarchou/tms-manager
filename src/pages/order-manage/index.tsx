@@ -6,9 +6,11 @@ import { PageContainer } from '@ant-design/pro-layout';
 import styles from '@/pages/team-building-manage/TeamBuildingList.less';
 import { Button, Space, Table } from 'antd';
 import { history } from '@@/core/history';
-import { API } from '@/services/API';
-import { HomeBannerStatus } from '@/services/API.Enum';
+import type { API } from '@/services/API';
+import { HomeBannerStatus, OrderType } from '@/services/API.Enum';
 import { getOrders } from '@/services/order';
+import moment from 'moment';
+import { activityTypeConfig, orderSourceConfig, orderStatusConfig } from '@/helpers';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
@@ -36,32 +38,64 @@ export default function () {
       key: 'order_no',
     },
     {
-      title: '订单时间',
+      title: '类型',
       dataIndex: 'start_date',
       key: 'start_date',
+      render: (type: OrderType) => {
+        return type === OrderType.TB? '团建' : '年会';
+      },
     },
     {
-      title: '订单金额(元)',
-      dataIndex: 'amount',
-      key: 'amount',
+      title: '来源',
+      dataIndex: 'source',
+      key: 'source',
+      render: (source: number) => {
+        const sources: any[] = []
+        // eslint-disable-next-line no-return-assign
+        orderSourceConfig().map(item => sources[item.value] = item.text)
+        return sources[source]?? "";
+      },
+    },
+    {
+      title: '姓名',
+      dataIndex: 'contact',
+      key: 'contact'
+    },
+    {
+      title: '联系方式',
+      dataIndex: 'contact_mobile',
+      key: 'contact_mobile',
+    },
+    {
+      title: '公司',
+      dataIndex: 'company',
+      key: 'company',
+    },
+    {
+      title: '人数',
+      dataIndex: 'company',
+      key: 'company',
     },
     {
       title: '订单状态',
       key: 'status',
       dataIndex: 'status',
-      render: (text: string, record: API.Order) => {
-        return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
+      render: (status: string | number) => {
+        const items: any[] = []
+        // eslint-disable-next-line no-return-assign
+        orderStatusConfig().map(item => items[item.value] = item.text)
+        return items[status]?? "";
       },
     },
     {
-      title: '活动名称',
-      key: 'name',
-      dataIndex: 'name',
-    },
-    {
-      title: '活动策划师',
+      title: '未成单原因',
       key: 'planner',
       dataIndex: 'planner',
+    },
+    {
+      title: '需求描述',
+      key: 'remark',
+      dataIndex: 'remark',
     },
     {
       title: '操作',
@@ -102,6 +136,7 @@ export default function () {
           </Button>
         </div>
         <Table
+          key={'order_list'}
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}
