@@ -10,3 +10,8 @@ export enum HomeBannerStatus {
   DOWN = 0,
   UP,
 }
+
+export enum OrderType {
+  TB = 1,
+  UP = 2,
+}
