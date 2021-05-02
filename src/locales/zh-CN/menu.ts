@@ -63,7 +63,7 @@ export default {
   'menu.operation.manage.homeCategory': '优选团建',
   'menu.operation.manage.seasonhot': '当季热门',
   'menu.operation.manage.case.list': '客户案例',
-  'menu.operation.manage.photo-wall': '照片墙',
+  'menu.operation.manage.photo-wall': '客户Logo',
   'menu.supplier.manage': '供应商管理',
   'menu.supplier.manage.list': '供应商列表',
   'menu.team-building.manage': '团建管理',

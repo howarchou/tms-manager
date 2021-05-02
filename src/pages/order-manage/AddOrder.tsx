@@ -8,11 +8,11 @@ import moment from 'moment';
 import { detailDefaultValues } from '@/pages/order-manage/helpers';
 import FeeDetails from '@/components/FeeDetails/FeeDetails';
 import styles from './AddOrder.less';
-import { uuid } from '@/helpers';
+import { activityTypeConfig, areaConfig, orderSourceConfig, orderStatusConfig, uuid } from '@/helpers';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
 
 const FormItem = Form.Item;
-const { Option } = Select;
+const { Option, OptGroup } = Select;
 const { TextArea } = Input;
 
 interface AddorderProps {
@@ -66,8 +66,8 @@ const AddOrder: FC<AddorderProps> = (props) => {
         <Form
           style={{ marginTop: 8 }}
           form={form}
-          layout="vertical"
-          name="addOrder"
+          layout='vertical'
+          name='addOrder'
           initialValues={detailDefaultValues(data)}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -76,7 +76,7 @@ const AddOrder: FC<AddorderProps> = (props) => {
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
               <FormItem
                 label={'订单名称'}
-                name="name"
+                name='name'
                 rules={[
                   {
                     required: true,
@@ -84,13 +84,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input placeholder="请输入订单名称" />
+                <Input placeholder='请输入订单名称' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
-                label="订单状态"
-                name="status"
+                label='订单状态'
+                name='status'
                 rules={[
                   {
                     required: true,
@@ -99,16 +99,19 @@ const AddOrder: FC<AddorderProps> = (props) => {
                 ]}
               >
                 <Select>
-                  <Option value={1}>已支付</Option>
-                  <Option value={2}>已上线</Option>
-                  <Option value={3}>已下线</Option>
+                  {orderStatusConfig().map((status) => {
+                      return (
+                        <Option value={status.value}>{status.text}</Option>
+                      );
+                    },
+                  )}
                 </Select>
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'单价'}
-                name="price"
+                name='price'
                 rules={[
                   {
                     required: true,
@@ -123,8 +126,8 @@ const AddOrder: FC<AddorderProps> = (props) => {
           <Row gutter={FormRowLayoutSpan}>
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
               <FormItem
-                label="活动地区"
-                name="area"
+                label='活动地区'
+                name='area'
                 rules={[
                   {
                     required: true,
@@ -132,17 +135,30 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Select>
-                  <Option value={1}>北京</Option>
-                  <Option value={2}>上海</Option>
-                  <Option value={3}>成都</Option>
+                <Select placeholder={'请选择活动地区'}>
+                  {areaConfig().map((province) => {
+                      return (
+                        <OptGroup label={province.text}>
+                          {
+                            province.items?.map((area) => {
+                              return (
+                                <Option key={area.value} value={area.value}>
+                                  {area.text}
+                                </Option>
+                              );
+                            })
+                          }
+                        </OptGroup>
+                      );
+                    },
+                  )}
                 </Select>
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'详细地址'}
-                name="address"
+                name='address'
                 rules={[
                   {
                     required: true,
@@ -150,13 +166,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input placeholder="详细地址" />
+                <Input placeholder='详细地址' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'活动起始时间'}
-                name="start_date"
+                name='start_date'
                 rules={[
                   {
                     required: true,
@@ -172,7 +188,7 @@ const AddOrder: FC<AddorderProps> = (props) => {
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
               <FormItem
                 label={'活动天数'}
-                name="days"
+                name='days'
                 rules={[
                   {
                     required: true,
@@ -180,13 +196,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <InputNumber style={{ width: '100%' }} placeholder="活动天数" />
+                <InputNumber style={{ width: '100%' }} placeholder='活动天数' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'活动策划师'}
-                name="planner"
+                name='planner'
                 rules={[
                   {
                     required: true,
@@ -194,13 +210,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input placeholder="请输入活动策划师" />
+                <Input placeholder='请输入活动策划师' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'策划师电话'}
-                name="planner_mobile"
+                name='planner_mobile'
                 rules={[
                   {
                     required: true,
@@ -208,7 +224,7 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input style={{ width: '100%' }} placeholder="策划师电话" />
+                <Input style={{ width: '100%' }} placeholder='策划师电话' />
               </FormItem>
             </Col>
           </Row>
@@ -216,7 +232,7 @@ const AddOrder: FC<AddorderProps> = (props) => {
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
               <FormItem
                 label={'客户公司'}
-                name="company"
+                name='company'
                 rules={[
                   {
                     required: true,
@@ -224,13 +240,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input placeholder="客户公司" />
+                <Input placeholder='客户公司' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'客户联系人'}
-                name="contact"
+                name='contact'
                 rules={[
                   {
                     required: true,
@@ -238,13 +254,13 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input placeholder="客户联系人" />
+                <Input placeholder='客户联系人' />
               </FormItem>
             </Col>
             <Col span={FormItemLayoutSpan}>
               <FormItem
                 label={'客户电话'}
-                name="contact_mobile"
+                name='contact_mobile'
                 rules={[
                   {
                     required: true,
@@ -252,15 +268,15 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <Input style={{ width: '100%' }} placeholder="客户电话" />
+                <Input style={{ width: '100%' }} placeholder='客户电话' />
               </FormItem>
             </Col>
           </Row>
           <Row gutter={FormRowLayoutSpan}>
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
               <FormItem
-                label="来源"
-                name="source"
+                label='来源'
+                name='source'
                 rules={[
                   {
                     required: true,
@@ -269,17 +285,20 @@ const AddOrder: FC<AddorderProps> = (props) => {
                 ]}
               >
                 <Select>
-                  <Option value={1}>小程序</Option>
-                  <Option value={2}>网络订单</Option>
-                  <Option value={3}>老客户介绍</Option>
+                  {orderSourceConfig().map((source) => {
+                      return (
+                        <Option value={source.value}>{source.text}</Option>
+                      );
+                    },
+                  )}
                 </Select>
               </FormItem>
             </Col>
           </Row>
           <Row gutter={FormRowLayoutSpan}>
             <Col span={12} offset={FormItemLayoutOffset}>
-              <FormItem label={'备注'} name="remark">
-                <TextArea placeholder="备注" rows={3} />
+              <FormItem label={'备注'} name='remark'>
+                <TextArea placeholder='备注' rows={3} />
               </FormItem>
             </Col>
           </Row>
@@ -293,7 +312,7 @@ const AddOrder: FC<AddorderProps> = (props) => {
                 justifyContent: 'center',
               }}
             >
-              <Button type="primary" htmlType="submit" loading={submitting}>
+              <Button type='primary' htmlType='submit' loading={submitting}>
                 {data?.id ? '更新' : '保存'}
               </Button>
               <Button style={{ marginLeft: 8 }} onClick={handleCancel}>
