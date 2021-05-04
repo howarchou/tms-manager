@@ -177,9 +177,9 @@ export default () => {
   ];
   return (
     <PageContainer>
-      <div className={styles.team_buildin_list}>
+      <div className={styles.team_building_list}>
         {/*<AddTeambuildPanel onResult={() => handAddResult()} />*/}
-        <div className={styles.team_buildin_add}>
+        <div className={styles.team_building_add}>
           <Button type='primary' onClick={handleAdd}>
             添加
           </Button>

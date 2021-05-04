@@ -21,10 +21,7 @@ const Step2: React.FC<Step2Props> = (props) => {
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      feature:
-        data?.feature !== undefined ? [data?.feature] : {},
-      place:
-        data?.place !== undefined ? [data?.place] : {},
+      ...data,
     });
   }, []);
   if (!data) {
@@ -69,69 +66,50 @@ const Step2: React.FC<Step2Props> = (props) => {
       form={form}
       layout='horizontal'
       autoComplete='off'
+      initialValues={data}
     >
-      <Form.List name={'feature'}>
-        {(fields) =>
-          fields.map((field) => (
-            <Card key={field.key} title="团建特色">
-              <Row gutter={FormRowLayoutSpan}>
-                <Col span={16}>
-                  <Form.Item
-                    {...field}
-                    label="特色描述"
-                    name={[field.name, 'description']}
-                    fieldKey={[field.fieldKey, 'description']}
-                    rules={[{ message: '请输入特色描述' }]}
-                  >
-                    <Input.TextArea placeholder="请输入特色描述" autoSize={{ minRows: 4 }} />
-                  </Form.Item>
-                </Col>
-                <Col span={FormItemLayoutSpan}>
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'picture']}
-                    fieldKey={[field.fieldKey, 'picture']}
-                    rules={[{ message: '请团建特色图片' }]}
-                  >
-                    <UploadComponent />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Card>
-          ))
-        }
-      </Form.List>
-      <Form.List name={'place'}>
-        {(fields) =>
-          fields.map((field) => (
-            <Card key={field.key} title="场地" style={{ marginTop: 16 }}>
-              <Row gutter={FormRowLayoutSpan}>
-                <Col span={16}>
-                  <Form.Item
-                    {...field}
-                    label="场地描述"
-                    name={[field.name, 'description']}
-                    fieldKey={[field.fieldKey, 'description']}
-                    rules={[{ required: true, message: '请输入场地描述' }]}
-                  >
-                    <Input.TextArea placeholder="请输入场地描述" autoSize={{ minRows: 4 }} />
-                  </Form.Item>
-                </Col>
-                <Col span={FormItemLayoutSpan}>
-                  <Form.Item
-                    {...field}
-                    name={[field.name, 'pictures']}
-                    fieldKey={[field.fieldKey, 'pictures']}
-                    rules={[{ required: true, message: '请上传场地图片' }]}
-                  >
-                    <UploadComponent max={2} multiple={true} showUploadList={true} />
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Card>
-          ))
-        }
-      </Form.List>
+      <Card key={'feature'} title='团建特色'>
+        <Row gutter={FormRowLayoutSpan}>
+          <Col span={16}>
+            <Form.Item
+              label='特色描述'
+              name={['feature', 'description']}
+              rules={[{ message: '请输入特色描述' }]}
+            >
+              <Input.TextArea placeholder='请输入特色描述' autoSize={{ minRows: 4 }} />
+            </Form.Item>
+          </Col>
+          <Col span={FormItemLayoutSpan}>
+            <Form.Item
+              name={['feature', 'picture']}
+              rules={[{ message: '请团建特色图片' }]}
+            >
+              <UploadComponent />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Card>
+      <Card key={'place'} title='场地' style={{ marginTop: 16 }}>
+        <Row gutter={FormRowLayoutSpan}>
+          <Col span={16}>
+            <Form.Item
+              label='场地描述'
+              name={['place', 'description']}
+              rules={[{ required: true, message: '请输入场地描述' }]}
+            >
+              <Input.TextArea placeholder='请输入场地描述' autoSize={{ minRows: 4 }} />
+            </Form.Item>
+          </Col>
+          <Col span={FormItemLayoutSpan}>
+            <Form.Item
+              name={['place', 'pictures']}
+              rules={[{ required: true, message: '请上传场地图片' }]}
+            >
+              <UploadComponent max={2} multiple={true} showUploadList={true} />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Card>
       <Space
         style={{
           marginTop: 40,
