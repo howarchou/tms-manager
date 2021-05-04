@@ -21,19 +21,10 @@ const Step2: React.FC<Step2Props> = (props) => {
   const [form] = Form.useForm();
   useEffect(() => {
     form.setFieldsValue({
-      themes: data?.themes?.length || [{}],
       feature:
-        data?.feature !== undefined
-          ? Array.isArray(data?.feature)
-            ? data?.feature
-            : [data?.feature]
-          : [{}],
-      places:
-        data?.places !== undefined
-          ? Array.isArray(data?.places)
-            ? data?.places
-            : [data?.places]
-          : [{}],
+        data?.feature !== undefined ? [data?.feature] : {},
+      place:
+        data?.place !== undefined ? [data?.place] : {},
     });
   }, []);
   if (!data) {
@@ -76,8 +67,8 @@ const Step2: React.FC<Step2Props> = (props) => {
       style={{ height: '100%', marginTop: 40 }}
       name={'plan'}
       form={form}
-      layout="horizontal"
-      autoComplete="off"
+      layout='horizontal'
+      autoComplete='off'
     >
       <Form.List name={'feature'}>
         {(fields) =>
@@ -88,8 +79,8 @@ const Step2: React.FC<Step2Props> = (props) => {
                   <Form.Item
                     {...field}
                     label="特色描述"
-                    name={[field.name, 'desc']}
-                    fieldKey={[field.fieldKey, 'desc']}
+                    name={[field.name, 'description']}
+                    fieldKey={[field.fieldKey, 'description']}
                     rules={[{ message: '请输入特色描述' }]}
                   >
                     <Input.TextArea placeholder="请输入特色描述" autoSize={{ minRows: 4 }} />
@@ -110,7 +101,7 @@ const Step2: React.FC<Step2Props> = (props) => {
           ))
         }
       </Form.List>
-      <Form.List name={'places'}>
+      <Form.List name={'place'}>
         {(fields) =>
           fields.map((field) => (
             <Card key={field.key} title="场地" style={{ marginTop: 16 }}>
@@ -119,8 +110,8 @@ const Step2: React.FC<Step2Props> = (props) => {
                   <Form.Item
                     {...field}
                     label="场地描述"
-                    name={[field.name, 'later']}
-                    fieldKey={[field.fieldKey, 'later']}
+                    name={[field.name, 'description']}
+                    fieldKey={[field.fieldKey, 'description']}
                     rules={[{ required: true, message: '请输入场地描述' }]}
                   >
                     <Input.TextArea placeholder="请输入场地描述" autoSize={{ minRows: 4 }} />
@@ -154,7 +145,7 @@ const Step2: React.FC<Step2Props> = (props) => {
         <Button onClick={onPrev} style={{ marginRight: 8 }}>
           上一步
         </Button>
-        <Button type="primary" onClick={onValidateForm} loading={submitting}>
+        <Button type='primary' onClick={onValidateForm} loading={submitting}>
           下一步
         </Button>
       </Space>
@@ -163,9 +154,9 @@ const Step2: React.FC<Step2Props> = (props) => {
 };
 export default connect(
   ({
-    addteambuilding,
-    loading,
-  }: {
+     addteambuilding,
+     loading,
+   }: {
     addteambuilding: StateType;
     loading: {
       effects: { [key: string]: boolean };

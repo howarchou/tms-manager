@@ -99,15 +99,14 @@ declare namespace API {
     planner: string; // 团建策划师
     price: number; // 人均消费(单位分)
     profit: number; // 收益
-    schedules: TeamBuilding_Schedules; // 行程安排
-    fees: FeeDetail; // 费用明细
+    schedule: TeamBuilding_Schedules; // 行程安排
+    fee: FeeDetail; // 费用明细
     stars: string; // 推荐指数
     tags: string; // 标签，多个以空格分隔
     warm_tips: string; // 温馨提示
     mobile: string;
-    places?: TeamBuilding_Place[];
-    themes?: TeamBuilding_Theme[];
-    feature: TeamBuilding_Feature;
+    place?: TeamBuilding_Place;
+    feature?: TeamBuilding_Feature;
   }
 
   interface TeamBuilding_Schedules {
@@ -132,21 +131,13 @@ declare namespace API {
   }
 
   export interface TeamBuilding_Place {
-    foreword: string;
     pictures: string[];
-    later: string;
-  }
-
-  export interface TeamBuilding_Theme {
-    foreword: string;
-    pictures: string[];
-    later: string;
+    description: string;
   }
 
   export interface TeamBuilding_Feature {
-    title: string;
-    pictures: string;
-    desc: string;
+    picture?: string;
+    description?: string;
   }
 
   export interface TeamBuildingPlan {
@@ -280,6 +271,7 @@ declare namespace API {
     sort: number;
     title: string;
     status: HomeBannerStatus;
+    activity?: TeamBuildingNew;
   }
 
   export interface Case_Schedule {

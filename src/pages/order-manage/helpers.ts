@@ -9,7 +9,7 @@ export function detailMapper(order: API.Order) {}
 export function detailDefaultValues(data?: API.Order) {
   return {
     status: data?.status || 1,
-    area: data?.area || 1,
+    area: data?.area || 110101,
     start_date: data?.start_date ? moment(data.start_date) : moment(),
     source: data?.source || 1,
   };
