@@ -39,8 +39,8 @@ export default function () {
     },
     {
       title: '类型',
-      dataIndex: 'start_date',
-      key: 'start_date',
+      dataIndex: 'type',
+      key: 'type',
       render: (type: OrderType) => {
         return type === OrderType.TB? '团建' : '年会';
       },
