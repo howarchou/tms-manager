@@ -23,7 +23,7 @@ const Step2: React.FC<Step2Props> = (props) => {
     form.setFieldsValue({
       ...data,
     });
-  }, []);
+  }, [data, form]);
   if (!data) {
     return null;
   }

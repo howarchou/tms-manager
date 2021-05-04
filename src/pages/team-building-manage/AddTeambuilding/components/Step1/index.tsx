@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Form, Button, Input, Select, Row, Col, Space, InputNumber } from 'antd';
-import { connect, Dispatch } from 'umi';
+import type { Dispatch } from 'umi';
+import { connect } from 'umi';
 import styles from './index.less';
-import { StateType } from '../../model';
+import type { StateType } from '../../model';
 import UploadComponent from '@/components/Upload';
 import { RateGroup } from '@/components/Rates';
-import { IconSelect } from '../IconSelect';
+import type { Key } from 'rc-select/lib/interface/generator';
 
 import {
   activityTypeConfig,
@@ -15,7 +16,6 @@ import {
   methodConfig,
   profitConfig,
   starConfig,
-  typeIconConfig,
 } from '@/helpers/config';
 
 const { Option, OptGroup } = Select;
@@ -111,13 +111,13 @@ const Step1: React.FC<Step1Props> = (props) => {
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item label='类别' name='type' rules={[{ required: true, message: '请选择类别' }]}>
               <Select placeholder={'请选择类别'}>
-              {activityTypeConfig().map((province) => {
+                {activityTypeConfig().map((province) => {
                   return (
                     <OptGroup label={province.text}>
                       {
-                        province.items?.map((icon) => {
+                        province.items?.map((icon: { value: Key | undefined; icon: string | undefined; text: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) => {
                           return (
-                          <Select.Option key={icon.value} value={icon.value}>
+                          <Select.Option key={icon.value} value={icon.value?? 0}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                               <img src={icon.icon} style={{ marginRight: 8, width: 10, height: 12 }}  alt={"图标"}/>
                               {icon.text}

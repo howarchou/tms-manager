@@ -29,8 +29,8 @@ const Step3: React.FC<Step3Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
-  }, [data?.schedules, form]);
+    form.setFieldsValue({ ...data });
+  }, [data, form]);
   if (!data) {
     return null;
   }
@@ -55,32 +55,12 @@ const Step3: React.FC<Step3Props> = (props) => {
     // const values = await getFieldsValue();
     const values = await form.validateFields()
 
-    const planPromises = listFrom.map(async (form) => {
-      const plan = await form.getFieldsValue();
-      return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-        const time = moment(plan.time, 'HH:mm').valueOf();
-        return { ...plan, time };
-      });
-    });
-    const plans = await Promise.all(planPromises);
-    const sections = values.schedules.map(
-      (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-        const { title, sub_title, icon } = schedule;
-        const items = plans[index];
-        // console.log(moment(date).valueOf());
-        return { title, sub_title, icon, items };
-      },
-    );
-    const schedules = {
-      activity_id: data?.id ?? undefined,
-      sections,
-    }
-
     if (dispatch) {
       dispatch({
         type: 'addteambuilding/saveStepFormData',
         payload: {
-          schedules,
+          ...data,
+          ...values,
         },
       });
       dispatch({
@@ -90,6 +70,7 @@ const Step3: React.FC<Step3Props> = (props) => {
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handleListFrom = (key: string, form: FormInstance) => {
     listFrom.push(form);
     setListFrom(listFrom.slice());
@@ -104,11 +85,11 @@ const Step3: React.FC<Step3Props> = (props) => {
       autoComplete="off"
       initialValues={data}
     >
-      <Form.List name={'schedules'}>
+      <Form.List name={'schedule'}>
         {(fields, { add, remove }) => (
           <>
             {fields.map((field, index) => {
-              const section = data?.schedules?.sections ? data?.schedules?.sections[index] : undefined;
+              const section = data?.schedule? data?.schedule[index] : undefined;
               return (
                 <Card
                   key={field.key}
@@ -124,7 +105,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                             listFrom.splice(field.name, 1);
                             setListFrom(listFrom.slice());
                           } else {
-                            message.warning('至少保留一个');
+                            message.warning('至少保留一个').then(() => {} );
                           }
                         }}
                       />
@@ -169,6 +150,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                       </Row>
                     }
                   >
+                    {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
                     <FormItemList
                       uuidKey={uuid(8)}
                       onUpdateFrom={handleListFrom}
