@@ -29,7 +29,7 @@ const Step3: React.FC<Step3Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ ...data });
+    form.setFieldsValue({ ...data, schedule: data?.schedule??[{}]});
   }, [data, form]);
   if (!data) {
     return null;

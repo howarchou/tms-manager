@@ -62,18 +62,17 @@ const Step4: React.FC<Step4Props> = (props) => {
 
   const handleTotalPrice = () => {
     const value = form.getFieldsValue();
-    console.log("values", value)
-    const {fees} = value;
-    if (fees && fees.length) {
-      const calFees = fees.map((fee: { days: number; price: number; num: number; }) => {
-        if (Number.isNaN(fee.days) || Number.isNaN(fee.price) || Number.isNaN(fee.num)) {
-          return fee;
-        }
-        const total_price = fee.days * fee.price * fee.num;
-        return { ...fee, total_price};
-      });
-      console.log("fees:", calFees)
-      form.setFieldsValue({ fees: calFees });
+    const {fee} = value;
+    if (fee && fee.length) {
+        const calFee = fee.map((feeItem: { days: number; price: number; num: number; total_price: any }) => {
+          if (Number.isNaN(feeItem.days) || Number.isNaN(feeItem.price) || Number.isNaN(feeItem.num)) {
+            return feeItem;
+          }
+          // eslint-disable-next-line no-param-reassign
+          feeItem.total_price = feeItem.days * feeItem.price * feeItem.num;
+          return { ...feeItem};
+        });
+       form.setFieldsValue({ ...calFee });
     }
   };
 
