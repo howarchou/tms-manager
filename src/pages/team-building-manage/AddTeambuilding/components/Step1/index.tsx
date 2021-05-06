@@ -41,7 +41,7 @@ const Step1: React.FC<Step1Props> = (props) => {
         hold_people: { hold_min: data?.hold_min, hold_max: data?.hold_max },
       });
     }
-  }, [data?.id]);
+  }, [data, data.id, form]);
 
   if (!data) {
     return null;
@@ -104,18 +104,17 @@ const Step1: React.FC<Step1Props> = (props) => {
               name='people_number'
               rules={[{ required: true, message: '请输入活动人数' }]}
             >
-              <InputNumber placeholder={'请输入活动人数'} min={1} style={{ width: '100%' }}
-                           defaultValue={data?.people_number} />
+              <InputNumber placeholder={'请输入活动人数'} min={1} style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
             <Form.Item label='类别' name='type' rules={[{ required: true, message: '请选择类别' }]}>
               <Select placeholder={'请选择类别'}>
-                {activityTypeConfig().map((province) => {
+                {activityTypeConfig().map((type) => {
                   return (
-                    <OptGroup label={province.text}>
+                    <OptGroup key={'activity-type'} label={type.text}>
                       {
-                        province.items?.map((icon: { value: Key | undefined; icon: string | undefined; text: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) => {
+                        type.items?.map((icon: { value: Key | undefined; icon: string | undefined; text: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) => {
                           return (
                           <Select.Option key={icon.value} value={icon.value?? 0}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -161,7 +160,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               <Select placeholder={'请选择活动地区'}>
                 {areaConfig().map((province) => {
                     return (
-                      <OptGroup label={province.text}>
+                      <OptGroup key={'activity-area'} label={province.text}>
                         {
                           province.items?.map((area) => {
                             return (
@@ -204,7 +203,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name='profits'
               rules={[{ required: true, message: '请选择团建收益' }]}
             >
-              <Select mode={'tags'} placeholder={'请选择团建收益'}>
+              <Select mode={'multiple'} placeholder={'请选择团建收益'}>
                 {profitConfig().map((area) => {
                   return (
                     <Option key={area.value} value={area.value}>
@@ -221,8 +220,7 @@ const Step1: React.FC<Step1Props> = (props) => {
               name='sort'
               rules={[{ required: true, message: '请输入排序' }]}
             >
-              <InputNumber placeholder={'请输入排序'} style={{ width: '100%' }} min={0} max={99999}
-                           defaultValue={data.sort} />
+              <InputNumber placeholder={'请输入排序'} style={{ width: '100%' }} min={0} max={99999} />
             </Form.Item>
           </Col>
         </Row>

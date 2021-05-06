@@ -21,50 +21,10 @@ const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    if (data?.feature !== undefined) {
-      if (data?.places !== undefined) {
-        form.setFieldsValue({
-          themes: data?.themes?.length || [{}],
-          feature:
-            Array.isArray(data?.feature)
-              ? data?.feature
-              : [data?.feature],
-          places:
-            Array.isArray(data?.places)
-              ? data?.places
-              : [data?.places],
-        });
-      } else {
-        form.setFieldsValue({
-          themes: data?.themes?.length || [{}],
-          feature:
-            Array.isArray(data?.feature)
-              ? data?.feature
-              : [data?.feature],
-          places:
-            [{}],
-        });
-      }
-    } else if (data?.places !== undefined) {
-      form.setFieldsValue({
-        themes: data?.themes?.length || [{}],
-        feature:
-          [{}],
-        places:
-          Array.isArray(data?.places)
-            ? data?.places
-            : [data?.places],
-      });
-    } else {
-      form.setFieldsValue({
-        themes: data?.themes?.length || [{}],
-        feature:
-          [{}],
-        places:
-          [{}],
-      });
-    }
-  }, []);
+    form.setFieldsValue({
+      ...data
+    });
+  }, );
   if (!data) {
     return null;
   }
@@ -128,7 +88,7 @@ const Step4: React.FC<Step4Props> = (props) => {
       initialValues={data}
     >
       {/*<FeeDetails id={data?.id} type={'activity'} />*/}
-      <Form.List name="fees">
+      <Form.List name="fee">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field) => (
