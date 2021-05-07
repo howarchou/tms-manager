@@ -154,7 +154,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                     <FormItemList
                       uuidKey={uuid(8)}
                       onUpdateFrom={handleListFrom}
-                      value={section?.items}
+                      value={section?.items?? [{}]}
                     />
                   </Card>
                 </Card>
@@ -196,12 +196,12 @@ const FormItemList = (props: FormItemListProps) => {
   const { uuidKey, onUpdateFrom, value } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    const plans = value
+    const items = value
       ? value.map((item) => {
         return { ...item, time: moment(item.time).format('HH:mm') };
       })
       : [{}];
-    form.setFieldsValue({ plans });
+    form.setFieldsValue({ items });
     onUpdateFrom(uuidKey, form);
   }, [form, value]);
   return (
@@ -213,7 +213,7 @@ const FormItemList = (props: FormItemListProps) => {
       autoComplete="off"
       initialValues={value}
     >
-      <Form.List name={'plans'}>
+      <Form.List name={'items'}>
         {(fields, { add, remove }) => {
           return (
             <>
