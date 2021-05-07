@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import { Form, Button, Space, Row, Col, Input } from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
 
 import { saveActivity } from '@/services/activity';
-import type { FormInstance } from 'antd/lib/form/hooks/useForm';
-import moment from 'moment';
-import type { API } from '@/services/API';
 import { history } from 'umi';
 
 interface Step5Props {
@@ -20,13 +17,11 @@ const { TextArea } = Input;
 const FormItemLayoutOffset = 0;
 
 const Step5: React.FC<Step5Props> = (props) => {
-  const [listFrom] = useState<FormInstance[]>([]);
   const [form] = Form.useForm();
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    form.setFieldsValue({ schedules: data?.schedules?.sections ?? [{}] });
-  }, []);
   const { data, dispatch, submitting } = props;
+  useEffect(() => {
+    form.setFieldsValue({ ...data });
+  }, [data, form]);
   if (!data) {
     return null;
   }
@@ -73,28 +68,7 @@ const Step5: React.FC<Step5Props> = (props) => {
         type: 'addteambuilding/saveCurrentStep',
         payload: {},
       });
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-      // const planPromises = listFrom.map(async (form) => {
-      //   const plan = await form.getFieldsValue();
-      //   // eslint-disable-next-line @typescript-eslint/no-shadow
-      //   return plan.plans.map((plan: API.TeamBuilding_Schedule_Item) => {
-      //     const time = moment(plan.time, 'HH:mm').valueOf();
-      //     return { ...plan, time };
-      //   });
-      // });
-      // const plans = await Promise.all(planPromises);
-      // const schedules = values?.schedules?.map(
-      //   (schedule: API.TeamBuilding_Schedule_Section, index: number) => {
-      //     const { title, sub_title, icon } = schedule;
-      //     const items = plans[index];
-      //     return { title, sub_title, icon, items };
-      //   },
-      // );
-      // const booking_notes = values?.booking_notes;
-      // const safety_notes = values?.safety_notes;
-      // const warm_tips = values?.warm_tips;
-      // const { hold_people = {}, feature = [], ...others }: any = data;
-      // const [first] = Array.isArray(feature) ? feature : [feature];
+
       if (data?.id === undefined || data?.id === 0) {
         data.status = 0;
       }
@@ -114,7 +88,7 @@ const Step5: React.FC<Step5Props> = (props) => {
   return (
     <Form
       style={{ height: '100%', marginTop: 40 }}
-      name={'plan'}
+      name={'tips'}
       form={form}
       layout='vertical'
       autoComplete='off'

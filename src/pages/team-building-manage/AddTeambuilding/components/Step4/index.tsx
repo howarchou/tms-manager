@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Form, Button, Space, Row, Col, Input, InputNumber, Card, Descriptions } from 'antd';
+import React, { useEffect} from 'react';
+import { Form, Button, Space, Row, Col, Input, InputNumber } from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { API } from '@/services/API';
 
 interface Step4Props {
   data?: StateType['step'];
@@ -13,10 +12,6 @@ interface Step4Props {
 }
 const { TextArea } = Input;
 const FormItemLayoutOffset = 0;
-const SCALE = 2;
-let sum: number = 0;
-const num = 0;
-
 const Step4: React.FC<Step4Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
@@ -86,7 +81,6 @@ const Step4: React.FC<Step4Props> = (props) => {
       autoComplete="off"
       initialValues={data}
     >
-      {/*<FeeDetails id={data?.id} type={'activity'} />*/}
       <Form.List name="fee">
         {(fields, { add, remove }) => (
           <>
