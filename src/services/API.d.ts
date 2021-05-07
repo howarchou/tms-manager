@@ -109,13 +109,12 @@ declare namespace API {
     feature?: TeamBuilding_Feature;
   }
 
-  interface TeamBuilding_Schedules {
-    activity_id: string;
-    sections: TeamBuilding_Schedule_Section[];
-  }
+  // interface TeamBuilding_Schedules {
+  //   activity_id: string;
+  //   sections: TeamBuilding_Schedule_Section[];
+  // }
 
-  interface TeamBuilding_Schedule_Section {
-    uuidKey?: string;
+  interface TeamBuilding_Schedules {
     title: string;
     sub_title: string;
     date: number;
