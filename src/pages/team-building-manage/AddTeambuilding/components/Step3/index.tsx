@@ -210,7 +210,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                                             if (fields.length !== 1) {
                                               remove(field.name);
                                             } else {
-                                              message.warning('至少保留一个');
+                                              message.warning('至少保留一个').then();
                                             }
                                           }}
                                         />
@@ -231,7 +231,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                                       {...field}
                                       name={[field.name, 'pictures']}
                                       fieldKey={[field.fieldKey, 'pictures']}
-                                      rules={[{ required: true, message: '请选择图片' }]}
+                                      rules={[{ message: '请选择图片' }]}
                                     >
                                       <UploadComponent
                                         showUploadList={true}
