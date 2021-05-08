@@ -231,7 +231,6 @@ const Step3: React.FC<Step3Props> = (props) => {
                                       {...field}
                                       name={[field.name, 'pictures']}
                                       fieldKey={[field.fieldKey, 'pictures']}
-                                      rules={[{ message: '请选择图片' }]}
                                     >
                                       <UploadComponent
                                         showUploadList={true}
