@@ -26,7 +26,7 @@ const Step3: React.FC<Step3Props> = (props) => {
   const { data, dispatch, submitting } = props;
   const [form] = Form.useForm();
   useEffect(() => {
-    form.setFieldsValue({ ...data, schedule: data?.schedule ?? [{items:[{}]}] });
+    form.setFieldsValue({ ...data, schedule: data?.schedule ?? [{ items: [{}] }] });
   }, [data, form]);
   if (!data) {
     return null;
@@ -86,7 +86,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                   style={{ marginTop: 20 }}
                   extra={
                     <Space align={'center'}>
-                      <PlusOutlined onClick={() => add()} />
+                      <PlusOutlined onClick={() => add({'items':[{}]}, index + 1)} />
                       <MinusCircleOutlined
                         onClick={() => {
                           if (fields.length !== 1) {
@@ -147,7 +147,7 @@ const Step3: React.FC<Step3Props> = (props) => {
                           return (
                             <>
                               {/* eslint-disable-next-line @typescript-eslint/no-shadow */}
-                              {fields.map((field) => (
+                              {fields.map((field, index) => (
                                 <div key={field.key}>
                                   <Row
                                     gutter={FormRowLayoutSpan}
@@ -164,7 +164,6 @@ const Step3: React.FC<Step3Props> = (props) => {
                                         label='标题'
                                         name={[field.name, 'title']}
                                         fieldKey={[field.fieldKey, 'title']}
-                                        rules={[{ required: true, message: '请输入标题' }]}
                                       >
                                         <Input placeholder={'请输入标题'} />
                                       </Form.Item>
@@ -186,7 +185,6 @@ const Step3: React.FC<Step3Props> = (props) => {
                                         label='图标'
                                         name={[field.name, 'icon']}
                                         fieldKey={[field.fieldKey, 'icon']}
-                                        rules={[{ required: true, message: '请选择图标' }]}
                                       >
                                         <IconSelect data={scheduleIconConfig()} placeholder={'请选择类别'} />
                                       </Form.Item>
@@ -197,14 +195,13 @@ const Step3: React.FC<Step3Props> = (props) => {
                                         label='具体时间'
                                         name={[field.name, 'time']}
                                         fieldKey={[field.fieldKey, 'time']}
-                                        rules={[{ required: true, message: '请选择时间' }]}
                                       >
                                         <Input placeholder={'请输入时间例如:11:30'} />
                                       </Form.Item>
                                     </Col>
                                     <Col span={1} offset={FormItemLayoutOffset}>
                                       <Space className={styles.actionRow} align={'center'}>
-                                        <PlusOutlined onClick={() => add()} />
+                                        <PlusOutlined onClick={() => add({}, index + 1)} />
                                         <MinusCircleOutlined
                                           onClick={() => {
                                             if (fields.length !== 1) {
@@ -250,7 +247,8 @@ const Step3: React.FC<Step3Props> = (props) => {
                   </Card>
                 </Card>
               );
-            })}
+            })
+            }
           </>
         )}
       </Form.List>
