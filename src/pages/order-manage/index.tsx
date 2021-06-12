@@ -36,11 +36,17 @@ export default function () {
       title: '订单ID',
       dataIndex: 'order_no',
       key: 'order_no',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '类型',
       dataIndex: 'type',
       key: 'type',
+      width: 50,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (type: OrderType) => {
         return type === OrderType.TB? '团建' : '年会';
       },
@@ -49,6 +55,9 @@ export default function () {
       title: '来源',
       dataIndex: 'source',
       key: 'source',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (source: number) => {
         const sources: any[] = []
         // eslint-disable-next-line no-return-assign
@@ -59,27 +68,42 @@ export default function () {
     {
       title: '姓名',
       dataIndex: 'contact',
-      key: 'contact'
+      key: 'contact',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '联系方式',
       dataIndex: 'contact_mobile',
       key: 'contact_mobile',
+      width: 120,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '公司',
       dataIndex: 'company',
       key: 'company',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '人数',
       dataIndex: 'people_number',
       key: 'people_number',
+      width: 50,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '订单状态',
       key: 'status',
       dataIndex: 'status',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (status: string | number) => {
         const items: any[] = []
         // eslint-disable-next-line no-return-assign
@@ -91,15 +115,32 @@ export default function () {
       title: '未成单原因',
       key: 'uncompleted_reason',
       dataIndex: 'uncompleted_reason',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
+    },
+    {
+      title: '策划师',
+      key: 'planner',
+      dataIndex: 'planner',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '需求描述',
       key: 'remark',
       dataIndex: 'remark',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '操作',
       key: 'action',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (text: string, record: any) => (
         <Space size="middle">
           <a onClick={() => handleDetail(record)}>查看</a>
@@ -142,6 +183,7 @@ export default function () {
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}
+          size="middle"
         />
       </div>
     </PageContainer>
