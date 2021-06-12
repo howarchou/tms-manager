@@ -73,8 +73,8 @@ export default function () {
     },
     {
       title: '人数',
-      dataIndex: 'company',
-      key: 'company',
+      dataIndex: 'people_number',
+      key: 'people_number',
     },
     {
       title: '订单状态',
@@ -89,8 +89,8 @@ export default function () {
     },
     {
       title: '未成单原因',
-      key: 'planner',
-      dataIndex: 'planner',
+      key: 'uncompleted_reason',
+      dataIndex: 'uncompleted_reason',
     },
     {
       title: '需求描述',
@@ -110,6 +110,7 @@ export default function () {
   ];
 
   const handleEdit = (record: API.Order) => {
+    // @ts-ignore
     history.push({
       pathname: '/order/add',
       query: { id: record.id },
@@ -117,6 +118,7 @@ export default function () {
   };
 
   const handleDetail = (record: API.Order) => {
+    // @ts-ignore
     history.push({
       pathname: '/order/detail',
       query: { id: record.id },
