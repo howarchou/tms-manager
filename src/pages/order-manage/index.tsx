@@ -141,6 +141,7 @@ export default function () {
       width: 80,
       textWrap: 'word-break',
       ellipsis: true,
+      fixed: 'right',
       render: (text: string, record: any) => (
         <Space size="middle">
           <a onClick={() => handleDetail(record)}>查看</a>
