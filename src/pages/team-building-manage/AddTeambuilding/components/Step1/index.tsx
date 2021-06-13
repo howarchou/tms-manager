@@ -111,24 +111,26 @@ const Step1: React.FC<Step1Props> = (props) => {
             <Form.Item label='类别' name='type' rules={[{ required: true, message: '请选择类别' }]}>
               <Select placeholder={'请选择类别'}>
                 {activityTypeConfig().map((type) => {
-                  return (
-                    <OptGroup key={'activity-type'} label={type.text}>
-                      {
-                        type.items?.map((icon: { value: Key | undefined; icon: string | undefined; text: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) => {
-                          return (
-                          <Select.Option key={icon.value} value={icon.value?? 0}>
-                            <div style={{ display: 'flex', alignItems: 'center' }}>
-                              <img src={icon.icon} style={{ marginRight: 8, width: 10, height: 12 }}  alt={"图标"}/>
-                              {icon.text}
-                            </div>
-                          </Select.Option>
-                        );
-                        })
-                      }
-                    </OptGroup>
-                  );
-                },
-              )}
+                    return (
+                      <OptGroup label={type.text}>
+                        {
+                          type.items?.map((icon: { value: Key | undefined; icon: string | undefined; text: string | number | boolean | {} | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactNodeArray | React.ReactPortal | null | undefined; }) => {
+                            return (
+                              <Select.Option key={icon.value} value={icon.value ?? 0}>
+                                {
+                                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <img src={icon.icon} style={{ marginRight: 8, width: 10, height: 12 }} alt={'图标'} />
+                                    {icon.text}
+                                  </div>
+                                }
+                              </Select.Option>
+                            );
+                          })
+                        }
+                      </OptGroup>
+                    );
+                  },
+                )}
               </Select>
             </Form.Item>
           </Col>
