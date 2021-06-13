@@ -10,6 +10,7 @@ import FeeDetails from '@/components/FeeDetails/FeeDetails';
 import styles from './AddOrder.less';
 import { activityTypeConfig, areaConfig, orderSourceConfig, orderStatusConfig, uuid } from '@/helpers';
 import PriceDetails from '@/components/PriceElemets/PriceDetails';
+import HeaderBack from '@/components/HeaderBack';
 
 const FormItem = Form.Item;
 const { Option, OptGroup } = Select;
@@ -60,8 +61,15 @@ const AddOrder: FC<AddorderProps> = (props) => {
     setOpen(uuid(8));
   };
 
+  const handleLeftClick = () => {
+    history.push({
+      pathname: '/order/list',
+    });
+  };
+
   return (
-    <PageContainer title={'新增订单'} className={styles.addOrder}>
+    <PageContainer title={<HeaderBack title={data?.id ? '编辑订单' : '新增订单'} onBackClick={handleLeftClick} />}
+                   className={styles.addOrder}>
       <Card bordered={false}>
         <Form
           style={{ marginTop: 8 }}
@@ -119,7 +127,14 @@ const AddOrder: FC<AddorderProps> = (props) => {
                   },
                 ]}
               >
-                <PriceDetails showLabel={!!data?.id} onFeeDetailClick={handleFeeDetail} />
+                <InputNumber style={{ width: '100%' }} placeholder='单价' />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={FormRowLayoutSpan}>
+            <Col span={12} offset={FormItemLayoutOffset}>
+              <FormItem label={'未成单原因'} name='uncompleted_reason'>
+                <TextArea placeholder='未成单原因' rows={3} />
               </FormItem>
             </Col>
           </Row>
@@ -213,20 +228,20 @@ const AddOrder: FC<AddorderProps> = (props) => {
                 <Input placeholder='请输入活动策划师' />
               </FormItem>
             </Col>
-            <Col span={FormItemLayoutSpan}>
-              <FormItem
-                label={'策划师电话'}
-                name='planner_mobile'
-                rules={[
-                  {
-                    required: true,
-                    message: '请输入策划师电话',
-                  },
-                ]}
-              >
-                <Input style={{ width: '100%' }} placeholder='策划师电话' />
-              </FormItem>
-            </Col>
+            {/*<Col span={FormItemLayoutSpan}>*/}
+            {/*  <FormItem*/}
+            {/*    label={'策划师电话'}*/}
+            {/*    name='planner_mobile'*/}
+            {/*    rules={[*/}
+            {/*      {*/}
+            {/*        required: true,*/}
+            {/*        message: '请输入策划师电话',*/}
+            {/*      },*/}
+            {/*    ]}*/}
+            {/*  >*/}
+            {/*    <Input style={{ width: '100%' }} placeholder='策划师电话' />*/}
+            {/*  </FormItem>*/}
+            {/*</Col>*/}
           </Row>
           <Row gutter={FormRowLayoutSpan}>
             <Col span={FormItemLayoutSpan} offset={FormItemLayoutOffset}>
@@ -322,7 +337,6 @@ const AddOrder: FC<AddorderProps> = (props) => {
           </Row>
         </Form>
       </Card>
-      <FeeDetails open={open} id={data?.id} />
     </PageContainer>
   );
 };

@@ -16,10 +16,26 @@ const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
 
 export default function () {
+  const [orderStatus, setOrderStatus] = useState<string[]>([]);
+  const [sources, setSources] = useState<string[]>([]);
   const [data, setData] = useState<API.ListResponsePayload<API.Order>>();
 
   useEffect(() => {
     fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
+  }, []);
+
+  useEffect(() => {
+    const items: any[] = [];
+    // eslint-disable-next-line no-return-assign
+    orderStatusConfig().map(item => items[item.value] = item.text)
+    setOrderStatus(items);
+  }, []);
+
+  useEffect(() =>{
+    const items: any[] = [];
+    // eslint-disable-next-line no-return-assign
+    orderSourceConfig().map(item => items[item.value] = item.text)
+    setSources(items);
   }, []);
 
   const fetchData = async (params: API.ListParam) => {
@@ -59,10 +75,7 @@ export default function () {
       textWrap: 'word-break',
       ellipsis: true,
       render: (source: number) => {
-        const sources: any[] = []
-        // eslint-disable-next-line no-return-assign
-        orderSourceConfig().map(item => sources[item.value] = item.text)
-        return sources[source]?? "";
+        return sources[source]?? '';
       },
     },
     {
@@ -105,10 +118,7 @@ export default function () {
       textWrap: 'word-break',
       ellipsis: true,
       render: (status: string | number) => {
-        const items: any[] = []
-        // eslint-disable-next-line no-return-assign
-        orderStatusConfig().map(item => items[item.value] = item.text)
-        return items[status]?? "";
+        return orderStatus[status]??''
       },
     },
     {
@@ -134,6 +144,15 @@ export default function () {
       width: 200,
       textWrap: 'word-break',
       ellipsis: true,
+    },
+    {
+      title: '创建时间',
+      key: 'created_at',
+      dataIndex: 'created_at',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
+      render: (text: number) => moment(text).format('YYYY-MM-DD HH:mm:ss')
     },
     {
       title: '操作',

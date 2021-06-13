@@ -26,6 +26,7 @@ export function detailDescribe(): DetailDescribeIF[] {
   return [
     { key: 'order_no', label: '订单ID' },
     { key: 'status', label: '订单状态' },
+    { key: 'uncompleted_reason', label: '未成单原因' },
     { key: 'name', label: '订单名称' },
     { key: 'price', label: '订单金额' },
     { key: 'area', label: '活动地区' },
@@ -33,7 +34,6 @@ export function detailDescribe(): DetailDescribeIF[] {
     { key: 'start_date', label: '活动起始时间' },
     { key: 'days', label: '活动天数' },
     { key: 'planner', label: '活动策划师' },
-    { key: 'mobile', label: '策划师电话' },
     { key: 'description', label: '活动描述' },
     { key: 'company', label: '客户公司' },
     { key: 'contact', label: '客户联系人' },
