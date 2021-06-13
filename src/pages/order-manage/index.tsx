@@ -173,14 +173,15 @@ export default function () {
 
   return (
     <PageContainer title={'团建订单'}>
-      <div className={styles.team_buildin_list}>
-        <div className={styles.team_buildin_add}>
+      <div className={styles.team_building_list}>
+        <div className={styles.team_building_add}>
           <Button type="primary" onClick={handleAdd}>
             添加
           </Button>
         </div>
         <Table
           key={'order_list'}
+          // @ts-ignore
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}
