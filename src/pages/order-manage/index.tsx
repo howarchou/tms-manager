@@ -157,7 +157,7 @@ export default function () {
     {
       title: '操作',
       key: 'action',
-      width: 80,
+      width: 100,
       textWrap: 'word-break',
       ellipsis: true,
       fixed: 'right',
