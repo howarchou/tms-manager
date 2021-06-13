@@ -83,16 +83,25 @@ export default () => {
       title: '活动ID',
       dataIndex: 'series_number',
       key: 'series_number',
+      width: 210,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '活动名称',
       dataIndex: 'name',
       key: 'name',
+      width: 350,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '团建玩法',
       dataIndex: 'method',
       key: 'method',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (value: string) => {
         let text: string = '';
         methodConfig().forEach(method => {
@@ -107,17 +116,26 @@ export default () => {
       title: '人均价格',
       key: 'price',
       dataIndex: 'price',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '团建人数',
       key: 'people_number',
       dataIndex: 'people_number',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (people_number: number, record: API.TeamBuildingNew) => `${people_number} 人`,
     },
     {
       title: '团建天数',
       key: 'duration',
       dataIndex: 'duration',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (value: string) => {
         let text: string = '';
         durationConfig().forEach(duration => {
@@ -132,6 +150,9 @@ export default () => {
       title: '活动地区',
       key: 'area',
       dataIndex: 'area',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (value: string) => {
         let text: string = '';
         areaConfig().forEach(province => {
@@ -149,6 +170,9 @@ export default () => {
       title: '是否展示',
       key: 'status',
       dataIndex: 'status',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
       render: (text: string, record: API.TeamBuildingNew) => {
         return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
       },
@@ -156,6 +180,10 @@ export default () => {
     {
       title: '操作',
       key: 'action',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
+      fixed: 'right',
       render: (text: string, record: API.TeamBuildingNew) => (
         <Space size='middle'>
           <a onClick={() => handleState(record)}>
@@ -186,9 +214,11 @@ export default () => {
         </div>
         <Table
           rowKey='id'
+          // @ts-ignore
           columns={columns}
           dataSource={data?.data}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}
+          size={'middle'}
         />
       </div>
     </PageContainer>
