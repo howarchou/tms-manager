@@ -5,20 +5,21 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.less';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Popconfirm, Space, Table } from 'antd';
-import AddRecommendModal from './AddRecommendModal';
-import { HomeBannerStatus } from '@/services/API.Enum';
-import { API } from '@/services/API';
+import { HomeBannerStatus, OrderType } from '@/services/API.Enum';
+import type { API } from '@/services/API';
 import { customSetting } from '../../../../config/defaultSettings';
-import { getRecommends, saveRecommend, deleteRecommend } from '@/services/recommend';
+import { saveRecommend, deleteRecommend, getTypes } from '@/services/recommend';
 import { uuid } from '@/helpers';
+import moment from 'moment';
+import AddTypeModal from './AddTypeModal';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
 
 export default function () {
-  const [data, setData] = useState<API.ListResponsePayload<API.HomeBanner>>();
+  const [data, setData] = useState<API.ListResponsePayload<API.Type>>();
   const [page, setPage] = useState(DEFAULT_PAGE_NO);
-  const [editData, setEditData] = useState<API.HomeBanner>({} as API.HomeBanner);
+  const [editData, setEditData] = useState<API.Type>({} as API.Type);
   const [openModal, setOpenModal] = useState('');
 
   useEffect(() => {
@@ -26,57 +27,79 @@ export default function () {
   }, []);
 
   const fetchData = (params: API.ListParam) => {
-    getRecommends(params).then((res) => {
+    getTypes(params).then((res) => {
       setData(res);
     });
   };
 
   const columns = [
     {
-      title: '分类名称',
+      title: '城市',
+      dataIndex: 'province',
+      key: 'province',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
+    },
+    {
+      title: '名称',
       dataIndex: 'name',
       key: 'name',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
-      title: '封面跳转链接',
-      dataIndex: 'link',
-      key: 'link',
+      title: '图标',
+      dataIndex: 'icon',
+      key: 'icon',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
-      title: '缩略图',
-      key: 'cover',
-      dataIndex: 'cover',
-      render: (text: string) => {
-        const imgUrl = !!~text.indexOf(customSetting.globalFileUrl)
-          ? text
-          : `${customSetting.globalFileUrl}${text}`;
-        return <img className={styles.home_banner_column_img} src={imgUrl} />;
-      },
+      title: '图标(未选择)',
+      dataIndex: 'icon_unselect',
+      key: 'icon_unselect',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
-      title: '状态',
-      key: 'status',
-      dataIndex: 'status',
-      render: (text: string, record: API.SeasonHot) => {
-        return record.status === HomeBannerStatus.UP ? '已上架' : '已下架';
-      },
+      title: '图标(大)',
+      dataIndex: 'icon_large',
+      key: 'icon_large',
+      width: 200,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
-
+    {
+      title: '排序',
+      key: 'sort',
+      dataIndex: 'sort',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true
+    },
+    {
+      title: '首页显示?',
+      key: 'is_top',
+      dataIndex: 'is_top',
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
+    },
     {
       title: '操作',
       key: 'action',
-      render: (text: string, record: API.Recommend) => (
+      width: 100,
+      textWrap: 'word-break',
+      ellipsis: true,
+      fixed: 'right',
+      render: (text: string, record: any) => (
         <Space size="middle">
+          <a onClick={() => handleDetail(record)}>查看</a>
           <a onClick={() => handleEdit(record)}>编辑</a>
-          <a onClick={() => handleState(record)}>下架</a>
-          <Popconfirm
-            title="确认删除?"
-            onConfirm={() => handleDel(record)}
-            okText="删除"
-            cancelText="取消"
-          >
-            <a>删除</a>
-          </Popconfirm>
         </Space>
       ),
     },
@@ -113,7 +136,7 @@ export default function () {
     <PageContainer>
       <div className={styles.home_banner}>
         <div className={styles.home_banner_add}>
-          <AddRecommendModal onAdd={handAddResult} open={openModal} data={editData} />
+          <AddTypeModal onAdd={handAddResult} open={openModal} data={editData} />
         </div>
         <Table
           size="large"

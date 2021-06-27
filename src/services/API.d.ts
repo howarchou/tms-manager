@@ -157,6 +157,17 @@ declare namespace API {
     cover: string;
   }
 
+  export interface Type {
+    id: number;
+    province: number;
+    name: string;
+    icon: string;
+    iconUnselect: string;
+    iconLarge: string;
+    sort: number;
+    isTop: number;
+  }
+
   export interface BaseResponse<T> {
     message: string;
     payload: T;
