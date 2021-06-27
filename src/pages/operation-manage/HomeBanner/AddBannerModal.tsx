@@ -24,7 +24,7 @@ interface AddModalIF {
   open: string;
 }
 
-const AddBannnerModal = (props: AddModalIF) => {
+const AddBannerModal = (props: AddModalIF) => {
   const { data = { sort: 1 } as API.HomeBanner, open } = props;
   const [visible, setVisible] = useState(!!open);
   const [dataValue, setDataValue] = useState(data);
@@ -129,4 +129,4 @@ const AddBannnerModal = (props: AddModalIF) => {
   );
 };
 
-export default (props: AddModalIF) => <AddBannnerModal {...props} />;
+export default (props: AddModalIF) => <AddBannerModal {...props} />;

@@ -56,9 +56,10 @@ declare namespace API {
     status: string;
   }
 
-  export interface AddAccount {
+  export interface Account {
+    id?: number;
     email: string;
-    phone: string;
+    mobile: string;
     name: string;
     password: string;
     role: 'admin' | 'user';

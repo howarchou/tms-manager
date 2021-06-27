@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form, Input, Select } from 'antd';
-
-const { Option } = Select;
+import { Modal, Button, Form, Input } from 'antd';
+import type { API } from '@/services/API';
+import { saveAccount } from '@/services/account';
 
 const formItemLayout = {
   labelCol: {
@@ -15,24 +15,30 @@ const formItemLayout = {
 };
 
 interface AddModalIF {
-  onAdd: (data: API.AddAccount, isAdd: boolean) => void;
-  data: API.AddAccount;
+  onAdd: (data: API.Account, isAdd: boolean) => void;
+  data: API.Account;
   visibleModal: boolean;
 }
 
 const AddModal = (props: AddModalIF) => {
-  const { visibleModal, data = { role: 'admin' } as API.AddAccount } = props;
+  const { visibleModal, data = { role: 'admin' } as API.Account } = props;
   const [visible, setVisible] = useState(visibleModal);
+  const [dataValue, setDataValue] = useState(data);
   const [form] = Form.useForm();
 
   useEffect(() => {
     setVisible(visibleModal);
-  }, [visibleModal]);
+    form.setFieldsValue(data);
+    setDataValue(data);
+  }, [data, form, visibleModal]);
 
   const handleOk = async () => {
     const values = await form.validateFields();
-    console.log(values);
-    props.onAdd(values as API.AddAccount, !data.phone);
+    const results = await saveAccount({
+      ...values,
+      id: dataValue?.id,
+    } as API.Account);
+    props.onAdd(results as API.Account, !data.mobile);
     setVisible(false);
   };
 
@@ -46,7 +52,7 @@ const AddModal = (props: AddModalIF) => {
         添加
       </Button>
       <Modal width={600} title="新增账号" visible={visible} onOk={handleOk} onCancel={handleCancel}>
-        <Form<API.AddAccount>
+        <Form<API.Account>
           {...formItemLayout}
           form={form}
           name="addUser"
@@ -54,7 +60,7 @@ const AddModal = (props: AddModalIF) => {
           scrollToFirstError
         >
           <Form.Item
-            name="phone"
+            name="mobile"
             label="手机号"
             rules={[
               {
@@ -63,7 +69,10 @@ const AddModal = (props: AddModalIF) => {
               },
             ]}
           >
-            <Input />
+            {
+              data?.mobile ?
+              <Input readOnly={true} /> : <Input />
+            }
           </Form.Item>
           <Form.Item
             name="email"
@@ -79,7 +88,10 @@ const AddModal = (props: AddModalIF) => {
               },
             ]}
           >
-            <Input />
+            {
+              data?.email ? <Input readOnly={true} /> :
+              <Input />
+            }
           </Form.Item>
           <Form.Item
             name="name"
@@ -92,7 +104,10 @@ const AddModal = (props: AddModalIF) => {
               },
             ]}
           >
-            <Input />
+            {
+              data?.name? <Input readOnly={true} /> :
+              <Input />
+            }
           </Form.Item>
           <Form.Item
             name="password"
@@ -108,12 +123,12 @@ const AddModal = (props: AddModalIF) => {
             <Input.Password />
           </Form.Item>
 
-          <Form.Item name="role" label="角色" rules={[{ required: true, message: '请选择角色' }]}>
-            <Select>
-              <Option value="admin">管理员</Option>
-              <Option value="user">普通用户</Option>
-            </Select>
-          </Form.Item>
+          {/* <Form.Item name="role" label="角色" rules={[{ required: true, message: '请选择角色' }]}> */}
+          {/*  <Select> */}
+          {/*    <Option value="admin">管理员</Option> */}
+          {/*    <Option value="user">普通用户</Option> */}
+          {/*  </Select> */}
+          {/* </Form.Item> */}
         </Form>
       </Modal>
     </>
