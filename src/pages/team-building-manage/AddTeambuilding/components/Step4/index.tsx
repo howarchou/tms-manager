@@ -1,5 +1,5 @@
-import React, { useEffect} from 'react';
-import { Form, Button, Space, Row, Col, Input, InputNumber } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { Form, Button, Space, Row, Col, Input, InputNumber, Card, Descriptions } from 'antd';
 import type { Dispatch } from 'umi';
 import { connect } from 'umi';
 import type { StateType } from '../../model';
@@ -23,6 +23,11 @@ const Step4: React.FC<Step4Props> = (props) => {
   if (!data) {
     return null;
   }
+  const SCALE = 2;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [num, setNum] = useState(1);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [sum, setSum] = useState(0);
   const { getFieldsValue } = form;
   const onPrev = () => {
     if (dispatch) {
@@ -58,6 +63,7 @@ const Step4: React.FC<Step4Props> = (props) => {
   const handleTotalPrice = () => {
     const value = form.getFieldsValue();
     const {fee} = value;
+    let sumTemp = 0;
     if (fee && fee.length) {
         const calFee = fee.map((feeItem: { days: number; price: number; num: number; total_price: any }) => {
           if (Number.isNaN(feeItem.days) || Number.isNaN(feeItem.price) || Number.isNaN(feeItem.num)) {
@@ -65,10 +71,25 @@ const Step4: React.FC<Step4Props> = (props) => {
           }
           // eslint-disable-next-line no-param-reassign
           feeItem.total_price = feeItem.days * feeItem.price * feeItem.num;
+          sumTemp += feeItem.total_price
           return { ...feeItem};
         });
        form.setFieldsValue({ ...calFee });
     }
+    setSum(sumTemp)
+  };
+
+  const PeopleNum: FC<{ num: number }> = ({ num }) => {
+    return (
+      <Row align="middle">
+        <span style={{ marginRight: 10 }}>人数:</span>
+        <InputNumber
+          value={num}
+          placeholder={'人数'}
+          onChange={(value) => setNum(value as number)}
+        />
+      </Row>
+    );
   };
 
   return (
@@ -81,6 +102,18 @@ const Step4: React.FC<Step4Props> = (props) => {
       autoComplete="off"
       initialValues={data}
     >
+      <Card style={{ marginBottom: 10 }}>
+        <Descriptions title={'统计信息'} column={4} extra={<PeopleNum num={num} />}>
+          <Descriptions.Item label={'总计'}>{Number(sum).toFixed(SCALE)}</Descriptions.Item>
+          <Descriptions.Item label={'含税'}>
+            {Number(sum * Number(1 + 0.26)).toFixed(SCALE)}
+          </Descriptions.Item>
+          <Descriptions.Item label={'税率'}>{'6.00%'}</Descriptions.Item>
+          <Descriptions.Item label={'人均'}>
+            {num ? Number(sum / num).toFixed(SCALE) : '0.00'}
+          </Descriptions.Item>
+        </Descriptions>
+      </Card>
       <Form.List name="fee">
         {(fields, { add, remove }) => (
           <>

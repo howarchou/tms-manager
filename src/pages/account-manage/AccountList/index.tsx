@@ -80,13 +80,13 @@ export default () => {
       title: '操作',
       key: 'action',
       render: (text: string, record: any) => (
-        <Space size="middle">
+        <Space size='middle'>
           <a onClick={() => handleEdit(record)}>修改密码</a>
           <Popconfirm
-            title="确认删除?"
+            title='确认删除?'
             onConfirm={() => handleDel(record)}
-            okText="删除"
-            cancelText="取消"
+            okText='删除'
+            cancelText='取消'
           >
             <a>删除</a>
           </Popconfirm>
@@ -101,7 +101,16 @@ export default () => {
         <div className={styles.table_header}>
           <AddModal onAdd={handleAdd} data={editData} visibleModal={visible} />
         </div>
-        <Table columns={columns} dataSource={data?.data} />
+        <Table columns={columns} dataSource={data?.data}
+               pagination={{
+                 hideOnSinglePage: true,
+                 showSizeChanger: false,
+                 current: page,
+                 total: data?.total_count,
+                 showTotal:
+                   (total, range) => `第 ${range[0]}-${range[1]} 项, 共 ${total} 项`,
+                 onChange: handlePageChange,
+               }} />
       </div>
     </PageContainer>
   );
