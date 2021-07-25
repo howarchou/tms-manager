@@ -2,7 +2,7 @@
  *  Created by pw on 2020/8/29 5:23 下午.
  */
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button, Popconfirm, Col, Form, Select } from 'antd';
+import { Space, Table, Button, Popconfirm, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
@@ -87,7 +87,7 @@ export default () => {
   };
 
   const handleSearch = () => {
-    setPage(1)
+    setPage(DEFAULT_PAGE_NO);
     fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
@@ -247,7 +247,7 @@ export default () => {
                 },
               )}
             </Select>
-            <input type='text' placeholder={'活动名称'} value={queryName} onChange={handleSearchNameChange} />
+            <Input style={{ width: 200, marginLeft: 20, marginRight: 20 }} type='text' placeholder={'活动名称'} value={queryName} allowClear={true} onChange={handleSearchNameChange} />
             <Button type='primary' icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
           </div>
         </div>
@@ -256,10 +256,16 @@ export default () => {
           // @ts-ignore
           columns={columns}
           dataSource={data?.data}
-          hideOnSinglePage={true}
-          showSizeChanger={false}
-          current={page}
-          pagination={{ total: data?.total_count, onChange: handlePageChange }}
+
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: false,
+            current: page,
+            total: data?.total_count,
+            showTotal:
+              (total, range) => `第 ${range[0]}-${range[1]} 项, 共 ${total} 项`,
+            onChange: handlePageChange,
+          }}
           size={'middle'}
         />
       </div>
