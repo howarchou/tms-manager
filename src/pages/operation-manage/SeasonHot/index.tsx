@@ -136,7 +136,15 @@ export default function () {
           size="large"
           columns={columns}
           dataSource={data?.data}
-          pagination={{ total: data?.total_count, onChange: handlePageChange }}
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: false,
+            current: page,
+            total: data?.total_count,
+            showTotal:
+              (total, range) => `第 ${range[0]}-${range[1]} 项, 共 ${total} 项`,
+            onChange: handlePageChange,
+          }}
         />
       </div>
     </PageContainer>
