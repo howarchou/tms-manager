@@ -2,7 +2,8 @@
  *  Created by pw on 2020/8/29 5:23 下午.
  */
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Button, Popconfirm } from 'antd';
+import { Space, Table, Button, Popconfirm, Col, Form, Select } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
 import { API } from '@/services/API';
@@ -16,16 +17,20 @@ import {
   methodConfig,
 } from '@/helpers/config';
 import { preview } from '@/helpers';
-import { deleteBanner } from '@/services/banner';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
 
+const { Option, OptGroup } = Select;
+
 export default () => {
   const [data, setData] = useState<API.ListResponsePayload<API.TeamBuildingNew>>();
+  const [queryArea, setQueryArea] = useState<number>(0);
+  const [queryName, setQueryName] = useState<string>('');
 
   useEffect(() => {
-    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
+    const listParam = { page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: 0, name: '' };
+    fetchData(listParam);
   }, []);
   const [page, setPage] = useState(DEFAULT_PAGE_NO);
 
@@ -47,7 +52,7 @@ export default () => {
 
   const handleState = async (record: API.TeamBuildingNew) => {
     await updateActivityState(record.id!!, !record.status);
-    await fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
+    await fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
   // const handleDetail = (record: API.TeamBuildingNew) => {
@@ -68,9 +73,21 @@ export default () => {
     preview(`teambuilding-teambuilding-detail?id=${record.encode_id}`);
   };
 
+  const handleSearchNameChange = (e: any) => {
+    setQueryName(e.target.value);
+  };
+
+  const handleSearchAreaChange = (e: any) => {
+    setQueryArea(e ?? 0);
+  };
+
   const handlePageChange = (page: number) => {
     setPage(page);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
+  };
+
+  const handleSearch = () => {
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
   const handleDel = async (record: API.TeamBuildingNew) => {
@@ -157,11 +174,11 @@ export default () => {
         let text: string = '';
         areaConfig().forEach(province => {
           province.items?.forEach(area => {
-            if (area.value === value) {
-              text = area.text;
-            }
-          }
-        )
+              if (area.value === value) {
+                text = area.text;
+              }
+            },
+          );
         });
         return text;
       },
@@ -192,10 +209,10 @@ export default () => {
           <a onClick={() => handleEdit(record)}>编辑</a>
           <a onClick={() => handlePreview(record)}>预览</a>
           <Popconfirm
-            title="确认删除?"
+            title='确认删除?'
             onConfirm={() => handleDel(record)}
-            okText="删除"
-            cancelText="取消"
+            okText='删除'
+            cancelText='取消'
           >
             <a>删除</a>
           </Popconfirm>
@@ -206,11 +223,32 @@ export default () => {
   return (
     <PageContainer>
       <div className={styles.team_building_list}>
-        {/*<AddTeambuildPanel onResult={() => handAddResult()} />*/}
         <div className={styles.team_building_add}>
           <Button type='primary' onClick={handleAdd}>
             添加
           </Button>
+          <div className={styles.team_building_search}>
+            <Select placeholder={'请选择活动地区'} allowClear={true} onChange={handleSearchAreaChange}>
+              {areaConfig().map((province) => {
+                  return (
+                    <OptGroup key={'activity-area'} label={province.text}>
+                      {
+                        province.items?.map((area) => {
+                          return (
+                            <Option key={area.value} value={area.value}>
+                              {area.text}
+                            </Option>
+                          );
+                        })
+                      }
+                    </OptGroup>
+                  );
+                },
+              )}
+            </Select>
+            <input type='text' placeholder={'活动名称'} value={queryName} onChange={handleSearchNameChange} />
+            <Button type='primary' icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
+          </div>
         </div>
         <Table
           rowKey='id'

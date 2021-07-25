@@ -190,6 +190,8 @@ declare namespace API {
   export interface ListParam {
     page_no: number;
     page_size: number;
+    area?: number;
+    name?: string;
   }
 
   export interface Recommend {

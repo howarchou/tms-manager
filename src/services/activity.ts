@@ -9,7 +9,7 @@ export async function getActivities(
 ): Promise<API.ListResponsePayload<API.TeamBuildingNew>> {
   const { page_no = 1, page_size = 10 } = params;
   const result = await request<API.ListResponse<API.TeamBuildingNew>>(
-    `/api/activities?page_no=${page_no}&page_size=${page_size}`,
+    `/api/activities?page_no=${page_no}&page_size=${page_size}&area=${params.area}&name=${params.name}`,
   );
   return result.payload;
 }
