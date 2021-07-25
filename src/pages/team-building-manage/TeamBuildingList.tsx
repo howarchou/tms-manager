@@ -87,12 +87,13 @@ export default () => {
   };
 
   const handleSearch = () => {
+    setPage(1)
     fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
   const handleDel = async (record: API.TeamBuildingNew) => {
     await deleteActivity(record);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
   const columns = [
@@ -255,6 +256,9 @@ export default () => {
           // @ts-ignore
           columns={columns}
           dataSource={data?.data}
+          hideOnSinglePage={true}
+          showSizeChanger={false}
+          current={page}
           pagination={{ total: data?.total_count, onChange: handlePageChange }}
           size={'middle'}
         />
