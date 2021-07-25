@@ -190,7 +190,10 @@ const Step4: React.FC<Step4Props> = (props) => {
                 >
                   <InputNumber disabled={true} placeholder="总价" />
                 </Form.Item>
-                <MinusCircleOutlined onClick={() => remove(field.name)} />
+                <MinusCircleOutlined onClick={() => {
+                  remove(field.name);
+                  handleTotalPrice();
+                }} />
               </Space>
             ))}
             <Form.Item>
