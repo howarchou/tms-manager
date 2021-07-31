@@ -194,6 +194,15 @@ declare namespace API {
     name?: string;
   }
 
+  export interface OrderListParam {
+    page_no: number;
+    page_size: number;
+    status: number;
+    source: number;
+    planner: string;
+    company: string;
+  }
+
   export interface Recommend {
     id: string;
     name: string;

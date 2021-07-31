@@ -1,7 +1,7 @@
 /**
  *  Created by pw on 2020/10/24 3:43 下午.
  */
-import { API } from '@/services/API';
+import type { API } from '@/services/API';
 import { request } from '@@/plugin-request/request';
 
 export interface FeeDetailSaveIF {

@@ -4,41 +4,52 @@
 import React, { useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from '@/pages/team-building-manage/TeamBuildingList.less';
-import { Button, Space, Table } from 'antd';
+import { Button, Input, Select, Space, Table } from 'antd';
 import { history } from '@@/core/history';
 import type { API } from '@/services/API';
-import { HomeBannerStatus, OrderType } from '@/services/API.Enum';
+import { OrderType } from '@/services/API.Enum';
 import { getOrders } from '@/services/order';
 import moment from 'moment';
-import { activityTypeConfig, orderSourceConfig, orderStatusConfig } from '@/helpers';
+import { orderSourceConfig, orderStatusConfig } from '@/helpers';
+import { SearchOutlined } from '@ant-design/icons';
 
 const DEFAULT_PAGE_SIZE = 10;
 const DEFAULT_PAGE_NO = 1;
+const { Option } = Select;
 
-export default function () {
+// eslint-disable-next-line func-names
+export default function() {
   const [orderStatus, setOrderStatus] = useState<string[]>([]);
+  const [status, setStatus] = useState<number>(0);
+  const [source, setSource] = useState<number>(0);
+  const [planner, setPlanner] = useState<string>('');
+  const [company, setCompany] = useState<string>('');
   const [sources, setSources] = useState<string[]>([]);
   const [data, setData] = useState<API.ListResponsePayload<API.Order>>();
 
   useEffect(() => {
-    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE });
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner }).then(() => {});
+  }, [company, planner, source, status]);
+
+  useEffect(() => {
+    const items: any[] = [];
+    // eslint-disable-next-line no-return-assign
+    orderStatusConfig().map(item => items[item.value] = item.text);
+    setOrderStatus(items);
   }, []);
 
   useEffect(() => {
     const items: any[] = [];
     // eslint-disable-next-line no-return-assign
-    orderStatusConfig().map(item => items[item.value] = item.text)
-    setOrderStatus(items);
-  }, []);
-
-  useEffect(() =>{
-    const items: any[] = [];
-    // eslint-disable-next-line no-return-assign
-    orderSourceConfig().map(item => items[item.value] = item.text)
+    orderSourceConfig().map(item => items[item.value] = item.text);
     setSources(items);
   }, []);
 
-  const fetchData = async (params: API.ListParam) => {
+  const [page, setPage] = useState(DEFAULT_PAGE_NO);
+
+  const fetchData = async (params: API.OrderListParam) => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const data = await getOrders(params);
     setData(data);
   };
@@ -64,7 +75,7 @@ export default function () {
       textWrap: 'word-break',
       ellipsis: true,
       render: (type: OrderType) => {
-        return type === OrderType.TB? '团建' : '年会';
+        return type === OrderType.TB ? '团建' : '年会';
       },
     },
     {
@@ -74,8 +85,9 @@ export default function () {
       width: 100,
       textWrap: 'word-break',
       ellipsis: true,
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       render: (source: number) => {
-        return sources[source]?? '';
+        return sources[source] ?? '';
       },
     },
     {
@@ -117,8 +129,9 @@ export default function () {
       width: 80,
       textWrap: 'word-break',
       ellipsis: true,
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       render: (status: string | number) => {
-        return orderStatus[status]??''
+        return orderStatus[status] ?? '';
       },
     },
     {
@@ -152,7 +165,7 @@ export default function () {
       width: 200,
       textWrap: 'word-break',
       ellipsis: true,
-      render: (text: number) => moment(text).format('YYYY-MM-DD HH:mm:ss')
+      render: (text: number) => moment(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '操作',
@@ -162,8 +175,10 @@ export default function () {
       ellipsis: true,
       fixed: 'right',
       render: (text: string, record: any) => (
-        <Space size="middle">
+        <Space size='middle'>
+          {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
           <a onClick={() => handleDetail(record)}>查看</a>
+          {/* eslint-disable-next-line @typescript-eslint/no-use-before-define */}
           <a onClick={() => handleEdit(record)}>编辑</a>
         </Space>
       ),
@@ -186,25 +201,67 @@ export default function () {
     });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handlePageChange = (page: number) => {
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
+    setPage(page);
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner });
+  };
+
+  const handleSearch = () => {
+    setPage(DEFAULT_PAGE_NO);
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner});
   };
 
   return (
     <PageContainer title={'团建订单'}>
       <div className={styles.team_building_list}>
         <div className={styles.team_building_add}>
-          <Button type="primary" onClick={handleAdd}>
+          <Button type='primary' onClick={handleAdd}>
             添加
           </Button>
+          <div className={styles.team_building_search}>
+            <Select style={{ width: 100, marginLeft: 20, marginRight: 10 }} placeholder={'状态'} allowClear={true} onChange={(value) => setStatus(value as number)}>
+              {orderStatusConfig().map((item) => {
+                  return (
+                    <Option key={item.value} value={item.value}>
+                      {item.text}
+                    </Option>
+                  );
+                },
+              )}
+            </Select>
+            <Select style={{ width: 120, marginLeft: 10, marginRight: 10 }} placeholder={'来源'} allowClear={true} onChange={(value) => setSource(value as number)}>
+              {orderSourceConfig().map((item) => {
+                  return (
+                    <Option key={item.value} value={item.value}>
+                      {item.text}
+                    </Option>
+                  );
+                },
+              )}
+            </Select>
+            <Input style={{ width: 100, marginLeft: 10, marginRight: 10 }} type='text' placeholder={'策划师'}
+                   value={planner} allowClear={true} onChange={(e) => setPlanner(e.target.value as string)} />
+            <Input style={{ width: 200, marginLeft: 10, marginRight: 20 }} type='text' placeholder={'公司'}
+                   value={company} allowClear={true} onChange={(e) => setCompany(e.target.value as string)} />
+            <Button type='primary' icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
+          </div>
         </div>
         <Table
           key={'order_list'}
           // @ts-ignore
           columns={columns}
           dataSource={data?.data}
-          pagination={{ total: data?.total_count, onChange: handlePageChange }}
-          size="middle"
+          pagination={{
+            hideOnSinglePage: true,
+            showSizeChanger: false,
+            current: page,
+            total: data?.total_count,
+            showTotal:
+              (total, range) => `第 ${range[0]}-${range[1]} 项, 共 ${total} 项`,
+            onChange: handlePageChange,
+          }}
+          size='middle'
         />
       </div>
     </PageContainer>
