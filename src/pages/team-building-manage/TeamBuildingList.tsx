@@ -6,8 +6,8 @@ import { Space, Table, Button, Popconfirm, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from './TeamBuildingList.less';
-import { API } from '@/services/API';
-import { deleteActivity, getActivities, saveActivity, updateActivityState } from '@/services/activity';
+import type { API } from '@/services/API';
+import { deleteActivity, getActivities, updateActivityState } from '@/services/activity';
 import { HomeBannerStatus } from '@/services/API.Enum';
 import { history } from 'umi';
 
@@ -23,18 +23,21 @@ const DEFAULT_PAGE_NO = 1;
 
 const { Option, OptGroup } = Select;
 
-export default () => {
+// eslint-disable-next-line func-names
+export default function() {
   const [data, setData] = useState<API.ListResponsePayload<API.TeamBuildingNew>>();
   const [queryArea, setQueryArea] = useState<number>(0);
   const [queryName, setQueryName] = useState<string>('');
 
   useEffect(() => {
-    const listParam = { page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: 0, name: '' };
-    fetchData(listParam);
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: 0, name: '' }).then(() => {
+    });
   }, []);
   const [page, setPage] = useState(DEFAULT_PAGE_NO);
 
   const fetchData = async (params: API.ListParam) => {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const data = await getActivities(params);
     setData(data);
   };
@@ -73,27 +76,22 @@ export default () => {
     preview(`teambuilding-teambuilding-detail?id=${record.encode_id}`);
   };
 
-  const handleSearchNameChange = (e: any) => {
-    setQueryName(e.target.value);
-  };
-
-  const handleSearchAreaChange = (e: any) => {
-    setQueryArea(e ?? 0);
-  };
-
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const handlePageChange = (page: number) => {
     setPage(page);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName }).then(() => {
+    });
   };
 
   const handleSearch = () => {
     setPage(DEFAULT_PAGE_NO);
-    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName }).then(() => {
+    });
   };
 
   const handleDel = async (record: API.TeamBuildingNew) => {
     await deleteActivity(record);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
+    await fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, area: queryArea, name: queryName });
   };
 
   const columns = [
@@ -145,7 +143,7 @@ export default () => {
       width: 80,
       textWrap: 'word-break',
       ellipsis: true,
-      render: (people_number: number, record: API.TeamBuildingNew) => `${people_number} 人`,
+      render: (people_number: number) => `${people_number} 人`,
     },
     {
       title: '团建天数',
@@ -229,7 +227,7 @@ export default () => {
             添加
           </Button>
           <div className={styles.team_building_search}>
-            <Select placeholder={'请选择活动地区'} allowClear={true} onChange={handleSearchAreaChange}>
+            <Select placeholder={'请选择活动地区'} allowClear={true} onChange={(value) => setQueryArea(value as number)}>
               {areaConfig().map((province) => {
                   return (
                     <OptGroup key={'activity-area'} label={province.text}>
@@ -247,16 +245,16 @@ export default () => {
                 },
               )}
             </Select>
-            <Input style={{ width: 200, marginLeft: 20, marginRight: 20 }} type='text' placeholder={'活动名称'} value={queryName} allowClear={true} onChange={handleSearchNameChange} />
+            <Input style={{ width: 200, marginLeft: 20, marginRight: 20 }} type='text' placeholder={'活动名称'}
+                   value={queryName} allowClear={true} onChange={(e) => setQueryName(e.target.value as string)} />
             <Button type='primary' icon={<SearchOutlined />} onClick={handleSearch}>搜索</Button>
           </div>
         </div>
         <Table
-          rowKey='id'
+          rowKey='team-building-list'
           // @ts-ignore
           columns={columns}
           dataSource={data?.data}
-
           pagination={{
             hideOnSinglePage: true,
             showSizeChanger: false,

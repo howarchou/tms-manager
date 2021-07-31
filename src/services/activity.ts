@@ -7,9 +7,9 @@ import type { API } from '@/services/API';
 export async function getActivities(
   params: API.ListParam,
 ): Promise<API.ListResponsePayload<API.TeamBuildingNew>> {
-  const { page_no = 1, page_size = 10 } = params;
+  const { page_no = 1, page_size = 10, area = '', name = '' } = params;
   const result = await request<API.ListResponse<API.TeamBuildingNew>>(
-    `/api/activities?page_no=${page_no}&page_size=${page_size}&area=${params.area}&name=${params.name}`,
+    `/api/activities?page_no=${page_no}&page_size=${page_size}&area=${area}&name=${name}`,
   );
   return result.payload;
 }
