@@ -36,6 +36,7 @@ export function detailDescribe(): DetailDescribeIF[] {
     { key: 'planner', label: '活动策划师' },
     { key: 'description', label: '活动描述' },
     { key: 'company', label: '客户公司' },
+    { key: 'people_number', label: '团建人数' },
     { key: 'contact', label: '客户联系人' },
     { key: 'contact_mobile', label: '客户电话' },
     { key: 'source', label: '来源' },
