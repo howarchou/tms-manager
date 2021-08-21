@@ -20,6 +20,7 @@ const ActivitySelect: React.FC<ActivitySelectProps> = ({ onChange }) => {
 
   let timeout: NodeJS.Timeout | null;
 
+  // eslint-disable-next-line @typescript-eslint/unified-signatures
   const fetch = (keywords: any, callback: { (d: any): void; (arg0: any[]): void; }) => {
     if (timeout) {
       clearTimeout(timeout);
@@ -31,7 +32,7 @@ const ActivitySelect: React.FC<ActivitySelectProps> = ({ onChange }) => {
         code: 'utf-8',
         q: keywords,
       });
-      const list = await getActivities({ page_no: 1, page_size: 9999 });
+      const list = await getActivities({ page_no: 1, page_size: 9999, name: keywords, area: 0 });
       const temp: any[] = [];
       list.data.map(d => {
         temp.push({

@@ -226,7 +226,7 @@ const Formadvancedformtwo: FC<FormadvancedformtwoProps> = ({ submitting, locatio
                 label={fieldLabels.activity}
                 name={'activity_id'}
                 >
-                <ActivitySelect/>
+                <ActivitySelect activity={data?.activity} />
               </Form.Item>
             </Col>
           </Row>
