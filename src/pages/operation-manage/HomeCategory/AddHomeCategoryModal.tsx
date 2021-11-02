@@ -4,8 +4,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, InputNumber, Modal, Select, Spin } from 'antd';
 import { debounce } from 'lodash';
-const { Option } = Select;
-import { API } from '@/services/API';
+
+const {Option} = Select;
+import type { API } from '@/services/API';
 import { saveHomeCategory } from '@/services/homeCategory';
 import { typeIconConfig } from '@/helpers/config';
 import { IconSelect } from '@/pages/team-building-manage/AddTeambuilding/components/IconSelect';
@@ -13,13 +14,13 @@ import { getActivities } from '@/services/activity';
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 4 },
+    xs: {span: 24},
+    sm: {span: 4}
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
+    xs: {span: 24},
+    sm: {span: 16}
+  }
 };
 
 interface AddModalIF {
@@ -29,9 +30,9 @@ interface AddModalIF {
 }
 
 const AddHomeCategoryModal = (props: AddModalIF) => {
-  const { open } = props;
+  const {open} = props;
   const [data, setData] = useState<API.Home_Category>(
-    props.data || ({ sort: 1 } as API.Home_Category),
+    props.data || ({sort: 1} as API.Home_Category)
   );
   const [visible, setVisible] = useState(!!open);
   const [form] = Form.useForm();
@@ -43,8 +44,8 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
   }, [open + data?.id]);
 
   const handleAdd = () => {
-    setData({ id: undefined } as API.Home_Category);
-    form.setFieldsValue({ type_id: undefined, activity_id: undefined, sort: undefined });
+    setData({id: undefined} as API.Home_Category);
+    form.setFieldsValue({type_id: undefined, activity_id: undefined, sort: undefined});
     setVisible(true);
   };
 
@@ -54,7 +55,7 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
     const results = await saveHomeCategory({
       ...values,
       status: data?.status || 0,
-      id: data?.id,
+      id: data?.id
     } as API.Home_Category);
     props.onAdd(results);
     setVisible(false);
@@ -74,7 +75,7 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
           {...formItemLayout}
           form={form}
           name="addCategory"
-          initialValues={{ ...data }}
+          initialValues={{...data}}
           scrollToFirstError
         >
           <Form.Item
@@ -83,11 +84,11 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
             rules={[
               {
                 required: true,
-                message: '请选择关联团建',
-              },
+                message: '请选择关联团建'
+              }
             ]}
           >
-            <ActivitySelect categoryId={data?.id} />
+            <ActivitySelect categoryId={data?.id}/>
           </Form.Item>
           <Form.Item
             name="sort"
@@ -95,15 +96,15 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
             rules={[
               {
                 required: true,
-                message: '请输入排序',
+                message: '请输入排序'
               },
               {
                 type: 'number',
-                message: '请输入数字',
-              },
+                message: '请输入数字'
+              }
             ]}
           >
-            <InputNumber placeholder={'排序'} />
+            <InputNumber placeholder={'排序'}/>
           </Form.Item>
         </Form>
       </Modal>
@@ -118,28 +119,30 @@ interface Props {
 }
 
 const ActivitySelect = (props: Props) => {
-  const { onChange, categoryId, value: defalueValue } = props;
+  const {onChange, categoryId, value: defalueValue} = props;
+  console.info('>>>123:~~~~~~~~~~111~~~~~~~~~~~~,%o', defalueValue);
   const [data, setData] = useState<API.TeamBuildingNew[]>([]);
-  const [value, setValue] = useState<any>(defalueValue ? { value: defalueValue } : undefined);
+  const [value, setValue] = useState<any>(defalueValue ? {value: defalueValue} : undefined);
   const [fetching, setFetching] = useState(false);
+
+  const fetchData = debounce(async (sv?: string) => {
+    setFetching(true);
+    const list = await getActivities({page_no: 1, page_size: 9999, name: sv} as API.ListParam);
+    setData(list.data || []);
+    setFetching(false);
+  }, 800);
 
   useEffect(() => {
     fetchData();
   }, [categoryId]);
 
-  const fetchData = debounce(async () => {
-    setFetching(true);
-    const list = await getActivities({ page_no: 1, page_size: 9999 });
-    setData(list.data);
-    setFetching(false);
-  }, 800);
 
-  const handleChange = (value: any) => {
+  const handleChange = (changeValue: any) => {
     setValue(value);
     setData([]);
     setFetching(false);
     if (onChange) {
-      onChange(value?.value);
+      onChange(changeValue?.value);
     }
   };
 
@@ -147,12 +150,15 @@ const ActivitySelect = (props: Props) => {
     <Select
       labelInValue
       value={value}
+      defaultValue={defalueValue}
       placeholder="请选择团建"
-      notFoundContent={fetching ? <Spin size="small" /> : null}
+      notFoundContent={fetching ? <Spin size="small"/> : null}
       filterOption={false}
-      // onSearch={fetchData}
+      onSearch={fetchData}
       onChange={handleChange}
-      style={{ width: '100%' }}
+      showSearch
+      allowClear
+      style={{width: '100%'}}
     >
       {data.map((d) => (
         <Option key={d.id} value={d.id!!}>

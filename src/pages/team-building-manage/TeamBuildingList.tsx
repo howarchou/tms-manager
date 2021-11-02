@@ -76,6 +76,14 @@ export default function() {
     preview(`teambuilding-teambuilding-detail?id=${record.encode_id}`);
   };
 
+  const handleCopy = (record: API.TeamBuildingNew) => {
+    history.push({
+      pathname: '/team-building/add',
+      query: { id: record?.id ? record.id.toString() : '' , copy: '1'},
+    });
+  };
+
+
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -207,6 +215,7 @@ export default function() {
           </a>
           <a onClick={() => handleEdit(record)}>编辑</a>
           <a onClick={() => handlePreview(record)}>预览</a>
+          <a onClick={() => handleCopy(record)}>复制</a>
           <Popconfirm
             title='确认删除?'
             onConfirm={() => handleDel(record)}

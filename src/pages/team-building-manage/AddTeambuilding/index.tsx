@@ -13,8 +13,9 @@ import { getActivityDetail } from '@/services/activity';
 import type { Dispatch } from '@@/plugin-dva/connect';
 import { history } from 'umi';
 import HeaderBack from '@/components/HeaderBack';
+import { API } from "@/services/API";
 
-const { Step } = Steps;
+const {Step} = Steps;
 
 interface AddTeamBuildingProps {
   current: StateType['current'];
@@ -25,48 +26,49 @@ interface AddTeamBuildingProps {
 const getCurrentStepAndComponent = (current?: string) => {
   switch (current) {
     case 'place':
-      return { step: 1, component: <Step2 /> };
+      return {step: 1, component: <Step2/>};
     case 'schedule':
-      return { step: 2, component: <Step3 /> };
+      return {step: 2, component: <Step3/>};
     case 'fee':
-      return { step: 3, component: <Step4 /> };
+      return {step: 3, component: <Step4/>};
     case 'notice':
-      return { step: 4, component: <Step5 /> };
+      return {step: 4, component: <Step5/>};
     case 'basic':
     default:
-      return { step: 0, component: <Step1 /> };
+      return {step: 0, component: <Step1/>};
   }
 };
 
-const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({ current, location  }) => {
-  const [stepComponent, setStepComponent] = useState<React.ReactNode>(<Step1 />);
+const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({current, location}) => {
+  const [stepComponent, setStepComponent] = useState<React.ReactNode>(<Step1/>);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const id = location?.query?.id;
+  const isCopy = location?.query?.copy === '1';
 
   useEffect(() => {
-    const { step, component } = getCurrentStepAndComponent(current);
+    const {step, component} = getCurrentStepAndComponent(current);
     setCurrentStep(step);
     setStepComponent(component);
   }, [current]);
 
   const handleLeftClick = () => {
     history.push({
-      pathname: '/team-building/list',
+      pathname: '/team-building/list'
     });
   };
 
   return (
     <PageContainer
-      title={<HeaderBack title={id ? '编辑团建' : '添加团建'} onBackClick={handleLeftClick} />}
+      title={<HeaderBack title={id && !isCopy ? '编辑团建' : '添加团建'} onBackClick={handleLeftClick}/>}
     >
       <Card bordered={false}>
         <div className={styles.pageContainer}>
           <Steps current={currentStep} className={styles.steps}>
-            <Step title="团建" />
-            <Step title="场地" />
-            <Step title="行程" />
-            <Step title="费用" />
-            <Step title="须知" />
+            <Step title="团建"/>
+            <Step title="场地"/>
+            <Step title="行程"/>
+            <Step title="费用"/>
+            <Step title="须知"/>
           </Steps>
           {stepComponent}
         </div>
@@ -75,12 +77,26 @@ const AddTeamBuilding: React.FC<AddTeamBuildingProps> = ({ current, location  })
   );
 };
 
+type  TeamBuildingNewTemp = (API.TeamBuildingNew & {
+  created_at: string
+  updated_at: string
+})
+
 const AddTeamBuildingWrapper = (props: any) => {
-  const { dispatch, location } = props;
+  const {dispatch, location} = props;
   const id = location?.query?.id;
+  const isCopy = location?.query?.copy === '1';
+
   useEffect(() => {
     if (id) {
       getActivityDetail(id).then((data) => {
+        if (isCopy) {
+          data.id = undefined;
+          (data as TeamBuildingNewTemp).updated_at = "";
+          (data as TeamBuildingNewTemp).created_at = "";
+          data.status = 0;
+          data.sort += 1;
+        }
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         handleUpdateData(data);
       });
@@ -95,17 +111,17 @@ const AddTeamBuildingWrapper = (props: any) => {
       const action = clear ? 'clearFormData' : 'saveStepFormData';
       dispatch({
         type: `addteambuilding/${action}`,
-        payload: data,
+        payload: data
       });
       dispatch({
         type: 'addteambuilding/saveCurrentStep',
-        payload: 'info',
+        payload: 'info'
       });
     }
   };
   return <AddTeamBuilding {...props} />;
 };
 
-export default connect(({ addteambuilding }: { addteambuilding: StateType }) => ({
-  current: addteambuilding.current,
+export default connect(({addteambuilding}: { addteambuilding: StateType }) => ({
+  current: addteambuilding.current
 }))(AddTeamBuildingWrapper);
