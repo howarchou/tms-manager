@@ -119,6 +119,7 @@ const Step4: React.FC<Step4Props> = (props) => {
           if (
             Number.isNaN(feeItem?.days) ||
             Number.isNaN(feeItem?.price) ||
+            Number.isNaN(feeItem?.cost_price) ||
             Number.isNaN(feeItem?.num)
           ) {
             return feeItem;
