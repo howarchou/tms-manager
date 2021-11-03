@@ -74,7 +74,7 @@ const Step1: React.FC<Step1Props> = (props) => {
   };
 
 
-  const onValidateForm = async () => {
+  const onValidateForm = async (flag?: string) => {
     const values = await form.validateFields();
     // const values = await getFieldsValue();
     if (dispatch) {
@@ -87,7 +87,7 @@ const Step1: React.FC<Step1Props> = (props) => {
         payload: 'place'
       });
 
-      if (isCopy) {
+      if (isCopy && 'submit' === flag) {
         if (data?.id === undefined || data?.id === 0) {
           data.status = 0;
         }
@@ -309,11 +309,11 @@ const Step1: React.FC<Step1Props> = (props) => {
           align={'baseline'}
         >
           <Form.Item>
-            <Button onClick={onValidateForm}>
+            <Button onClick={()=>onValidateForm()}>
               下一步
             </Button>
             {
-              isCopy && <Button type='primary' onClick={onValidateForm} loading={submitting} style={{marginLeft: 8}}>
+              isCopy && <Button type='primary' onClick={() => onValidateForm('submit')} loading={submitting} style={{marginLeft: 8}}>
                 提交
               </Button>
             }
@@ -327,7 +327,7 @@ const Step1: React.FC<Step1Props> = (props) => {
 export default connect(({addteambuilding, loading}: {
   addteambuilding: StateType;
   loading: {
-    effects: { [key: string]: boolean };
+    effects: Record<string, boolean>;
   }
 }) => ({
   data: addteambuilding.step,

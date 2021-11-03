@@ -8,9 +8,68 @@ import { debounce } from 'lodash';
 const {Option} = Select;
 import type { API } from '@/services/API';
 import { saveHomeCategory } from '@/services/homeCategory';
-import { typeIconConfig } from '@/helpers/config';
-import { IconSelect } from '@/pages/team-building-manage/AddTeambuilding/components/IconSelect';
 import { getActivities } from '@/services/activity';
+
+interface Props {
+  onChange?: (value: string) => void;
+  value?: string;
+  categoryId: number | undefined;
+}
+
+const ActivitySelect = (props: Props) => {
+  const {onChange, categoryId, value: defalueValue} = props;
+  const [data, setData] = useState<API.TeamBuildingNew[]>([]);
+  const [value, setValue] = useState<any>(defalueValue ? {value: defalueValue} : undefined);
+  const [fetching, setFetching] = useState(false);
+
+  const fetchData = debounce(async (sv?: string) => {
+    setFetching(true);
+    const list = await getActivities({page_no: 1, page_size: 9999, name: sv} as API.ListParam);
+    setData(list.data || []);
+    setFetching(false);
+  }, 800);
+
+  useEffect(() => {
+    fetchData();
+  }, [categoryId]);
+
+  useEffect(()=>{
+    if(!defalueValue) setValue(defalueValue ? {value: defalueValue} : undefined)
+  }, [defalueValue])
+
+
+  const handleChange = (changeValue: any) => {
+    setValue(changeValue);
+    setData([]);
+    setFetching(false);
+    if (onChange) {
+      onChange(changeValue?.value);
+    }
+  };
+
+  return (
+    <Select
+      labelInValue
+      value={value}
+      defaultValue={defalueValue}
+      placeholder="请选择团建"
+      notFoundContent={fetching ? <Spin size="small"/> : null}
+      filterOption={false}
+      onSearch={fetchData}
+      onChange={handleChange}
+      showSearch
+      allowClear
+      style={{width: '100%'}}
+    >
+      {data.map((d) => (
+        <Option key={d.id} value={d.id!!}>
+          {d.name}
+        </Option>
+      ))}
+    </Select>
+  );
+};
+
 
 const formItemLayout = {
   labelCol: {
@@ -62,6 +121,7 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
   };
 
   const handleCancel = () => {
+    form.setFieldsValue({type_id: undefined, activity_id: undefined, sort: undefined});
     setVisible(false);
   };
 
@@ -109,63 +169,6 @@ const AddHomeCategoryModal = (props: AddModalIF) => {
         </Form>
       </Modal>
     </>
-  );
-};
-
-interface Props {
-  onChange?: (value: string) => void;
-  value?: string;
-  categoryId: number | undefined;
-}
-
-const ActivitySelect = (props: Props) => {
-  const {onChange, categoryId, value: defalueValue} = props;
-  console.info('>>>123:~~~~~~~~~~111~~~~~~~~~~~~,%o', defalueValue);
-  const [data, setData] = useState<API.TeamBuildingNew[]>([]);
-  const [value, setValue] = useState<any>(defalueValue ? {value: defalueValue} : undefined);
-  const [fetching, setFetching] = useState(false);
-
-  const fetchData = debounce(async (sv?: string) => {
-    setFetching(true);
-    const list = await getActivities({page_no: 1, page_size: 9999, name: sv} as API.ListParam);
-    setData(list.data || []);
-    setFetching(false);
-  }, 800);
-
-  useEffect(() => {
-    fetchData();
-  }, [categoryId]);
-
-
-  const handleChange = (changeValue: any) => {
-    setValue(value);
-    setData([]);
-    setFetching(false);
-    if (onChange) {
-      onChange(changeValue?.value);
-    }
-  };
-
-  return (
-    <Select
-      labelInValue
-      value={value}
-      defaultValue={defalueValue}
-      placeholder="请选择团建"
-      notFoundContent={fetching ? <Spin size="small"/> : null}
-      filterOption={false}
-      onSearch={fetchData}
-      onChange={handleChange}
-      showSearch
-      allowClear
-      style={{width: '100%'}}
-    >
-      {data.map((d) => (
-        <Option key={d.id} value={d.id!!}>
-          {d.name}
-        </Option>
-      ))}
-    </Select>
   );
 };
 
