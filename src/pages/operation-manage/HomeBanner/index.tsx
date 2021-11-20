@@ -42,6 +42,10 @@ export default function () {
       title: '跳转链接',
       dataIndex: 'link',
       key: 'link',
+    }, {
+      title: '地区',
+      dataIndex: 'province',
+      key: 'province'
     },
     {
       title: '排序',
@@ -99,10 +103,18 @@ export default function () {
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };
 
-  const handleState = async (record: API.HomeBanner) => {
+  const handleState = async (record: any) => {
+    if(record.province === '北京') {
+      record.province = 11
+    }
+    else if(record.province === '上海') {
+      record.province = 31
+    }
+    delete record.area;
+    const banner = {...record} as API.HomeBanner
     await saveBanner({
-      ...record,
-      status: record.status === HomeBannerStatus.DOWN ? HomeBannerStatus.UP : HomeBannerStatus.DOWN,
+      ...banner,
+      status: banner.status === HomeBannerStatus.DOWN ? HomeBannerStatus.UP : HomeBannerStatus.DOWN,
     });
     fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE });
   };

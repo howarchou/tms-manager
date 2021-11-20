@@ -43,10 +43,15 @@ const AddBannerModal = (props: AddModalIF) => {
   };
 
   const handleOk = async () => {
-    const values = await form.validateFields();
-    values.area = 1000 //not fix area data
+    const record = await form.validateFields();
+    if(record.province === '北京') {
+      record.province = 11
+    }
+    else if(record.province === '上海') {
+      record.province = 31
+    }
     const results = await saveBanner({
-      ...values,
+      ...record,
       status: dataValue?.status || 0,
       id: dataValue?.id
     } as API.HomeBanner);
@@ -106,9 +111,9 @@ const AddBannerModal = (props: AddModalIF) => {
             ]}
           >
             <Select>
-              <Select.Option value={0}>不限</Select.Option>
-              <Select.Option value={11}>北京</Select.Option>
-              <Select.Option value={31}>上海</Select.Option>
+              <Select.Option value={''}>不限</Select.Option>
+              <Select.Option value={'北京'}>北京</Select.Option>
+              <Select.Option value={'上海'}>上海</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
