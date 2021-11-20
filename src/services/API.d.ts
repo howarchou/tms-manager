@@ -156,6 +156,7 @@ declare namespace API {
     sort: number;
     status: HomeBannerStatus;
     cover: string;
+    province: number;
   }
 
   export interface Type {
