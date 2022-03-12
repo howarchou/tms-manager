@@ -7,9 +7,9 @@ import { request } from '@@/plugin-request/request';
 export async function getOrders(
   params: API.OrderListParam,
 ): Promise<API.ListResponsePayload<API.Order>> {
-  const { page_no = 1, page_size = 10, status = 0, source = 0, company = '', planner = '' } = params;
+  const { page_no = 1, page_size = 10, status = 0, source = 0, from_area = 0, company = '', planner = '' } = params;
   const result = await request<API.ListResponse<API.Order>>(
-    `/api/orders?page_no=${page_no}&page_size=${page_size}&status=${status}&source=${source}&planner=${planner}&company=${company}`,
+    `/api/orders?page_no=${page_no}&page_size=${page_size}&status=${status}&source=${source}&from_area=${from_area}&planner=${planner}&company=${company}`,
   );
   return result.payload;
 }

@@ -25,11 +25,12 @@ export default function() {
   const [planner, setPlanner] = useState<string>('');
   const [company, setCompany] = useState<string>('');
   const [sources, setSources] = useState<string[]>([]);
+  const [fromArea, setFromArea] = useState<string>('0');
   const [data, setData] = useState<API.ListResponsePayload<API.Order>>();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner }).then(() => {});
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, from_area: fromArea, source, company, planner }).then(() => {});
   }, [company, planner, source, status]);
 
   useEffect(() => {
@@ -89,6 +90,14 @@ export default function() {
       render: (source: number) => {
         return sources[source] ?? '';
       },
+    },
+    {
+      title: '来访地区',
+      dataIndex: 'from_area_name',
+      key: 'from_area_name',
+      width: 80,
+      textWrap: 'word-break',
+      ellipsis: true,
     },
     {
       title: '姓名',
@@ -204,12 +213,12 @@ export default function() {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const handlePageChange = (page: number) => {
     setPage(page);
-    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner });
+    fetchData({ page_no: page, page_size: DEFAULT_PAGE_SIZE, from_area: fromArea,status, source, company, planner });
   };
 
   const handleSearch = () => {
     setPage(DEFAULT_PAGE_NO);
-    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, source, company, planner});
+    fetchData({ page_no: DEFAULT_PAGE_NO, page_size: DEFAULT_PAGE_SIZE, status, source,from_area: fromArea, company, planner});
   };
 
   return (
@@ -220,6 +229,16 @@ export default function() {
             添加
           </Button>
           <div className={styles.team_building_search}>
+            <Select style={{ width: 100, marginRight: 10 }} placeholder={'来访地区'} allowClear={true} onChange={(value) => setFromArea(value as string)}>
+              {[{value: '0', text: '不限' },{value: '11', text: '北京' }, {value: '31', text: '上海' }].map((item) => {
+                  return (
+                    <Option key={item.value} value={item.value}>
+                      {item.text}
+                    </Option>
+                  );
+                },
+              )}
+            </Select>
             <Select style={{ width: 100, marginLeft: 20, marginRight: 10 }} placeholder={'状态'} allowClear={true} onChange={(value) => setStatus(value as number)}>
               {orderStatusConfig().map((item) => {
                   return (

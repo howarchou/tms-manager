@@ -13,7 +13,7 @@ export default defineConfig({
     hmr: true,
   },
   layout: {
-    name: '鱼跃团建',
+    name: '鱼悦团建',
     locale: true,
     siderWidth: 208,
     logo: '',

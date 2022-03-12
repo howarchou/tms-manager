@@ -39,6 +39,7 @@ export function detailDescribe(): DetailDescribeIF[] {
     { key: 'people_number', label: '团建人数' },
     { key: 'contact', label: '客户联系人' },
     { key: 'contact_mobile', label: '客户电话' },
+    { key: 'from_area_name', label: '客户来访地区' },
     { key: 'source', label: '来源' },
     { key: 'remark', label: '备注' },
   ];

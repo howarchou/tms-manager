@@ -202,6 +202,7 @@ declare namespace API {
     source: number;
     planner: string;
     company: string;
+    from_area: string;
   }
 
   export interface Recommend {
