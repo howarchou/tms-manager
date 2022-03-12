@@ -8,6 +8,10 @@ import JD_ICON from '@/assets/schedule/景点.png';
 import TZHD_ICON from '@/assets/schedule/拓展活动.png';
 import XX_ICON from '@/assets/schedule/休息.png';
 import YC_ICON from '@/assets/schedule/用餐.png';
+import CHECK_ICON from '@/assets/schedule/checkin.png';
+import BBQ_ICON from '@/assets/schedule/bbq1.png';
+import FREE_ICON from '@/assets/schedule/freedom.png';
+import OTHER_ICON from '@/assets/schedule/other.png';
 
 export function areaConfig(): API.BaseConfig[] {
   return getCookieValueByKey('activity_area');
@@ -44,6 +48,10 @@ export function scheduleIconConfig(): any[] {
     { icon: TZHD_ICON, text: '拓展活动', value: 3 },
     { icon: XX_ICON, text: '休息', value: 4 },
     { icon: YC_ICON, text: '用餐', value: 5 },
+    { icon: CHECK_ICON, text: '办理入住', value: 6 },
+    { icon: BBQ_ICON, text: '烧烤', value: 7 },
+    { icon: FREE_ICON, text: '自由活动', value: 8 },
+    { icon: OTHER_ICON, text: '其他', value: 9 },
   ];
 }
 
