@@ -65,6 +65,7 @@ export default {
   'menu.operation.manage.case.list': '客户案例',
   'menu.operation.manage.photo-wall': '客户Logo',
   'menu.supplier.manage': '供应商管理',
+  'menu.supplier.manage.partner': '合作伙伴列表',
   'menu.supplier.manage.list': '供应商列表',
   'menu.team-building.manage': '团建管理',
   'menu.team-building.manage.list': '团建列表',

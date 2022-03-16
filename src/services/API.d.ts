@@ -319,4 +319,15 @@ declare namespace API {
     sort: number;
     activity?: API.TeamBuildingNew;
   }
+  export interface Partner {
+    id?: string;
+    partner_type: string;
+    service_type: string;
+    contact_name: string;
+    contact_mobile: string;
+    remark: string;
+    created_at: number;
+    updated_at: number;
+    deleted_at: number;
+  }
 }

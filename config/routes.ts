@@ -155,6 +155,12 @@ const routes: IRoute[] = [
     path: '/supplier',
     routes: [
       {
+        path: '/supplier/partner',
+        name: 'partner',
+        icon: 'smile',
+        component: './supplier-manage/PartnerList',
+      },
+      {
         path: '/supplier/list',
         name: 'list',
         icon: 'smile',
