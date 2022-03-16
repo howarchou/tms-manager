@@ -115,3 +115,13 @@ export function detailDescribe(): DetailDescribeIF[] {
     { key: 'stars', label: '推荐指数', type: 'stars' },
   ];
 }
+export function partnerDetailDescribe(): DetailDescribeIF[] {
+  return [
+    { key: 'id', label: 'ID' },
+    { key: 'partner_type', label: '合作伙伴' },
+    { key: 'service_type', label: '客户类型' },
+    { key: 'contact_name', label: '联系人' },
+    { key: 'contact_mobile', label: '联系电话' },
+    { key: 'remark', label: '备注' },
+  ];
+}

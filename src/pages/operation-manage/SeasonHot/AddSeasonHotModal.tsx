@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, Input, InputNumber, Modal, Row, Select } from 'antd';
+import { Button,  Form, Input, InputNumber, Modal, Select } from 'antd';
 import UploadComponent from '@/components/Upload';
 import { API } from '@/services/API';
 import { saveSeasonHot } from '@/services/seasonHot';
@@ -30,7 +30,17 @@ const AddSeasonHotModal = (props: AddModalIF) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    setVisible(!!open);
+    setVisible(!!open)
+    if (data && typeof data.area === 'string') {
+      const areaList = areaConfig().reduce((arr: any[], item: API.BaseConfig) => {
+        return [...arr, ...item?.items??[]]
+      }, [])
+
+      const area = areaList.find(item => item.text === data.area)
+      if (area) {
+        data.area = area.value
+      }
+    }
     form.setFieldsValue(data);
   }, [open]);
 

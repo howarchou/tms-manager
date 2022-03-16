@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import styles from '@/pages/team-building-manage/TeamBuildingList.less';
-import { Button, Space, Table } from 'antd';
+import { Space, Table } from 'antd';
 import { history } from '@@/core/history';
 import type { API } from '@/services/API';
 import moment from 'moment';
@@ -30,9 +30,6 @@ export default function() {
     if(v) setData(v);
   };
 
-  const handleAdd = () => {
-    history.push({ pathname: '/order/add' });
-  };
 
   const columns = [
     {
@@ -112,7 +109,7 @@ export default function() {
   const handleDetail = (record: API.Order) => {
     // @ts-ignore
     history.push({
-      pathname: '/supplier/partner_detail',
+      pathname: '/supplier/partner-detail',
       query: { id: record.id },
     });
   };
@@ -126,11 +123,6 @@ export default function() {
   return (
     <PageContainer title={'合作伙伴列表'}>
       <div className={styles.team_building_list}>
-        <div className={styles.team_building_add}>
-          <Button type='primary' onClick={handleAdd}>
-            添加
-          </Button>
-        </div>
         <Table
           key={'order_list'}
           // @ts-ignore

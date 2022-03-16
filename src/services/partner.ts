@@ -10,6 +10,6 @@ export async function queryPartners(params: QueryPartnerParamer) {
 }
 
 export async function getPartner(id?: string) {
-  const { payload } = await request<API.ListResponse<API.Partner>>(`/api/partner/${id}`);
+  const { payload } = await request<API.BaseResponse<API.Partner>>(`/api/partner/${id}`);
   return payload
 }
