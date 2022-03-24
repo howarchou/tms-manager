@@ -6,6 +6,7 @@ import { StateType } from '../../model';
 // import { saveActivitying } from '@/services/activity';
 import UploadComponent from '@/components/Upload';
 import { getDefaultValue } from '@/helpers';
+import { useBuild } from "@/utils/useBuild"
 
 interface Step2Props {
   data?: StateType['step'];
@@ -19,6 +20,7 @@ const FormRowLayoutSpan = 16;
 const Step2: React.FC<Step2Props> = (props) => {
   const { data = getDefaultValue(), dispatch, submitting } = props;
   const [form] = Form.useForm();
+  const [ cacheButton, allSubmitButton ] = useBuild(data, form, dispatch, submitting)
   useEffect(() => {
     form.setFieldsValue({
       ...data,
@@ -123,6 +125,12 @@ const Step2: React.FC<Step2Props> = (props) => {
         <Button onClick={onPrev} style={{ marginRight: 8 }}>
           上一步
         </Button>
+
+
+
+        { cacheButton }
+        { allSubmitButton }
+
         <Button type='primary' onClick={onValidateForm} loading={submitting}>
           下一步
         </Button>
